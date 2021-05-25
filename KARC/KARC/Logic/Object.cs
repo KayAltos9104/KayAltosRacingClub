@@ -10,9 +10,9 @@ namespace KARC.Logic
 {
     class Object
     {
-        Dictionary<string, Texture2D> images = new Dictionary<string, Texture2D>();//Изображения, которые имеет объект
-        Texture2D currentImage;
-        Vector2 pos;
+        protected Dictionary<string, Texture2D> images = new Dictionary<string, Texture2D>();//Изображения, которые имеет объект
+        protected Texture2D currentImage;
+        protected Vector2 pos;
 
         float layer = 1.0f; //Слой отрисовки
 
@@ -29,6 +29,23 @@ namespace KARC.Logic
         }
 
 
+        public virtual void Update(SpriteBatch _spriteBatch)
+        {
+            currentImage = images.ElementAt(0).Value;
+            drawObject(_spriteBatch);
+        }
+
+        public virtual void Update(SpriteBatch _spriteBatch, Keys key)
+        {
+            drawObject(_spriteBatch);
+        }
+
+
+        protected virtual void move (Vector2 newPos)
+        {
+            pos = newPos;
+        }
+
         public void loadImages(string _key, Texture2D _image)
         {
             images.Add(_key, _image);
@@ -39,16 +56,7 @@ namespace KARC.Logic
             _spriteBatch.Draw(currentImage,pos,null, Color.White,0, Vector2.Zero,1.0f, SpriteEffects.None,layer);
         }
 
-        public virtual void Update (SpriteBatch _spriteBatch)
-        {
-            currentImage = images.ElementAt(0).Value;
-            drawObject(_spriteBatch);
-        }
-
-        public virtual void Update(SpriteBatch _spriteBatch, Keys key)
-        {
-            drawObject(_spriteBatch);
-        }
+       
 
 
     }

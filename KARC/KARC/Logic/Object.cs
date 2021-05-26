@@ -41,16 +41,16 @@ namespace KARC.Logic
         }
 
 
-        public virtual void Update(SpriteBatch _spriteBatch, int _time) //Обновление состояния объекта
+        public virtual void Update(int _time) //Обновление состояния объекта
         {            
             currentTime = _time;
-            drawObject(_spriteBatch);
+            //drawObject(_spriteBatch);
         }
 
-        public virtual void Update(SpriteBatch _spriteBatch, Keys key, int _time)//Обновление состояния объекта с учетом нажатой клавиши
+        public virtual void Update(Keys key, int _time)//Обновление состояния объекта с учетом нажатой клавиши
         {            
             currentTime = _time;
-            drawObject(_spriteBatch);
+            //drawObject(_spriteBatch);
         }
 
 
@@ -70,7 +70,7 @@ namespace KARC.Logic
             images.Add(_key, _image);
         }
 
-        protected virtual void drawObject (SpriteBatch _spriteBatch)//Метод отрисовки объекта
+        public virtual void drawObject (SpriteBatch _spriteBatch)//Метод отрисовки объекта
         {
             _spriteBatch.Draw(currentImage,pos,null, Color.White,0, Vector2.Zero,1.0f, SpriteEffects.None,layer);
         }

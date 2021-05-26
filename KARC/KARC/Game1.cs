@@ -13,6 +13,8 @@ namespace KARC
         final
     }
 
+
+
     public enum objType: byte
     {
         background = 0,
@@ -27,13 +29,15 @@ namespace KARC
         SpriteBatch spriteBatch;
         GameMode mode;
 
+        Dictionary<string, Logic.Scene> scenesDict = new Dictionary<string, Logic.Scene>();
 
+        
+        
 
-        Logic.Object back;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            Content.RootDirectory = "Content/Resources";
             texturesDict = new Dictionary<string, Texture2D>();
             mode = GameMode.mainMenu;
         }
@@ -44,7 +48,19 @@ namespace KARC
         protected override void Initialize()
         {         
             base.Initialize();
-            
+
+            int[,] mainMenuMap = new int[1, 1];
+
+            List<Logic.Object> objList = new List<Logic.Object>();
+            Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
+
+
+            textureDict.Add("background", Content.Load<Texture2D>("MenuBackGround"));
+            Logic.Object backGround = new Logic.Object(Vector2.Zero, 1.0f, textureDict, 1);
+            objList.Add(backGround);
+
+            Logic.Scene mainMenu = new Logic.Scene(mainMenuMap, 600, objList);
+            scenesDict.Add("MainMenu", mainMenu);
         }
 
 
@@ -56,12 +72,12 @@ namespace KARC
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-
+            
 
             //back = new Logic.Object(Vector2.Zero,1.0f);
             //texturesDict.Add("InitialBackGround", Content.Load<Texture2D>("MenuBackGround"));
             //back.loadImages("Back", texturesDict["InitialBackGround"]);
-            
+
         }
 
        
@@ -94,9 +110,21 @@ namespace KARC
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
 
-            //back.Update(spriteBatch);
+            //spriteBatch.Begin();
+
+            switch (mode)
+            {
+                case GameMode.mainMenu:
+                    {
+                        foreach (var obj in scenesDict["MainMenu"].objectList)
+                        {
+                            obj.drawObject(spriteBatch);
+                        }
+                        break;
+                    }
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);

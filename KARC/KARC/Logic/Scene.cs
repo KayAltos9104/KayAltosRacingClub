@@ -9,9 +9,10 @@ namespace KARC.Logic
 {
     class Scene //Класс, который содержит в себе объекты и карту их расстановки
     {
-        List<Object> objectList;//Список всех объектов сцены
+        public List<Object> objectList;//Список всех объектов сцены
         int[,] map;//Клетки карты (одна клетка, по идее, один экран)
         int scale;// Масштаб одного тайла(клетки) карты
+        
 
         public Scene (int [,] _map, int _scale, List<Object> _objList)
         {
@@ -26,11 +27,13 @@ namespace KARC.Logic
                 objectList.Add(obj);
         }
 
-        public void updateScene (SpriteBatch _spriteBatch, Keys key, int _time)
+        public void updateScene (Keys key, int _time)
         {
             foreach (var obj in objectList)
-                obj.Update(_spriteBatch, key, _time);
+                obj.Update(key, _time);
         }
+
+
 
     }
 }

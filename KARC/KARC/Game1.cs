@@ -18,7 +18,8 @@ namespace KARC
     public enum objType: byte
     {
         background = 0,
-        car = 1
+        button = 1,
+        car = 2
     }
 
 

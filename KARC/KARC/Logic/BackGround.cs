@@ -17,6 +17,7 @@ namespace KARC.Logic
             {
                 fontDict.Add(f.Key, f.Value);
             }
+            type = objType.background;
         }
     }
 }

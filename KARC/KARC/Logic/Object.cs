@@ -10,48 +10,67 @@ namespace KARC.Logic
 {
     class Object
     {
-        protected Dictionary<string, Texture2D> images = new Dictionary<string, Texture2D>();//Изображения, которые имеет объект
-        protected Texture2D currentImage;
-        protected Vector2 pos;
+        //Графика
+        protected Dictionary<string, Texture2D> images = new Dictionary<string, Texture2D>();//Изображения, которые может иметь объект
+        protected Texture2D currentImage; //Текущее изображение        
+        protected float layer = 1.0f; //Слой отрисовки
+        
+        //Физика
+        protected Vector2 pos; //Текущая позиция
 
-        float layer = 1.0f; //Слой отрисовки
+        //Технические данные
+        protected int currentTime; //Текущее время игры
+        protected int id; //Id объекта
+        protected objType type; //Тип объекта
 
         public Object()
         {
 
         }
 
-        public Object (Vector2 _pos, float _layer)
+        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList, int _Id)
         {
             layer = _layer;
-            pos = _pos;
-            
-        }
-
-
-        public virtual void Update(SpriteBatch _spriteBatch)
-        {
+            pos = _pos;   
+            foreach (var img in _loadTextList)
+            {
+                loadImages(img.Key, img.Value);
+            }  
             currentImage = images.ElementAt(0).Value;
-            drawObject(_spriteBatch);
-        }
-
-        public virtual void Update(SpriteBatch _spriteBatch, Keys key)
-        {
-            drawObject(_spriteBatch);
+            id = _Id;
         }
 
 
-        protected virtual void move (Vector2 newPos)
+        public virtual void Update(SpriteBatch _spriteBatch, int _time) //Обновление состояния объекта
+        {            
+            currentTime = _time;
+            drawObject(_spriteBatch);
+        }
+
+        public virtual void Update(SpriteBatch _spriteBatch, Keys key, int _time)//Обновление состояния объекта с учетом нажатой клавиши
+        {            
+            currentTime = _time;
+            drawObject(_spriteBatch);
+        }
+
+
+        protected virtual void teleport (Vector2 newPos)//Поместить объект на заданное место
         {
             pos = newPos;
         }
 
-        public void loadImages(string _key, Texture2D _image)
+        protected virtual void move(Vector2 newPos)//Сместить объект на заданный вектор (сложить текущий вектор и заданный)
+        {
+            pos.X += newPos.X;
+            pos.Y += newPos.Y;
+        }
+
+        private void loadImages(string _key, Texture2D _image)//Добавить изображение к списку изображение
         {
             images.Add(_key, _image);
         }
 
-        protected virtual void drawObject (SpriteBatch _spriteBatch)
+        protected virtual void drawObject (SpriteBatch _spriteBatch)//Метод отрисовки объекта
         {
             _spriteBatch.Draw(currentImage,pos,null, Color.White,0, Vector2.Zero,1.0f, SpriteEffects.None,layer);
         }

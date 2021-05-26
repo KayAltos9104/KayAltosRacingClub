@@ -13,7 +13,11 @@ namespace KARC
         final
     }
 
-    
+    public enum objType: byte
+    {
+        background = 0,
+        car = 1
+    }
 
 
     public class Game1 : Game
@@ -22,6 +26,8 @@ namespace KARC
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         GameMode mode;
+
+
 
         Logic.Object back;
         public Game1()
@@ -48,11 +54,13 @@ namespace KARC
         {
             
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            back = new Logic.Object(Vector2.Zero,1.0f);
 
-            texturesDict.Add("InitialBackGround", Content.Load<Texture2D>("MenuBackGround"));
 
-            back.loadImages("Back", texturesDict["InitialBackGround"]);
+
+
+            //back = new Logic.Object(Vector2.Zero,1.0f);
+            //texturesDict.Add("InitialBackGround", Content.Load<Texture2D>("MenuBackGround"));
+            //back.loadImages("Back", texturesDict["InitialBackGround"]);
             
         }
 
@@ -88,7 +96,7 @@ namespace KARC
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
-            back.Update(spriteBatch);
+            //back.Update(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

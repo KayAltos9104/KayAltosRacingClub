@@ -57,10 +57,27 @@ namespace KARC
 
 
             textureDict.Add("background", Content.Load<Texture2D>("MenuBackGround"));
-            Logic.Object backGround = new Logic.Object(Vector2.Zero, 1.0f, textureDict, 1);
+            SpriteFont gameName = Content.Load<SpriteFont>("Title");
+            Dictionary<string, SpriteFont> fontDict = new Dictionary<string, SpriteFont>();
+            fontDict.Add("Title",gameName);
+            Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1,fontDict,50);
             objList.Add(backGround);
+            //TODO: период лучше в сцену вставлять. Или туда и туда
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
+            textureDict.Add("dark", Content.Load<Texture2D>("flatLight41"));
+            Logic.Button btnStart = new Logic.Button(new Vector2(370, 200), 0.9f, textureDict, 2, 0, 50);
+            btnStart.check = true;
+            objList.Add(btnStart);
 
-            Logic.Scene mainMenu = new Logic.Scene(mainMenuMap, 600, objList);
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
+            textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
+            Logic.Button btnExit = new Logic.Button(new Vector2(370, 250), 0.9f, textureDict, 3, 1, 50);
+            objList.Add(btnExit);
+
+            Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(mainMenuMap, 600, objList);
             scenesDict.Add("MainMenu", mainMenu);
         }
 
@@ -97,6 +114,17 @@ namespace KARC
             {
                 case GameMode.mainMenu:
                     {
+                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                        {
+                            scenesDict["MainMenu"].updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                        }
+                        else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                        {
+                            scenesDict["MainMenu"].updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                        }
+                        else
+                            scenesDict["MainMenu"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
+
 
                         break;
                     }
@@ -122,7 +150,10 @@ namespace KARC
                         foreach (var obj in scenesDict["MainMenu"].objectList)
                         {
                             obj.drawObject(spriteBatch);
+
                         }
+                        Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
+                        title.drawString("Title", "K.A.R.C.", new Vector2(350, 150), Color.Red, spriteBatch);
                         break;
                     }
             }

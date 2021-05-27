@@ -27,7 +27,13 @@ namespace KARC.Logic
                 objectList.Add(obj);
         }
 
-        public void updateScene (Keys key, int _time)
+        public virtual void updateScene(int _time)
+        {
+            foreach (var obj in objectList)
+                obj.Update(_time);
+        }
+
+        public virtual void updateScene (Keys key, int _time)
         {
             foreach (var obj in objectList)
                 obj.Update(key, _time);

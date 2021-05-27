@@ -20,15 +20,16 @@ namespace KARC.Logic
 
         //Технические данные
         protected int currentTime; //Текущее время игры
+        protected int period;
         protected int id; //Id объекта
-        protected objType type; //Тип объекта
+        public objType type; //Тип объекта
 
         public Object()
         {
 
         }
 
-        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList, int _Id)
+        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList, int _Id, int _peridod)
         {
             layer = _layer;
             pos = _pos;   
@@ -38,6 +39,7 @@ namespace KARC.Logic
             }  
             currentImage = images.ElementAt(0).Value;
             id = _Id;
+            period = _peridod;
         }
 
 

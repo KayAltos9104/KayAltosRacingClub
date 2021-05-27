@@ -90,3 +90,9 @@
 /processorParam:TextureFormat=Color
 /build:Resources/Start_Select.png
 
+#begin Resources/Title.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Resources/Title.spritefont
+

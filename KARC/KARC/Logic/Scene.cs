@@ -12,6 +12,7 @@ namespace KARC.Logic
         public List<Object> objectList;//Список всех объектов сцены
         int[,] map;//Клетки карты (одна клетка, по идее, один экран)
         int scale;// Масштаб одного тайла(клетки) карты
+
         
 
         public Scene (int [,] _map, int _scale, List<Object> _objList)

@@ -74,10 +74,10 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
-            Logic.Button btnExit = new Logic.Button(new Vector2(370, 250), 0.9f, textureDict, 3, 1, 50);
+            Logic.Button btnExit = new Logic.Button(new Vector2(370, 260), 0.9f, textureDict, 3, 1, 50);
             objList.Add(btnExit);
 
-            Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(mainMenuMap, 600, objList);
+            Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(mainMenuMap, 600, objList,100);
             scenesDict.Add("MainMenu", mainMenu);
         }
 

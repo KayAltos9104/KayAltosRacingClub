@@ -21,15 +21,12 @@ namespace KARC.Logic
 
         public override void Update(int _time)
         {
-            currentTime += _time;
-            if (currentTime > period)
-            {
-                currentTime -= period;
+            
                 if (check)
                     currentImage = images["light"];
                 else
                     currentImage = images["dark"];
-            }
+            
             
         }
         

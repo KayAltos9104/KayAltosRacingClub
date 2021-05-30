@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace KARC.Logic
 {
     class InterfaceMenu:Scene
     {
         Dictionary<int, Button> buttonDict = new Dictionary<int, Button>();
-        int cursor;
+        public int cursor;
         int maxCursor;
 
         protected int currentTime; //Текущее время игры
         protected int period;
 
-        bool pushed = false;
+       
+
+
 
         public InterfaceMenu (int[,] _map, int _scale, List<Object> _objList, int _period) :base(_map, _scale,_objList)
         {
@@ -37,8 +40,7 @@ namespace KARC.Logic
         {
 
             currentTime += _time;
-            if (currentTime > period)
-            //if (!pushed)
+            if (currentTime > period)            
             {
                 currentTime = 0;
                 
@@ -64,7 +66,7 @@ namespace KARC.Logic
                         but.Value.check = false;
                 }
             }
-            //pushed = true;
+            
             base.updateScene(key, _time);
             
         }

@@ -14,7 +14,9 @@ namespace KARC.Logic
         protected Dictionary<string, Texture2D> images = new Dictionary<string, Texture2D>();//Изображения, которые может иметь объект
         protected Texture2D currentImage; //Текущее изображение        
         protected float layer = 1.0f; //Слой отрисовки
-        
+        public Color colDraw = Color.White;
+
+
         //Физика
         protected Vector2 pos; //Текущая позиция
 
@@ -74,7 +76,7 @@ namespace KARC.Logic
 
         public virtual void drawObject (SpriteBatch _spriteBatch)//Метод отрисовки объекта
         {
-            _spriteBatch.Draw(currentImage,pos,null, Color.White,0, Vector2.Zero,1.0f, SpriteEffects.None,layer);
+            _spriteBatch.Draw(currentImage,pos,null, colDraw, 0, Vector2.Zero,1.0f, SpriteEffects.None,layer);
         }
 
        

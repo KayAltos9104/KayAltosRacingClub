@@ -40,6 +40,9 @@ namespace KARC
         public static int windoWidth;
         public static int windowHeight;
 
+        string titleLoad = "";
+        int nameIndex = 1;
+
         int currentTime = 0;
 
         public Game1()
@@ -211,16 +214,18 @@ namespace KARC
                     {
                         int period = 50;
                         currentTime += gameTime.ElapsedGameTime.Milliseconds;
+                        string gameName = "           K.A.R.C.\n Adrenaline Racing";
                         
+
                             foreach (var obj in scenesDict["MainMenu"].objectList)
                             {
                                 obj.colDraw = new Color(load, load, load);
                                 obj.drawObject(spriteBatch);
-                            //if (load >= 255)
-                           // {
+                            if (load >= 255)
+                            {
                                 Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
-                                title.drawString("Title", "K.A.R.C.", new Vector2(windoWidth / 2 - 50, windowHeight / 2 - 150), new Color(load, 0, 0), spriteBatch);
-                           // }
+                                title.drawString("Title", titleLoad, new Vector2(windoWidth / 2 - 165, windowHeight / 2 - 220), new Color(load, 0, 0), spriteBatch);
+                           }
                             
                         }
                            
@@ -230,11 +235,19 @@ namespace KARC
                             if (load < 255)
                             {
                                 load+=3;
-                            }                           
-                                }
+                            }
+                            else
+                            {                
+                                if (nameIndex<=gameName.Length)
+                                {
+                                    titleLoad = gameName.Substring(0, nameIndex);
+                                    nameIndex++;
+                                } 
+                            }
+                            
+                       }
                         
-
-                        break;
+                       break;
                     }
                 case GameMode.game:
                     {

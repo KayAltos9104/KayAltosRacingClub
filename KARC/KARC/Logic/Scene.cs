@@ -34,12 +34,6 @@ namespace KARC.Logic
             foreach (var obj in objectList)
                 obj.Update(_time);
 
-            //if (song !=null)
-            //{
-            //    MediaPlayer.Play(song);
-            //    // повторять после завершения
-            //    MediaPlayer.IsRepeating = true;
-            //}
            
            
            
@@ -48,16 +42,13 @@ namespace KARC.Logic
         public virtual void updateScene (Keys key, int _time)
         {
             foreach (var obj in objectList)
-                obj.Update(key, _time);
-            //if (song != null)
-            //{
-            //    MediaPlayer.Play(song);
-            //    // повторять после завершения
-            //    MediaPlayer.IsRepeating = true;
-            //};
+                obj.Update(key, _time);           
         }
 
+        public void scroll ()
+        {
 
+        }
 
     }
 }

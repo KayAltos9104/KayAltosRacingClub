@@ -108,3 +108,9 @@
 /processorParam:TextureFormat=NoChange
 /build:Resources/ManualFont.spritefont
 
+#begin Resources/DemonSpeeding.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Resources/DemonSpeeding.mp3
+

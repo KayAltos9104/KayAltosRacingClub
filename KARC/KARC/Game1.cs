@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 
 namespace KARC
 {
-    
+
     enum GameMode
     {
         mainMenu,
@@ -16,7 +17,7 @@ namespace KARC
 
 
 
-    public enum objType: byte
+    public enum objType : byte
     {
         background = 0,
         button = 1,
@@ -34,7 +35,7 @@ namespace KARC
         SpriteBatch spriteBatch;
         GameMode mode;
         Song song;
-         
+        Song[] musicList;
         Dictionary<string, Logic.Scene> scenesDict = new Dictionary<string, Logic.Scene>();
 
         public static int windoWidth;
@@ -44,6 +45,7 @@ namespace KARC
         int nameIndex = 1;
 
         int currentTime = 0;
+        bool songSwitched = false;
 
         public Game1()
         {
@@ -53,44 +55,44 @@ namespace KARC
             mode = GameMode.mainMenu;
         }
 
-      
+
 
 
         protected override void Initialize()
-        {         
+        {
             base.Initialize();
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight =768;
+            graphics.PreferredBackBufferHeight = 768;
             graphics.ApplyChanges();
 
             windoWidth = Window.ClientBounds.Width;
             windowHeight = Window.ClientBounds.Height;
 
+            musicList = new Song[2];
+            musicList[0] = Content.Load<Song>("ME");
+            musicList[1] = Content.Load<Song>("DemonSpeeding");
 
+            //===================Загрузка начального экрана
             int[,] map = new int[1, 1];
 
             List<Logic.Object> objList = new List<Logic.Object>();
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
-
-
-            //===================Загрузка начального экрана
-
             textureDict.Add("background", Content.Load<Texture2D>("MenuBackGround"));
 
             SpriteFont gameName = Content.Load<SpriteFont>("Title");
             Dictionary<string, SpriteFont> fontDict = new Dictionary<string, SpriteFont>();
-            fontDict.Add("Title",gameName);
+            fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1,fontDict,50);
+            Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1, fontDict, 50);
             objList.Add(backGround);
 
             //TODO: период лучше в сцену вставлять. Или туда и туда
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
-            Logic.Button btnStart = new Logic.Button(new Vector2(windoWidth/2-30, windowHeight/2-100), 0.9f, textureDict, 2, 0, 50);
+            Logic.Button btnStart = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0, 50);
             //Logic.Button btnStart = new Logic.Button(new Vector2(100, 100), 0.9f, textureDict, 2, 0, 50);
             btnStart.check = true;
             objList.Add(btnStart);
@@ -102,11 +104,14 @@ namespace KARC
             Logic.Button btnExit = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 3, 1, 50);
             objList.Add(btnExit);
 
-            Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(map, 600, objList,100);
+            Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(map, 600, objList, 100);
             //mainMenu.song = Content.Load<Song>("ME");
             //song = Content.Load<Song>("ME");
             scenesDict.Add("MainMenu", mainMenu);
             //==============================Конец
+
+
+
 
 
             //===================Загрузка игры
@@ -120,7 +125,7 @@ namespace KARC
 
         protected override void LoadContent()
         {
-            
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             song = Content.Load<Song>("ME");
@@ -129,26 +134,19 @@ namespace KARC
                 MediaPlayer.Play(song);
                 // повторять после завершения
                 MediaPlayer.IsRepeating = true;
+               
             }
-            //if (scenesDict["MainMenu"].song != null)
-            //{
-            //    MediaPlayer.Play(scenesDict["MainMenu"].song);
-            //    // повторять после завершения
-            //    MediaPlayer.IsRepeating = true;
-            //}
-            //back = new Logic.Object(Vector2.Zero,1.0f);
-            //texturesDict.Add("InitialBackGround", Content.Load<Texture2D>("MenuBackGround"));
-            //back.loadImages("Back", texturesDict["InitialBackGround"]);
+            
 
         }
 
-       
+
         protected override void UnloadContent()
         {
-           
+
         }
 
-      
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -157,7 +155,7 @@ namespace KARC
             switch (mode)
             {
                 case GameMode.mainMenu:
-                    {                       
+                    {
 
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
                         {
@@ -170,7 +168,7 @@ namespace KARC
                         else
                             scenesDict["MainMenu"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
 
-                        if (Keyboard.GetState().IsKeyDown(Keys.Space)|| Keyboard.GetState().IsKeyDown(Keys.Enter))
+                        if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
                         {
                             Logic.InterfaceMenu menu = (Logic.InterfaceMenu)scenesDict["MainMenu"];
                             switch (menu.cursor)
@@ -198,7 +196,7 @@ namespace KARC
 
 
 
-      
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -208,26 +206,25 @@ namespace KARC
 
             switch (mode)
             {
+
                 case GameMode.mainMenu:
                     {
                         int period = 50;
                         currentTime += gameTime.ElapsedGameTime.Milliseconds;
-                        
+                       
                         string gameName = "           K.A.R.C.\n Adrenaline Racing";
-                        
-
-                            foreach (var obj in scenesDict["MainMenu"].objectList)
-                            {
-                                obj.colDraw = new Color(load, load, load);
-                                obj.drawObject(spriteBatch);
+                        foreach (var obj in scenesDict["MainMenu"].objectList)
+                        {
+                            obj.colDraw = new Color(load, load, load);
+                            obj.drawObject(spriteBatch);
                             if (load >= 255)
-                            {                                
+                            {
                                 Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
                                 title.drawString("Title", titleLoad, new Vector2(windoWidth / 2 - 165, windowHeight / 2 - 220), new Color(load, 0, 0), spriteBatch);
 
-                                
+
                             }
-                           
+
 
                         }
                         if (titleLoad != gameName)
@@ -257,10 +254,10 @@ namespace KARC
                             {
 
                             }
-                            else if (currentTime>period&& currentTime < 2*period)
+                            else if (currentTime > period && currentTime < 2 * period)
                             {
                                 Logic.BackGround pressStart = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
-                                pressStart.drawString("ManualFont", "Нажмите пробел для выбора", new Vector2(windoWidth / 2 - 100, windowHeight - 300), Color.FloralWhite, spriteBatch);
+                                pressStart.drawString("ManualFont", "Нажмите пробел для выбора", new Vector2(windoWidth / 2 - 120, windowHeight - 300), Color.FloralWhite, spriteBatch);
 
                             }
                             else
@@ -268,18 +265,30 @@ namespace KARC
                                 currentTime = 0;
                             }
                         }
-                       
-                        
-                            
-                        
+
+
+
+
                         break;
 
                     }
                 case GameMode.game:
                     {
                         spriteBatch.DrawString(Content.Load<SpriteFont>("Title"), "Игра запущена", Vector2.Zero, Color.AliceBlue);
-                        MediaPlayer.Stop();
-                       
+                        if (!songSwitched)
+                        {
+                            MediaPlayer.Play(musicList[1]);
+                            songSwitched = true;
+                        }
+                        else
+                        {
+                            MediaPlayer.Resume();
+                            MediaPlayer.Volume = 1.0f;
+                        }
+
+
+
+
                         break;
                     }
             }

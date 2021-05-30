@@ -18,12 +18,12 @@ namespace KARC.Logic
 
 
         //Физика
-        protected Vector2 pos; //Текущая позиция
+        public Vector2 pos; //Текущая позиция
 
         //Технические данные
         protected int currentTime; //Текущее время игры
         protected int period;
-        protected int id; //Id объекта
+        public int id; //Id объекта
         public objType type; //Тип объекта
 
         public Object()

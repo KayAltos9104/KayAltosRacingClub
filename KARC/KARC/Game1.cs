@@ -167,7 +167,7 @@ namespace KARC
                         }
                         else
                             scenesDict["MainMenu"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
-
+                        
                         if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
                         {
                             Logic.InterfaceMenu menu = (Logic.InterfaceMenu)scenesDict["MainMenu"];
@@ -186,6 +186,11 @@ namespace KARC
                             }
 
                         }
+
+                        //if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                        //{
+                        //    scenesDict["MainMenu"].scroll(new Vector2(1, 1));
+                        //}
 
                         break;
                     }

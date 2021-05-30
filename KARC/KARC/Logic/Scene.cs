@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
@@ -11,10 +12,10 @@ namespace KARC.Logic
     class Scene //Класс, который содержит в себе объекты и карту их расстановки
     {
         public List<Object> objectList;//Список всех объектов сцены
-        int[,] map;//Клетки карты (одна клетка, по идее, один экран)
-        int scale;// Масштаб одного тайла(клетки) карты
+        protected int[,] map;//Клетки карты (одна клетка, по идее, один экран)
+        protected int scale;// Масштаб одного тайла(клетки) карты
 
-        public Song song;
+        //public Song song;
 
         public Scene (int [,] _map, int _scale, List<Object> _objList)
         {
@@ -33,10 +34,6 @@ namespace KARC.Logic
         {
             foreach (var obj in objectList)
                 obj.Update(_time);
-
-           
-           
-           
         }
 
         public virtual void updateScene (Keys key, int _time)
@@ -45,9 +42,12 @@ namespace KARC.Logic
                 obj.Update(key, _time);           
         }
 
-        public void scroll ()
+        public void scroll (Vector2 _shift)
         {
-
+            foreach (var obj in objectList)
+            {
+                obj.pos += _shift;
+            }
         }
 
     }

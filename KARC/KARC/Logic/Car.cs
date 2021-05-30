@@ -35,9 +35,13 @@ namespace KARC.Logic
             }
         }
 
-        public Car (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _period, Vector2 _speed) :base(_pos, _layer, _loadTextList, _Id, _period)
+        public Car (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _period, Vector2 _speed, int _weight) :base(_pos, _layer, _loadTextList, _Id, _period, _weight)
         {
             Speed = _speed;
+            movable = true;
+            type = objType.car;
         }
+
+
     }
 }

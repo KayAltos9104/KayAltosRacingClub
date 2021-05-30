@@ -47,6 +47,8 @@ namespace KARC
         int currentTime = 0;
         bool songSwitched = false;
 
+        bool showhitBox = true;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -62,7 +64,7 @@ namespace KARC
         {
             base.Initialize();
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferWidth = 840;
             graphics.PreferredBackBufferHeight = 768;
             graphics.ApplyChanges();
 
@@ -113,10 +115,30 @@ namespace KARC
 
 
 
-
             //===================Загрузка игры
 
+            //Тестовый уровень
+            //map =  new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+            map = new int[1, 3] { { 1, 1, 1 } };
+            objList.Clear();
+            textureDict.Clear();
+            textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
+           
+            for (int i = 0; i < map.GetLength(1);i++)
+            {
+                if (map[0,i]!=0)
+                {
+                    objList.Add(new Logic.BackGround(new Vector2(0, i * 840), 0.9f, textureDict, 0, 50));
+                }
+            }
+            textureDict.Clear();
+            textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
+            textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
+            objList.Add(new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, 50, new Vector2(0, 1), 5000));
 
+
+            Logic.Level testLevel = new Logic.Level(map, 840, objList, true);
+            scenesDict.Add("level0", testLevel);
             //==============================Конец
         }
 
@@ -191,7 +213,13 @@ namespace KARC
                         //{
                         //    scenesDict["MainMenu"].scroll(new Vector2(1, 1));
                         //}
-
+                        if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+                        {
+                            if (showhitBox)
+                                showhitBox = false;
+                            else
+                                showhitBox = true;
+                        }
                         break;
                     }
             }
@@ -280,6 +308,7 @@ namespace KARC
                 case GameMode.game:
                     {
                         spriteBatch.DrawString(Content.Load<SpriteFont>("Title"), "Игра запущена", Vector2.Zero, Color.AliceBlue);
+
                         if (!songSwitched)
                         {
                             MediaPlayer.Play(musicList[1]);
@@ -291,6 +320,17 @@ namespace KARC
                             MediaPlayer.Volume = 1.0f;
                         }
 
+
+                        foreach (var obj in scenesDict["level0"].objectList)
+                        {                            
+                            obj.drawObject(spriteBatch);
+                            if (showhitBox&&obj.physical)
+                            {
+                                Logic.PhysicalObject hb = (Logic.PhysicalObject)obj;
+                                spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
+                            }
+
+                        }
 
 
 

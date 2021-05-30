@@ -14,6 +14,7 @@ namespace KARC.Logic
         public List<Object> objectList;//Список всех объектов сцены
         protected int[,] map;//Клетки карты (одна клетка, по идее, один экран)
         protected int scale;// Масштаб одного тайла(клетки) карты
+        public int Id=1;
 
         //public Song song;
 
@@ -27,7 +28,13 @@ namespace KARC.Logic
             scale = _scale;
             objectList = new List<Object>();
             foreach (var obj in _objList)
+            {
+                obj.id = Id;
                 objectList.Add(obj);
+                Id++;
+            }
+                
+           
         }
 
         public virtual void updateScene(int _time)

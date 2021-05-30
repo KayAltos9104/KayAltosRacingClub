@@ -37,9 +37,10 @@ namespace KARC
          
         Dictionary<string, Logic.Scene> scenesDict = new Dictionary<string, Logic.Scene>();
 
-        int windoWidth;
-        int windowHeight;
-        
+        public static int windoWidth;
+        public static int windowHeight;
+
+        int currentTime = 0;
 
         public Game1()
         {
@@ -56,8 +57,8 @@ namespace KARC
         {         
             base.Initialize();
             graphics.IsFullScreen = false;
-            //graphics.PreferredBackBufferWidth = 1600;
-            graphics.PreferredBackBufferHeight = 700;
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight =768;
             graphics.ApplyChanges();
 
             windoWidth = Window.ClientBounds.Width;
@@ -85,6 +86,7 @@ namespace KARC
             textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
             Logic.Button btnStart = new Logic.Button(new Vector2(windoWidth/2-30, windowHeight/2-100), 0.9f, textureDict, 2, 0, 50);
+            //Logic.Button btnStart = new Logic.Button(new Vector2(100, 100), 0.9f, textureDict, 2, 0, 50);
             btnStart.check = true;
             objList.Add(btnStart);
 
@@ -207,20 +209,31 @@ namespace KARC
             {
                 case GameMode.mainMenu:
                     {
+                        int period = 50;
+                        currentTime += gameTime.ElapsedGameTime.Milliseconds;
                         
                             foreach (var obj in scenesDict["MainMenu"].objectList)
                             {
                                 obj.colDraw = new Color(load, load, load);
                                 obj.drawObject(spriteBatch);
-
-                            }
-                            Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
-                            title.drawString("Title", "K.A.R.C.", new Vector2(windoWidth / 2 - 50, windowHeight / 2 - 150), Color.Red, spriteBatch);
-                        while (load < 255)
-                        {
-                            load++;
+                            //if (load >= 255)
+                           // {
+                                Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
+                                title.drawString("Title", "K.A.R.C.", new Vector2(windoWidth / 2 - 50, windowHeight / 2 - 150), new Color(load, 0, 0), spriteBatch);
+                           // }
+                            
                         }
+                           
+                        if (currentTime > period)
+                        {
+                            currentTime = 0;
+                            if (load < 255)
+                            {
+                                load+=3;
+                            }                           
+                                }
                         
+
                         break;
                     }
                 case GameMode.game:

@@ -77,6 +77,7 @@ namespace KARC.Logic
         public virtual void drawObject (SpriteBatch _spriteBatch)//Метод отрисовки объекта
         {
             _spriteBatch.Draw(currentImage,pos,null, colDraw, 0, Vector2.Zero,1.0f, SpriteEffects.None,layer);
+            //_spriteBatch.Draw(currentImage, pos, new Rectangle((int)pos.X,(int)pos.Y,Game1.windoWidth,Game1.windowHeight), colDraw, 0, Vector2.Zero, 1.0f, SpriteEffects.None, layer);
         }
 
        

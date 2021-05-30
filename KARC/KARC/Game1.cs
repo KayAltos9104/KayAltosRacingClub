@@ -48,6 +48,7 @@ namespace KARC
         bool songSwitched = false;
 
         bool showhitBox = true;
+        public static int playerId;
 
         public Game1()
         {
@@ -65,7 +66,8 @@ namespace KARC
             base.Initialize();
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = 840;
-            graphics.PreferredBackBufferHeight = 768;
+            //graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferHeight = 700;
             graphics.ApplyChanges();
 
             windoWidth = Window.ClientBounds.Width;
@@ -131,10 +133,18 @@ namespace KARC
                     objList.Add(new Logic.BackGround(new Vector2(0, i * 840), 0.9f, textureDict, 0, 50));
                 }
             }
+
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
-            objList.Add(new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, 50, new Vector2(0, 1), 5000));
+            Logic.Car Player = new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, 50, new Vector2(0, 1), 5000);
+            Player.player = true;
+            objList.Add(Player);
+
+            textureDict.Clear();
+            textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
+            textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
+            objList.Add(new Logic.Car(new Vector2(420, 100), 0.2f, textureDict, 1, 50, new Vector2(0, 1), 5000));
 
 
             Logic.Level testLevel = new Logic.Level(map, 840, objList, true);
@@ -213,12 +223,55 @@ namespace KARC
                         //{
                         //    scenesDict["MainMenu"].scroll(new Vector2(1, 1));
                         //}
+                        
+                        break;
+                    }
+                case GameMode.game:
+                    {
                         if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                         {
                             if (showhitBox)
                                 showhitBox = false;
                             else
                                 showhitBox = true;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                        {
+                            scenesDict["level0"].objectList[playerId].pos.Y -= 1;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                        {
+                            scenesDict["level0"].objectList[playerId].pos.Y += 1;
+                        }
+                        if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                        {
+                            scenesDict["level0"].objectList[playerId].pos.X += 1;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                        {
+                            scenesDict["level0"].objectList[playerId].pos.X -= 1;
+                        }
+
+
+                        foreach (var obj in scenesDict["level0"].objectList)
+                        {
+                            if (obj.Value.physical)
+                            {
+                                foreach (var colObj in scenesDict["level0"].objectList)
+                                {
+                                    if (colObj.Value.physical&& obj.Value.id!= colObj.Value.id)
+                                    {
+                                        Logic.PhysicalObject obj1 = (Logic.PhysicalObject)obj.Value;
+                                        Logic.PhysicalObject obj2 = (Logic.PhysicalObject)colObj.Value;
+                                        obj1.collision(obj2);
+                                    }
+                                }
+                            }
+                            obj.Value.Update(gameTime.ElapsedGameTime.Milliseconds);                            
+
                         }
                         break;
                     }
@@ -248,11 +301,11 @@ namespace KARC
                         string gameName = "           K.A.R.C.\n Adrenaline Racing";
                         foreach (var obj in scenesDict["MainMenu"].objectList)
                         {
-                            obj.colDraw = new Color(load, load, load);
-                            obj.drawObject(spriteBatch);
+                            obj.Value.colDraw = new Color(load, load, load);
+                            obj.Value.drawObject(spriteBatch);
                             if (load >= 255)
                             {
-                                Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
+                                Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[1];
                                 title.drawString("Title", titleLoad, new Vector2(windoWidth / 2 - 165, windowHeight / 2 - 220), new Color(load, 0, 0), spriteBatch);
 
 
@@ -289,7 +342,7 @@ namespace KARC
                             }
                             else if (currentTime > period && currentTime < 2 * period)
                             {
-                                Logic.BackGround pressStart = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
+                                Logic.BackGround pressStart = (Logic.BackGround)scenesDict["MainMenu"].objectList[1];
                                 pressStart.drawString("ManualFont", "Нажмите пробел для выбора", new Vector2(windoWidth / 2 - 120, windowHeight - 300), Color.FloralWhite, spriteBatch);
 
                             }
@@ -323,10 +376,10 @@ namespace KARC
 
                         foreach (var obj in scenesDict["level0"].objectList)
                         {                            
-                            obj.drawObject(spriteBatch);
-                            if (showhitBox&&obj.physical)
+                            obj.Value.drawObject(spriteBatch);
+                            if (showhitBox&& obj.Value.physical)
                             {
-                                Logic.PhysicalObject hb = (Logic.PhysicalObject)obj;
+                                Logic.PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
                                 spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
                             }
 

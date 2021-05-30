@@ -16,6 +16,7 @@ namespace KARC.Logic
         public Level (int[,] _map, int _scale, List<Object> _objList, bool _toroidal) :base(_map, _scale, _objList)
         {
             toroidal = _toroidal;
+            
         }
 
         public void initMapGen ()

@@ -11,7 +11,7 @@ namespace KARC.Logic
 {
     class Scene //Класс, который содержит в себе объекты и карту их расстановки
     {
-        public List<Object> objectList;//Список всех объектов сцены
+        public Dictionary<int,Object> objectList;//Список всех объектов сцены
         protected int[,] map;//Клетки карты (одна клетка, по идее, один экран)
         protected int scale;// Масштаб одного тайла(клетки) карты
         public int Id=1;
@@ -26,11 +26,13 @@ namespace KARC.Logic
                     map[x, y] = _map[x, y];
 
             scale = _scale;
-            objectList = new List<Object>();
+            objectList = new Dictionary<int, Object>();
             foreach (var obj in _objList)
             {
                 obj.id = Id;
-                objectList.Add(obj);
+                objectList.Add(Id,obj);
+                if (obj.player)
+                    Game1.playerId = Id;
                 Id++;
             }
                 
@@ -40,20 +42,20 @@ namespace KARC.Logic
         public virtual void updateScene(int _time)
         {
             foreach (var obj in objectList)
-                obj.Update(_time);
+                obj.Value.Update(_time);
         }
 
         public virtual void updateScene (Keys key, int _time)
         {
             foreach (var obj in objectList)
-                obj.Update(key, _time);           
+                obj.Value.Update(key, _time);           
         }
 
         public void scroll (Vector2 _shift)
         {
             foreach (var obj in objectList)
             {
-                obj.pos += _shift;
+                obj.Value.pos += _shift;
             }
         }
 

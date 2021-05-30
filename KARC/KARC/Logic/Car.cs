@@ -10,6 +10,7 @@ namespace KARC.Logic
     class Car:PhysicalObject
     {
         Vector2 speed=Vector2.Zero;
+        
         public Vector2 Speed
         {
             set
@@ -41,6 +42,7 @@ namespace KARC.Logic
             movable = true;
             type = objType.car;
         }
+
 
 
     }

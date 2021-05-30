@@ -15,7 +15,7 @@ namespace KARC.Logic
         protected Texture2D currentImage; //Текущее изображение        
         protected float layer = 1.0f; //Слой отрисовки
         public Color colDraw = Color.White;
-
+        public bool player = false;
 
         //Физика
         public Vector2 pos; //Текущая позиция

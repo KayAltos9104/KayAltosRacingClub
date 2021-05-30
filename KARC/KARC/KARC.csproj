@@ -41,7 +41,10 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Logic\BackGround.cs" />
     <Compile Include="Logic\Button.cs" />
+    <Compile Include="Logic\Car.cs" />
+    <Compile Include="Logic\PhysicalObject.cs" />
     <Compile Include="Logic\InterfaceMenu.cs" />
+    <Compile Include="Logic\Level.cs" />
     <Compile Include="Logic\Object.cs" />
     <Compile Include="Logic\Scene.cs" />
     <Compile Include="Program.cs" />

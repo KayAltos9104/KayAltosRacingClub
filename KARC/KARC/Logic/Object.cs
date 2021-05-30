@@ -26,12 +26,15 @@ namespace KARC.Logic
         public int id; //Id объекта
         public objType type; //Тип объекта
 
+        public bool physical;
+
+
         public Object()
         {
 
         }
 
-        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList, int _Id, int _peridod)
+        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList, int _Id, int _period)
         {
             layer = _layer;
             pos = _pos;   
@@ -41,7 +44,8 @@ namespace KARC.Logic
             }  
             currentImage = images.ElementAt(0).Value;
             id = _Id;
-            period = _peridod;
+            period = _period;
+            physical = false;
         }
 
 
@@ -79,9 +83,6 @@ namespace KARC.Logic
             _spriteBatch.Draw(currentImage,pos,null, colDraw, 0, Vector2.Zero,1.0f, SpriteEffects.None,layer);
             //_spriteBatch.Draw(currentImage, pos, new Rectangle((int)pos.X,(int)pos.Y,Game1.windoWidth,Game1.windowHeight), colDraw, 0, Vector2.Zero, 1.0f, SpriteEffects.None, layer);
         }
-
-       
-
 
     }
 }

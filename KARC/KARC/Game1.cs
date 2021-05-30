@@ -137,7 +137,7 @@ namespace KARC
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
-            Logic.Car Player = new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, 50, new Vector2(0, 1), 5000);
+            Logic.Car Player = new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, 50, new Vector2(0, 10), 5000);
             Player.player = true;
             objList.Add(Player);
 

@@ -13,11 +13,40 @@ namespace KARC.Logic
         public bool movable;
         public int weight;//Вес объекта в килограммах
 
+        Vector2 speed = Vector2.Zero;
+
+        public virtual Vector2 Speed
+        {
+            set
+            {
+                if (value.X > 1)
+                    speed.X = 1;
+                else if (value.X < -1)
+                    speed.X = -1;
+                else
+                    speed.X = value.X;
+
+                if (value.Y > 1)
+                    speed.Y = 1;
+                else if (value.Y < -1)
+                    speed.Y = -1;
+                else
+                    speed.Y = value.Y;
+
+            }
+            get
+            {
+                return speed;
+            }
+        }
+
+
         public PhysicalObject(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _period, int _weight) :base(_pos, _layer, _loadTextList, _Id, _period)
         {
             physical = true;
             weight = _weight;
             hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+            
         }
 
         public override void Update(int _time)

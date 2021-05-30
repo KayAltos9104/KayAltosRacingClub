@@ -11,7 +11,7 @@ namespace KARC.Logic
     {
         Vector2 speed=Vector2.Zero;
         
-        public Vector2 Speed
+        public override Vector2 Speed
         {
             set
             {
@@ -43,7 +43,43 @@ namespace KARC.Logic
             type = objType.car;
         }
 
+        public override void collision(PhysicalObject _object)
+        {
+            if (hitBox.Intersects(_object.hitBox))
+            {                
+                Rectangle inter;
+                Rectangle.Intersect(ref hitBox, ref _object.hitBox, out inter);
+                Vector2 intersecVect = pos - _object.pos;
+                
+                if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 > 0)
+                {
+                    pos.X += Speed.X;
+                    _object.pos.X -= _object.Speed.X;
+                }
 
+                else if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 == 0)
+                { }
+                else
+                {
+                    pos.X -= Speed.X;
+                    _object.pos.X += _object.Speed.X;
+                }
+
+
+                if (pos.Y + hitBox.Height / 2 - _object.pos.Y - _object.hitBox.Height / 2 > 0)
+                {
+                    pos.Y += Speed.Y;
+                    _object.pos.Y -= _object.Speed.Y;
+                }
+                else if (pos.Y + hitBox.Height / 2 - _object.pos.Y - _object.hitBox.Height / 2 == 0)
+                { }
+                else
+                {
+                    pos.Y -= Speed.Y;
+                    _object.pos.Y += _object.Speed.Y;
+                }
+            }
+        }
 
     }
 }

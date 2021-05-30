@@ -82,7 +82,7 @@
 #begin Resources/Title.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=Color
 /build:Resources/Title.spritefont
 
 #begin Resources/ME.mp3
@@ -101,4 +101,10 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
 /build:Resources/StartButton.png
+
+#begin Resources/ManualFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=NoChange
+/build:Resources/ManualFont.spritefont
 

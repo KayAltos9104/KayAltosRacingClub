@@ -81,6 +81,8 @@ namespace KARC
             SpriteFont gameName = Content.Load<SpriteFont>("Title");
             Dictionary<string, SpriteFont> fontDict = new Dictionary<string, SpriteFont>();
             fontDict.Add("Title",gameName);
+            fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
+
             Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1,fontDict,50);
             objList.Add(backGround);
 
@@ -102,7 +104,7 @@ namespace KARC
 
             Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(map, 600, objList,100);
             //mainMenu.song = Content.Load<Song>("ME");
-            song = Content.Load<Song>("ME");
+            //song = Content.Load<Song>("ME");
             scenesDict.Add("MainMenu", mainMenu);
             //==============================Конец
 
@@ -121,11 +123,13 @@ namespace KARC
             
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
-            //if (mode == GameMode.mainMenu)
-            //{
-
-            //}
+            song = Content.Load<Song>("ME");
+            if (mode == GameMode.mainMenu)
+            {
+                MediaPlayer.Play(song);
+                // повторять после завершения
+                MediaPlayer.IsRepeating = true;
+            }
             //if (scenesDict["MainMenu"].song != null)
             //{
             //    MediaPlayer.Play(scenesDict["MainMenu"].song);
@@ -153,13 +157,7 @@ namespace KARC
             switch (mode)
             {
                 case GameMode.mainMenu:
-                    {
-                        //if (scenesDict["MainMenu"].song != null)
-                       // {
-                            //MediaPlayer.Play(song);
-                            // повторять после завершения
-                            //MediaPlayer.IsRepeating = true;
-                       // }
+                    {                       
 
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
                         {
@@ -214,6 +212,7 @@ namespace KARC
                     {
                         int period = 50;
                         currentTime += gameTime.ElapsedGameTime.Milliseconds;
+                        
                         string gameName = "           K.A.R.C.\n Adrenaline Racing";
                         
 
@@ -222,36 +221,64 @@ namespace KARC
                                 obj.colDraw = new Color(load, load, load);
                                 obj.drawObject(spriteBatch);
                             if (load >= 255)
-                            {
+                            {                                
                                 Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
                                 title.drawString("Title", titleLoad, new Vector2(windoWidth / 2 - 165, windowHeight / 2 - 220), new Color(load, 0, 0), spriteBatch);
-                           }
-                            
-                        }
+
+                                
+                            }
                            
-                        if (currentTime > period)
+
+                        }
+                        if (titleLoad != gameName)
                         {
-                            currentTime = 0;
-                            if (load < 255)
+                            if (currentTime > period)
                             {
-                                load+=3;
+                                currentTime = 0;
+                                if (load < 255)
+                                {
+                                    load += 3;
+                                }
+                                else
+                                {
+                                    if (nameIndex <= gameName.Length)
+                                    {
+                                        titleLoad = gameName.Substring(0, nameIndex);
+                                        nameIndex++;
+                                    }
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            period = 300;
+                            if (currentTime < period)
+                            {
+
+                            }
+                            else if (currentTime>period&& currentTime < 2*period)
+                            {
+                                Logic.BackGround pressStart = (Logic.BackGround)scenesDict["MainMenu"].objectList[0];
+                                pressStart.drawString("ManualFont", "Нажмите пробел для выбора", new Vector2(windoWidth / 2 - 100, windowHeight - 300), Color.FloralWhite, spriteBatch);
+
                             }
                             else
-                            {                
-                                if (nameIndex<=gameName.Length)
-                                {
-                                    titleLoad = gameName.Substring(0, nameIndex);
-                                    nameIndex++;
-                                } 
+                            {
+                                currentTime = 0;
                             }
-                            
-                       }
+                        }
+                       
                         
-                       break;
+                            
+                        
+                        break;
+
                     }
                 case GameMode.game:
                     {
-                        spriteBatch.DrawString(Content.Load<SpriteFont>("Title"), "Игра запущена", Vector2.Zero, Color.Black);
+                        spriteBatch.DrawString(Content.Load<SpriteFont>("Title"), "Игра запущена", Vector2.Zero, Color.AliceBlue);
+                        MediaPlayer.Stop();
                        
                         break;
                     }

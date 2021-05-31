@@ -158,7 +158,7 @@ namespace KARC
 
 
 
-            Logic.Level testLevel = new Logic.Level(map, 840, objList, true);
+            Logic.Level testLevel = new Logic.Level(map, 800, objList, true);
             scenesDict.Add("level0", testLevel);
             //==============================Конец
 
@@ -322,7 +322,7 @@ namespace KARC
                             //scenesDict["level0"].objectList[i].Update(gameTime.ElapsedGameTime.Milliseconds);                            
 
                         }
-                        // pushed = false;
+                        //pushed = false;
                         //Logic.Level upd = (Logic.Level)scenesDict["level0"];
                         scenesDict["level0"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
                         scenesDict["level0"].scroll(-Player.Speed);//Скроллинг

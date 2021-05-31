@@ -31,7 +31,7 @@ namespace KARC.Logic
                     {
                         if (obj.Value.type == objType.background)
                         {
-                            obj.Value.pos.Y = -(map.GetLength(1) - 1) * scale;
+                            obj.Value.pos.Y = -(map.GetLength(1) - 3) * scale;
                         }
                         else
                         {

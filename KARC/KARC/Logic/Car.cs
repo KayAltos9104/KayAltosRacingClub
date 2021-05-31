@@ -90,28 +90,30 @@ namespace KARC.Logic
         }
 
         public override void Update(int _time)
-        {            
+        {
+            if (speed.X > 0)
+            {
+                angle = 10;
+                hitBox = new Rectangle((int)pos.X - 10, (int)pos.Y + 5, currentImage.Width, currentImage.Height);
+            }
+
+            else if (speed.X < 0)
+            {
+                angle = -10;
+                hitBox = new Rectangle((int)pos.X + 10, (int)pos.Y - 5, currentImage.Width, currentImage.Height);
+            }
+            else
+            {
+                angle = 0;
+                hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+            }
+
             currentTime += _time;
             if (currentTime>period)
             {
                 currentTime = 0;
                 move();
-                if (speed.X > 0)
-                {
-                    angle = 10;
-                    hitBox = new Rectangle((int)pos.X - 10, (int)pos.Y+5, currentImage.Width, currentImage.Height);
-                }
-
-                else if (speed.X < 0)
-                {
-                    angle = -10;
-                    hitBox = new Rectangle((int)pos.X + 10, (int)pos.Y-5, currentImage.Width, currentImage.Height);
-                }
-                else
-                {
-                    angle = 0;
-                    hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
-                } 
+                
             }
             speed.X = 0;
         }

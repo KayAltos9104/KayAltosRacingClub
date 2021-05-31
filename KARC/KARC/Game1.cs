@@ -1,0 +1,398 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using System.Collections.Generic;
+
+namespace KARC
+{
+
+    enum GameMode
+    {
+        mainMenu,
+        game,
+        final
+    }
+
+
+
+    public enum objType : byte
+    {
+        background = 0,
+        button = 1,
+        car = 2
+    }
+
+
+    public class Game1 : Game
+    {
+        int load = 0;//Время загрузки заставки
+
+
+        Dictionary<string, Texture2D> texturesDict;
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
+        GameMode mode;
+        Song song;
+        Song[] musicList;
+        Dictionary<string, Logic.Scene> scenesDict = new Dictionary<string, Logic.Scene>();
+
+        public static int windoWidth;
+        public static int windowHeight;
+
+        string titleLoad = "";
+        int nameIndex = 1;
+
+        int currentTime = 0;
+        bool songSwitched = false;
+
+        bool showhitBox = true;
+        public static int playerId;
+
+        public Game1()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content/Resources";
+            texturesDict = new Dictionary<string, Texture2D>();
+            mode = GameMode.mainMenu;
+        }
+
+
+
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferWidth = 840;
+            //graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferHeight = 700;
+            graphics.ApplyChanges();
+
+            windoWidth = Window.ClientBounds.Width;
+            windowHeight = Window.ClientBounds.Height;
+
+            musicList = new Song[2];
+            musicList[0] = Content.Load<Song>("ME");
+            musicList[1] = Content.Load<Song>("DemonSpeeding");
+
+            //===================Загрузка начального экрана
+            int[,] map = new int[1, 1];
+
+            List<Logic.Object> objList = new List<Logic.Object>();
+            Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("background", Content.Load<Texture2D>("MenuBackGround"));
+
+            SpriteFont gameName = Content.Load<SpriteFont>("Title");
+            Dictionary<string, SpriteFont> fontDict = new Dictionary<string, SpriteFont>();
+            fontDict.Add("Title", gameName);
+            fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
+
+            Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1, fontDict);
+            objList.Add(backGround);
+
+            //TODO: период лучше в сцену вставлять. Или туда и туда
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
+            textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
+            Logic.Button btnStart = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0);
+            //Logic.Button btnStart = new Logic.Button(new Vector2(100, 100), 0.9f, textureDict, 2, 0, 50);
+            btnStart.check = true;
+            objList.Add(btnStart);
+
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
+            textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
+            Logic.Button btnExit = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 3, 1);
+            objList.Add(btnExit);
+
+            Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(map, 600, objList, 100);
+            //mainMenu.song = Content.Load<Song>("ME");
+            //song = Content.Load<Song>("ME");
+            scenesDict.Add("MainMenu", mainMenu);
+            //==============================Конец
+
+
+
+
+            //===================Загрузка игры
+
+            //Тестовый уровень
+            //map =  new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+            map = new int[1, 3] { { 1, 1, 1 } };
+            objList.Clear();
+            textureDict.Clear();
+            textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
+           
+            for (int i = 0; i < map.GetLength(1);i++)
+            {
+                if (map[0,i]!=0)
+                {
+                    objList.Add(new Logic.BackGround(new Vector2(0, i * 840), 0.9f, textureDict, 0));
+                }
+            }
+
+            textureDict.Clear();
+            textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
+            textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
+            Logic.Car Player = new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, new Vector2(0, -1), 5000);
+            Player.player = true;
+            objList.Add(Player);
+
+            textureDict.Clear();
+            textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
+            textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
+            objList.Add(new Logic.Car(new Vector2(420, 100), 0.2f, textureDict, 1, new Vector2(0, -1), 5000));
+
+
+            Logic.Level testLevel = new Logic.Level(map, 840, objList, true);
+            scenesDict.Add("level0", testLevel);
+            //==============================Конец
+        }
+
+
+
+
+        protected override void LoadContent()
+        {
+
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            song = Content.Load<Song>("ME");
+            if (mode == GameMode.mainMenu)
+            {
+                MediaPlayer.Play(song);
+                // повторять после завершения
+                MediaPlayer.IsRepeating = true;
+               
+            }
+            
+
+        }
+
+
+        protected override void UnloadContent()
+        {
+
+        }
+
+
+        protected override void Update(GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
+
+            switch (mode)
+            {
+                case GameMode.mainMenu:
+                    {
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                        {
+                            scenesDict["MainMenu"].updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                        }
+                        else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                        {
+                            scenesDict["MainMenu"].updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                        }
+                        else
+                            scenesDict["MainMenu"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
+                        
+                        if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                        {
+                            Logic.InterfaceMenu menu = (Logic.InterfaceMenu)scenesDict["MainMenu"];
+                            switch (menu.cursor)
+                            {
+                                case 0:
+                                    {
+                                        mode = GameMode.game;
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        this.Exit();
+                                        break;
+                                    }
+                            }
+
+                        }
+
+                        //if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                        //{
+                        //    scenesDict["MainMenu"].scroll(new Vector2(1, 1));
+                        //}
+                        
+                        break;
+                    }
+                case GameMode.game:
+                    {
+                        if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+                        {
+                            if (showhitBox)
+                                showhitBox = false;
+                            else
+                                showhitBox = true;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                        {
+                            scenesDict["level0"].objectList[playerId].pos.Y -= 1;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                        {
+                            scenesDict["level0"].objectList[playerId].pos.Y += 1;
+                        }
+                        if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                        {
+                            scenesDict["level0"].objectList[playerId].pos.X += 1;
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                        {
+                            scenesDict["level0"].objectList[playerId].pos.X -= 1;
+                        }
+
+
+                        foreach (var obj in scenesDict["level0"].objectList)
+                        {
+                            if (obj.Value.physical)
+                            {
+                                foreach (var colObj in scenesDict["level0"].objectList)
+                                {
+                                    if (colObj.Value.physical&& obj.Value.id!= colObj.Value.id)
+                                    {
+                                        Logic.PhysicalObject obj1 = (Logic.PhysicalObject)obj.Value;
+                                        Logic.PhysicalObject obj2 = (Logic.PhysicalObject)colObj.Value;
+                                        obj1.collision(obj2);
+                                    }
+                                }
+                            }
+                            obj.Value.Update(gameTime.ElapsedGameTime.Milliseconds);                            
+
+                        }
+                        break;
+                    }
+            }
+
+            base.Update(gameTime);
+        }
+
+
+
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
+
+            //spriteBatch.Begin();
+
+            switch (mode)
+            {
+
+                case GameMode.mainMenu:
+                    {
+                        int period = 50;
+                        currentTime += gameTime.ElapsedGameTime.Milliseconds;
+                       
+                        string gameName = "           K.A.R.C.\n Adrenaline Racing";
+                        foreach (var obj in scenesDict["MainMenu"].objectList)
+                        {
+                            obj.Value.colDraw = new Color(load, load, load);
+                            obj.Value.drawObject(spriteBatch);
+                            if (load >= 255)
+                            {
+                                Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[1];
+                                title.drawString("Title", titleLoad, new Vector2(windoWidth / 2 - 165, windowHeight / 2 - 220), new Color(load, 0, 0), spriteBatch);
+
+
+                            }
+
+
+                        }
+                        if (titleLoad != gameName)
+                        {
+                            if (currentTime > period)
+                            {
+                                currentTime = 0;
+                                if (load < 255)
+                                {
+                                    load += 3;
+                                }
+                                else
+                                {
+                                    if (nameIndex <= gameName.Length)
+                                    {
+                                        titleLoad = gameName.Substring(0, nameIndex);
+                                        nameIndex++;
+                                    }
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            period = 300;
+                            if (currentTime < period)
+                            {
+
+                            }
+                            else if (currentTime > period && currentTime < 2 * period)
+                            {
+                                Logic.BackGround pressStart = (Logic.BackGround)scenesDict["MainMenu"].objectList[1];
+                                pressStart.drawString("ManualFont", "Нажмите пробел для выбора", new Vector2(windoWidth / 2 - 120, windowHeight - 300), Color.FloralWhite, spriteBatch);
+
+                            }
+                            else
+                            {
+                                currentTime = 0;
+                            }
+                        }
+
+
+
+
+                        break;
+
+                    }
+                case GameMode.game:
+                    {
+                        spriteBatch.DrawString(Content.Load<SpriteFont>("Title"), "Игра запущена", Vector2.Zero, Color.AliceBlue);
+
+                        if (!songSwitched)
+                        {
+                            MediaPlayer.Play(musicList[1]);
+                            songSwitched = true;
+                        }
+                        else
+                        {
+                            MediaPlayer.Resume();
+                            MediaPlayer.Volume = 1.0f;
+                        }
+
+
+                        foreach (var obj in scenesDict["level0"].objectList)
+                        {                            
+                            obj.Value.drawObject(spriteBatch);
+                            if (showhitBox&& obj.Value.physical)
+                            {
+                                Logic.PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
+                                spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
+                            }
+
+                        }
+
+
+
+                        break;
+                    }
+            }
+
+            spriteBatch.End();
+            base.Draw(gameTime);
+        }
+    }
+}

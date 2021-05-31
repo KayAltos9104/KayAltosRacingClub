@@ -51,8 +51,9 @@ namespace KARC.Logic
 
         public override void Update(int _time)
         {
-            base.Update(_time);
             hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+            base.Update(_time);
+            
         }
 
         public virtual void collision (Logic.PhysicalObject _object)//Обработка столкновения

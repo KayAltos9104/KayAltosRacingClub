@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +11,24 @@ namespace KARC.Logic
     class Car:PhysicalObject
     {
         Vector2 speed=Vector2.Zero;
-        
+
+        public int acceleration=5;
+
         public override Vector2 Speed
         {
             set
             {
-                if (value.X > 30)
-                    speed.X = 30;
-                else if (value.X < -30)
-                    speed.X = -30;
+                if (value.X > 10)
+                    speed.X = 10;
+                else if (value.X < -10)
+                    speed.X = -10;
                 else
                     speed.X = value.X;
 
-                if (value.Y > 30)
-                    speed.Y = 30;
-                else if (value.Y < -30)
-                    speed.Y = -30;
+                if (value.Y > 10)
+                    speed.Y = 10;
+                else if (value.Y < -40)
+                    speed.Y = -40;
                 else
                     speed.Y = value.Y;
 
@@ -101,20 +104,26 @@ namespace KARC.Logic
 
         public override void Update(int _time)
         {
-            base.Update(_time);
+            
             currentTime += _time;
             if (currentTime>period)
             {
                 currentTime = 0;
                 move();
+                speed.X = 0;
             }
-            
+            base.Update(_time);
         }
+
+        
 
         public override void move()
         {
             pos += Speed;
         }
+
+        
+
 
     }
 }

@@ -113,8 +113,9 @@ namespace KARC.Logic
                     hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
                 }
                 
-                speed.X = 0;
+                
             }
+            speed.X = 0;
         }
         public override void move()
         {

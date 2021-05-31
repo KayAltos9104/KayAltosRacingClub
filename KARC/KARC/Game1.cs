@@ -53,7 +53,8 @@ namespace KARC
         int currentTimeforAccel;
         int periodForAccel;
 
-        SpriteFont gameFont; 
+        SpriteFont gameFont;
+        bool initial=true;
 
         public Game1()
         {
@@ -130,7 +131,7 @@ namespace KARC
 
             //Тестовый уровень
             //map =  new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
-            map = new int[1, 3] { { 1, 1, 1 } };
+            map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             objList.Clear();
             textureDict.Clear();
             textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
@@ -139,21 +140,22 @@ namespace KARC
             {
                 if (map[0,i]!=0)
                 {
-                    objList.Add(new Logic.BackGround(new Vector2(0, i * 840), 0.9f, textureDict, 0));
+                    objList.Add(new Logic.BackGround(new Vector2(0,i * 840), 0.9f, textureDict, 0));
                 }
             }
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
-            Logic.Car Player = new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
+            Logic.Car Player = new Logic.Car(new Vector2(420, -840-200 ), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
             Player.player = true;
             objList.Add(Player);
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
-            objList.Add(new Logic.Car(new Vector2(420, 100), 0.2f, textureDict, 1, new Vector2(0, 0), 5000));
+            objList.Add(new Logic.Car(new Vector2(420, -840-400), 0.2f, textureDict, 1, new Vector2(0, 0), 5000));
+
 
 
             Logic.Level testLevel = new Logic.Level(map, 840, objList, true);
@@ -240,6 +242,13 @@ namespace KARC
                 case GameMode.game:
                     {
                         //Управление машинкой========================================================
+                        if (initial)
+                        {
+                            scenesDict["level0"].scroll(new Vector2(0, -840*8));
+                            scenesDict["level0"].objectList[playerId].pos.Y = 500;
+                            initial = false;
+                        }
+                        
                         Logic.Car Player = (Logic.Car)scenesDict["level0"].objectList[playerId];
                         if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                         {
@@ -294,6 +303,8 @@ namespace KARC
 
                         }
                         //Обработка столкновений=============================================================
+                        
+
                         for (int i =1; i <= scenesDict["level0"].objectList.Count; i++)
                         {
                             if (scenesDict["level0"].objectList[i].physical)
@@ -308,10 +319,14 @@ namespace KARC
                                     }
                                 }
                             }
+                            
                             scenesDict["level0"].objectList[i].Update(gameTime.ElapsedGameTime.Milliseconds);                            
 
                         }
-                       // pushed = false;
+                        // pushed = false;
+                        //Logic.Level upd = (Logic.Level)scenesDict["level0"];
+                        scenesDict["level0"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
+                        scenesDict["level0"].scroll(-Player.Speed);//Скроллинг
                         break;
                     }
             }

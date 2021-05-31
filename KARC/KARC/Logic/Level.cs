@@ -19,6 +19,48 @@ namespace KARC.Logic
             
         }
 
+        public override void updateScene(int _time)
+        {
+            base.updateScene(_time);
+            if (toroidal)
+            {
+                List<int> delObj = new List<int>();
+                foreach (var obj in objectList)
+                {
+                    if (obj.Value.pos.Y>2*scale)
+                    {
+                        if (obj.Value.type == objType.background)
+                        {
+                            obj.Value.pos.Y = -(map.GetLength(1) - 1) * scale;
+                        }
+                        else
+                        {
+                            delObj.Add(obj.Key);
+                        }
+                    }
+
+                    if (obj.Value.pos.Y < -(map.GetLength(1)+1) * scale)
+                    {
+                        if (obj.Value.type == objType.background)
+                        {
+                            obj.Value.pos.Y = 0;
+                        }
+                        else
+                        {
+                            delObj.Add(obj.Key);
+                        }
+                    }
+                }
+
+                foreach (var del in delObj)
+                {
+                    objectList.Remove(del);
+                }
+            }
+            
+           
+        }
+
         public void initMapGen ()
         {
             

@@ -53,30 +53,47 @@ namespace KARC.Logic
                 
                 if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 > 0)
                 {
-                    pos.X += Speed.X;
-                    _object.pos.X -= _object.Speed.X;
+                    //pos.X += Speed.X;
+                    //_object.pos.X -= _object.Speed.X;
+                    //pos.X += Speed.X*(weight - _object.weight) / (weight + _object.weight);
+                    //_object.pos.X += 2 * weight * Speed.X / (weight + _object.weight);
+                    pos.X += _object.Speed.X;
+                    _object.pos.X -= Speed.X;
+
                 }
 
                 else if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 == 0)
                 { }
                 else
                 {
-                    pos.X -= Speed.X;
-                    _object.pos.X += _object.Speed.X;
+                    //pos.X -= Speed.X;
+                    //_object.pos.X += _object.Speed.X;
+                    //pos.X += Speed.X * (weight - _object.weight) / (weight + _object.weight);
+                    //_object.pos.X += 2 * weight * Speed.X / (weight + _object.weight);
+                    pos.X -= _object.Speed.X;
+                    _object.pos.X += Speed.X;
+
                 }
 
 
                 if (pos.Y + hitBox.Height / 2 - _object.pos.Y - _object.hitBox.Height / 2 > 0)
                 {
-                    pos.Y += Speed.Y;
-                    _object.pos.Y -= _object.Speed.Y;
+                    //pos.Y += Speed.Y;
+                    //_object.pos.Y -= _object.Speed.Y;
+
+                    //pos.Y += Speed.Y * (weight - _object.weight) / (weight + _object.weight);
+                    //_object.pos.Y += 2 * weight * Speed.Y / (weight + _object.weight);
+                    pos.Y += _object.Speed.Y;
+                    _object.pos.Y -= Speed.Y;
                 }
                 else if (pos.Y + hitBox.Height / 2 - _object.pos.Y - _object.hitBox.Height / 2 == 0)
                 { }
                 else
                 {
-                    pos.Y -= Speed.Y;
-                    _object.pos.Y += _object.Speed.Y;
+                    pos.Y -= _object.Speed.Y;
+                    _object.pos.Y += Speed.Y;
+                    //pos.Y += Speed.Y * (weight - _object.weight) / (weight + _object.weight);
+                    //_object.pos.Y += 2 * weight * Speed.Y / (weight + _object.weight);
                 }
             }
         }

@@ -34,7 +34,7 @@ namespace KARC.Logic
 
         }
 
-        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList, int _Id, int _period)
+        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList, int _Id)
         {
             layer = _layer;
             pos = _pos;   
@@ -44,20 +44,20 @@ namespace KARC.Logic
             }  
             currentImage = images.ElementAt(0).Value;
             id = _Id;
-            period = _period;
+            //period = _period;
             physical = false;
         }
 
 
         public virtual void Update(int _time) //Обновление состояния объекта
         {            
-            currentTime = _time;
+            currentTime += _time;
             //drawObject(_spriteBatch);
         }
 
         public virtual void Update(Keys key, int _time)//Обновление состояния объекта с учетом нажатой клавиши
         {            
-            currentTime = _time;
+            currentTime += _time;
             //drawObject(_spriteBatch);
         }
 

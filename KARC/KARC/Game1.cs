@@ -89,14 +89,14 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1, fontDict, 50);
+            Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1, fontDict);
             objList.Add(backGround);
 
             //TODO: период лучше в сцену вставлять. Или туда и туда
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
-            Logic.Button btnStart = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0, 50);
+            Logic.Button btnStart = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0);
             //Logic.Button btnStart = new Logic.Button(new Vector2(100, 100), 0.9f, textureDict, 2, 0, 50);
             btnStart.check = true;
             objList.Add(btnStart);
@@ -105,7 +105,7 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
-            Logic.Button btnExit = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 3, 1, 50);
+            Logic.Button btnExit = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 3, 1);
             objList.Add(btnExit);
 
             Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(map, 600, objList, 100);
@@ -130,21 +130,21 @@ namespace KARC
             {
                 if (map[0,i]!=0)
                 {
-                    objList.Add(new Logic.BackGround(new Vector2(0, i * 840), 0.9f, textureDict, 0, 50));
+                    objList.Add(new Logic.BackGround(new Vector2(0, i * 840), 0.9f, textureDict, 0));
                 }
             }
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
-            Logic.Car Player = new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, 50, new Vector2(5, 10), 5000);
+            Logic.Car Player = new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, new Vector2(0, -1), 5000);
             Player.player = true;
             objList.Add(Player);
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
-            objList.Add(new Logic.Car(new Vector2(420, 100), 0.2f, textureDict, 1, 50, new Vector2(5, 10), 5000));
+            objList.Add(new Logic.Car(new Vector2(420, 100), 0.2f, textureDict, 1, new Vector2(0, -1), 5000));
 
 
             Logic.Level testLevel = new Logic.Level(map, 840, objList, true);

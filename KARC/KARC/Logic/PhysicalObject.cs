@@ -41,7 +41,7 @@ namespace KARC.Logic
         }
 
 
-        public PhysicalObject(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _period, int _weight) :base(_pos, _layer, _loadTextList, _Id, _period)
+        public PhysicalObject(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _weight) :base(_pos, _layer, _loadTextList, _Id)
         {
             physical = true;
             weight = _weight;
@@ -100,6 +100,11 @@ namespace KARC.Logic
 
 
             }
+        }
+
+        public virtual void move()
+        {
+
         }
     }
 }

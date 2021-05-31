@@ -11,12 +11,12 @@ namespace KARC.Logic
     {
         Dictionary<string, SpriteFont> fontDict=new Dictionary<string, SpriteFont>();
 
-        public BackGround(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _period) : base(_pos, _layer, _loadTextList, _Id, _period)
+        public BackGround(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id) : base(_pos, _layer, _loadTextList, _Id)
         {           
             type = objType.background;
         }
 
-        public BackGround (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, Dictionary<string, SpriteFont> _fontDict, int _period) :base (_pos,_layer,_loadTextList, _Id, _period)
+        public BackGround (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, Dictionary<string, SpriteFont> _fontDict) :base (_pos,_layer,_loadTextList, _Id)
         {
             foreach (var f in _fontDict)
             {

@@ -15,17 +15,17 @@ namespace KARC.Logic
         {
             set
             {
-                if (value.X > 40)
-                    speed.X = 40;
-                else if (value.X < -10)
-                    speed.X = -10;
+                if (value.X > 30)
+                    speed.X = 30;
+                else if (value.X < -30)
+                    speed.X = -30;
                 else
                     speed.X = value.X;
 
-                if (value.Y > 40)
-                    speed.Y = 40;
-                else if (value.Y < -10)
-                    speed.Y = -10;
+                if (value.Y > 30)
+                    speed.Y = 30;
+                else if (value.Y < -30)
+                    speed.Y = -30;
                 else
                     speed.Y = value.Y;
 
@@ -36,11 +36,12 @@ namespace KARC.Logic
             }
         }
 
-        public Car (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _period, Vector2 _speed, int _weight) :base(_pos, _layer, _loadTextList, _Id, _period, _weight)
+        public Car (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, Vector2 _speed, int _weight) :base(_pos, _layer, _loadTextList, _Id, _weight)
         {
             Speed = _speed;
             movable = true;
             type = objType.car;
+            period = 20;
         }
 
         public override void collision(PhysicalObject _object)
@@ -96,6 +97,23 @@ namespace KARC.Logic
                     //_object.pos.Y += 2 * weight * Speed.Y / (weight + _object.weight);
                 }
             }
+        }
+
+        public override void Update(int _time)
+        {
+            base.Update(_time);
+            currentTime += _time;
+            if (currentTime>period)
+            {
+                currentTime = 0;
+                move();
+            }
+            
+        }
+
+        public override void move()
+        {
+            pos += Speed;
         }
 
     }

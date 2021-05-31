@@ -55,37 +55,47 @@ namespace KARC.Logic
                 Rectangle inter;
                 Rectangle.Intersect(ref hitBox, ref _object.hitBox, out inter);
                 Vector2 intersecVect = pos - _object.pos;
-                
-                if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 > 0)
-                {                    
-                    pos.X += _object.Speed.X;
-                    _object.pos.X += Speed.X;
 
+                if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 > 0)
+                {
+                    //pos.X -= _object.Speed.X;
+                    //_object.pos.X += Speed.X;
+                    pos.X += 2;
+                    _object.pos.X -= 2;
                 }
 
                 else if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 == 0)
                 { }
                 else
-                {                   
-                    pos.X -= _object.Speed.X;
-                    _object.pos.X -= Speed.X;
+                {
+                    //pos.X += _object.Speed.X;
+                    //_object.pos.X -= Speed.X;
+                    pos.X -= 2;
+                    _object.pos.X += 2;
 
                 }
 
 
                 if (pos.Y + hitBox.Height / 2 - _object.pos.Y - _object.hitBox.Height / 2 > 0)
                 {
-                    pos.Y += _object.Speed.Y;
-                    _object.pos.Y += Speed.Y;
+                    //pos.Y += _object.Speed.Y;
+                    //_object.pos.Y -= Speed.Y;
+                    pos.Y += 2;
+                    _object.pos.Y -= 2;
                 }
                 else if (pos.Y + hitBox.Height / 2 - _object.pos.Y - _object.hitBox.Height / 2 == 0)
                 { }
                 else
                 {
-                    pos.Y -= _object.Speed.Y;
-                    _object.pos.Y -= Speed.Y;
-                    
+                    //pos.Y -= _object.Speed.Y;
+                    //_object.pos.Y += Speed.Y;
+                    pos.Y -= 2;
+                    _object.pos.Y += 2;
+
                 }
+                Vector2 buf = speed;
+                speed = -_object.Speed;
+                _object.Speed = -buf;
             }
         }
 
@@ -107,13 +117,14 @@ namespace KARC.Logic
                 angle = 0;
                 hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
             }
-
+            bool q = false;
+            if (id==12)
+                q = true;
             currentTime += _time;
             if (currentTime>period)
             {
                 currentTime = 0;
-                move();
-                
+                move();                
             }
             speed.X = 0;
         }

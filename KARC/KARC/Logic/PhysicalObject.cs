@@ -98,8 +98,6 @@ namespace KARC.Logic
                     pos.Y -= 1;
                     _object.pos.Y += 1;
                 }
-
-
             }
         }
 

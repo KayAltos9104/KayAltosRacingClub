@@ -111,9 +111,7 @@ namespace KARC.Logic
                 {
                     angle = 0;
                     hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
-                }
-                
-                
+                } 
             }
             speed.X = 0;
         }

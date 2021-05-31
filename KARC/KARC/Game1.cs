@@ -304,7 +304,6 @@ namespace KARC
                         }
                         //Обработка столкновений=============================================================
                         
-
                         for (int i =1; i <= scenesDict["level0"].objectList.Count; i++)
                         {
                             if (scenesDict["level0"].objectList[i].physical)
@@ -320,7 +319,7 @@ namespace KARC
                                 }
                             }
                             
-                            scenesDict["level0"].objectList[i].Update(gameTime.ElapsedGameTime.Milliseconds);                            
+                            //scenesDict["level0"].objectList[i].Update(gameTime.ElapsedGameTime.Milliseconds);                            
 
                         }
                         // pushed = false;

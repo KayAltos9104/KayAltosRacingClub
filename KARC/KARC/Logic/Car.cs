@@ -13,6 +13,7 @@ namespace KARC.Logic
         Vector2 speed=Vector2.Zero;
 
         public int acceleration=5;
+        public int maneuver = 5;
 
         public override Vector2 Speed
         {
@@ -44,7 +45,7 @@ namespace KARC.Logic
             Speed = _speed;
             movable = true;
             type = objType.car;
-            period = 20;
+            period = 10;
         }
 
         public override void collision(PhysicalObject _object)
@@ -56,67 +57,65 @@ namespace KARC.Logic
                 Vector2 intersecVect = pos - _object.pos;
                 
                 if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 > 0)
-                {
-                    //pos.X += Speed.X;
-                    //_object.pos.X -= _object.Speed.X;
-                    //pos.X += Speed.X*(weight - _object.weight) / (weight + _object.weight);
-                    //_object.pos.X += 2 * weight * Speed.X / (weight + _object.weight);
+                {                    
                     pos.X += _object.Speed.X;
-                    _object.pos.X -= Speed.X;
+                    _object.pos.X += Speed.X;
 
                 }
 
                 else if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 == 0)
                 { }
                 else
-                {
-                    //pos.X -= Speed.X;
-                    //_object.pos.X += _object.Speed.X;
-                    //pos.X += Speed.X * (weight - _object.weight) / (weight + _object.weight);
-                    //_object.pos.X += 2 * weight * Speed.X / (weight + _object.weight);
+                {                   
                     pos.X -= _object.Speed.X;
-                    _object.pos.X += Speed.X;
+                    _object.pos.X -= Speed.X;
 
                 }
 
 
                 if (pos.Y + hitBox.Height / 2 - _object.pos.Y - _object.hitBox.Height / 2 > 0)
                 {
-                    //pos.Y += Speed.Y;
-                    //_object.pos.Y -= _object.Speed.Y;
-
-                    //pos.Y += Speed.Y * (weight - _object.weight) / (weight + _object.weight);
-                    //_object.pos.Y += 2 * weight * Speed.Y / (weight + _object.weight);
                     pos.Y += _object.Speed.Y;
-                    _object.pos.Y -= Speed.Y;
+                    _object.pos.Y += Speed.Y;
                 }
                 else if (pos.Y + hitBox.Height / 2 - _object.pos.Y - _object.hitBox.Height / 2 == 0)
                 { }
                 else
                 {
                     pos.Y -= _object.Speed.Y;
-                    _object.pos.Y += Speed.Y;
-                    //pos.Y += Speed.Y * (weight - _object.weight) / (weight + _object.weight);
-                    //_object.pos.Y += 2 * weight * Speed.Y / (weight + _object.weight);
+                    _object.pos.Y -= Speed.Y;
+                    
                 }
             }
         }
 
         public override void Update(int _time)
-        {
-            
+        {            
             currentTime += _time;
             if (currentTime>period)
             {
                 currentTime = 0;
                 move();
+                if (speed.X > 0)
+                {
+                    angle = 10;
+                    hitBox = new Rectangle((int)pos.X - 10, (int)pos.Y+5, currentImage.Width, currentImage.Height);
+                }
+
+                else if (speed.X < 0)
+                {
+                    angle = -10;
+                    hitBox = new Rectangle((int)pos.X + 10, (int)pos.Y-5, currentImage.Width, currentImage.Height);
+                }
+                else
+                {
+                    angle = 0;
+                    hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+                }
+                
                 speed.X = 0;
             }
-            base.Update(_time);
         }
-
-        
-
         public override void move()
         {
             pos += Speed;

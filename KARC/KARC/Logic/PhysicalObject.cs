@@ -12,7 +12,7 @@ namespace KARC.Logic
         public Rectangle hitBox;
         public bool movable;
         public int weight;//Вес объекта в килограммах
-
+        public bool live;
         Vector2 speed = Vector2.Zero;
 
         public virtual Vector2 Speed

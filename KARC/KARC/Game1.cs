@@ -165,12 +165,8 @@ namespace KARC
             gameFont = Content.Load<SpriteFont>("ManualFont");
         }
 
-
-
-
         protected override void LoadContent()
         {
-
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             song = Content.Load<Song>("ME");
@@ -178,11 +174,8 @@ namespace KARC
             {
                 MediaPlayer.Play(song);
                 // повторять после завершения
-                MediaPlayer.IsRepeating = true;
-               
-            }
-            
-
+                MediaPlayer.IsRepeating = true;               
+            }   
         }
 
 
@@ -190,7 +183,6 @@ namespace KARC
         {
 
         }
-
 
         protected override void Update(GameTime gameTime)
         {

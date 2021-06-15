@@ -17,6 +17,8 @@ namespace KARC.Logic
         public Color colDraw = Color.White;
         public bool player = false;
         protected int angle = 0;
+
+        protected Dictionary<string, Animation> animationDict = new Dictionary<string, Animation>();
         //Физика
         public Vector2 pos; //Текущая позиция
 
@@ -48,6 +50,7 @@ namespace KARC.Logic
             physical = false;
         }
 
+       
 
         public virtual void Update(int _time) //Обновление состояния объекта
         {            

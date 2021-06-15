@@ -14,7 +14,7 @@ namespace KARC.Logic
 
         public int acceleration=5;
         public int maneuver = 5;
-
+        
         public override Vector2 Speed
         {
             set
@@ -46,6 +46,7 @@ namespace KARC.Logic
             movable = true;
             type = objType.car;
             period = 10;
+            live = true;
         }
 
         public override void collision(PhysicalObject _object)
@@ -96,11 +97,21 @@ namespace KARC.Logic
                 Vector2 buf = speed;
                 speed = _object.Speed;
                 _object.Speed = buf;
+
+                live = false;
+                _object.live = false;
+                
             }
         }
 
         public override void Update(int _time)
         {
+            if (!live)
+            {
+                speed.Y = 0;
+                currentImage = images["CrushedModel"];
+            }
+
             if (speed.X > 0)
             {
                 angle = 10;
@@ -126,6 +137,7 @@ namespace KARC.Logic
             }
             speed.X = 0;
         }
+
         public override void move()
         {
             pos += Speed;

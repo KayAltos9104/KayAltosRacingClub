@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,11 +13,23 @@ namespace KARC.Logic
         bool toroidal;//Зацикливается ли карта
         protected int enemiesNum;
         protected int enemiesCur;
+        //protected List<Rectangle> tileMap;
+        int tileScale;
 
         public Level (int[,] _map, int _scale, List<Object> _objList, bool _toroidal) :base(_map, _scale, _objList)
         {
             toroidal = _toroidal;
-            
+            //tileScale = _scale / 2;//TODO: сделать в настройки
+            //for (int y = 0; y < _map.GetLength(1);y++)
+            //    for (int x = 0; x < _map.GetLength(0);y++)
+            //    {
+            //        for (int tileY=0;tileY < 2; tileY++)
+            //            for (int tileX=0; tileX <2;tileX++)
+            //            {
+            //                Rectangle tile = new Rectangle(tileX * tileScale + x, tileY * tileScale + y, tileScale, tileScale);
+            //                tileMap.Add(tile);
+            //            }
+            //    }             
         }
 
         public override void updateScene(int _time)

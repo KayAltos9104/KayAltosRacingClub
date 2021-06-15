@@ -94,8 +94,8 @@ namespace KARC.Logic
 
                 }
                 Vector2 buf = speed;
-                speed = -_object.Speed;
-                _object.Speed = -buf;
+                speed = _object.Speed;
+                _object.Speed = buf;
             }
         }
 
@@ -117,9 +117,7 @@ namespace KARC.Logic
                 angle = 0;
                 hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
             }
-            bool q = false;
-            if (id==12)
-                q = true;
+           
             currentTime += _time;
             if (currentTime>period)
             {

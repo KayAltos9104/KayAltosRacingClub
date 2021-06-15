@@ -100,6 +100,15 @@ namespace KARC.Logic
                 }
             }
         }
+        public double CountDistance(PhysicalObject _CheckObj)//Возвращает расстояние между этим объектом и объектом в аргументе
+        {
+            return Math.Sqrt(Math.Pow(hitBox.Center.X - _CheckObj.hitBox.Center.X, 2) + Math.Pow(hitBox.Center.Y - _CheckObj.hitBox.Center.Y, 2));
+        }
+
+        public bool CheckNeighborhood (PhysicalObject _CheckObj)
+        {
+            return (CountDistance(_CheckObj) < Math.Max(this.hitBox.Width * 5, this.hitBox.Height * 5));
+        }
 
         public virtual void move()
         {

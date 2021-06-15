@@ -47,7 +47,7 @@ namespace KARC
         int currentTime = 0;
         bool songSwitched = false;
 
-        bool showhitBox = true;
+        bool showhitBox = false;
         public static int playerId;
         bool pushed = false;
         int currentTimeforAccel;
@@ -245,7 +245,7 @@ namespace KARC
                         if (initial)
                         {
                             scenesDict["level0"].scroll(new Vector2(0, -840*8));
-                            scenesDict["level0"].objectList[playerId].pos.Y = 500;
+                            scenesDict["level0"].objectList[playerId].pos.Y = 400;
                             initial = false;
                         }
                         
@@ -314,7 +314,9 @@ namespace KARC
                                     {
                                         Logic.PhysicalObject obj1 = (Logic.PhysicalObject)scenesDict["level0"].objectList[i];
                                         Logic.PhysicalObject obj2 = (Logic.PhysicalObject)scenesDict["level0"].objectList[j];
-                                        obj1.collision(obj2);
+
+                                        if (obj1.CheckNeighborhood(obj2))
+                                            obj1.collision(obj2);
                                     }
                                 }
                             }

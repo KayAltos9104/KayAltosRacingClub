@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using KARC.Logic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -47,8 +48,14 @@ namespace KARC
         int currentTime = 0;
         bool songSwitched = false;
 
-        bool showhitBox = true;
+        bool showhitBox = false;
         public static int playerId;
+        bool pushed = false;
+        int currentTimeforAccel;
+        int periodForAccel;
+
+        SpriteFont gameFont;
+        bool initial=true;
 
         public Game1()
         {
@@ -77,6 +84,10 @@ namespace KARC
             musicList[0] = Content.Load<Song>("ME");
             musicList[1] = Content.Load<Song>("DemonSpeeding");
 
+
+            currentTimeforAccel = 0;
+            periodForAccel = 500;
+
             //===================Загрузка начального экрана
             int[,] map = new int[1, 1];
 
@@ -88,6 +99,9 @@ namespace KARC
             Dictionary<string, SpriteFont> fontDict = new Dictionary<string, SpriteFont>();
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
+
+           
+
 
             Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1, fontDict);
             objList.Add(backGround);
@@ -121,7 +135,7 @@ namespace KARC
 
             //Тестовый уровень
             //map =  new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
-            map = new int[1, 3] { { 1, 1, 1 } };
+            map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             objList.Clear();
             textureDict.Clear();
             textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
@@ -130,34 +144,42 @@ namespace KARC
             {
                 if (map[0,i]!=0)
                 {
-                    objList.Add(new Logic.BackGround(new Vector2(0, i * 840), 0.9f, textureDict, 0));
+                    objList.Add(new Logic.BackGround(new Vector2(0,i * 800), 0.9f, textureDict, 0));
                 }
             }
+
+            Animation carExplosion = new Animation(Content.Load<Texture2D>("Animations/exp2_0"),64,64,new Point(4,4),Vector2.Zero,false);
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
-            Logic.Car Player = new Logic.Car(new Vector2(420, 500), 0.2f, textureDict, 1, new Vector2(0, -1), 5000);
+            Logic.Car Player = new Logic.Car(new Vector2(420, -800-200 ), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
             Player.player = true;
+            Player.animationDict.Add("explosion", carExplosion);
             objList.Add(Player);
+           
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
-            objList.Add(new Logic.Car(new Vector2(420, 100), 0.2f, textureDict, 1, new Vector2(0, -1), 5000));
+            Car enemy = new Logic.Car(new Vector2(420, -800 - 400), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
+
+            carExplosion = new Animation(Content.Load<Texture2D>("Animations/exp2_0"), 64, 64, new Point(4, 4), Vector2.Zero, false);
+            enemy.animationDict.Add("explosion", carExplosion);
+            objList.Add(enemy);
+
+            
 
 
-            Logic.Level testLevel = new Logic.Level(map, 840, objList, true);
+            Logic.Level testLevel = new Logic.Level(map, 800, objList, true);
             scenesDict.Add("level0", testLevel);
             //==============================Конец
+
+            gameFont = Content.Load<SpriteFont>("ManualFont");
         }
-
-
-
 
         protected override void LoadContent()
         {
-
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             song = Content.Load<Song>("ME");
@@ -165,11 +187,8 @@ namespace KARC
             {
                 MediaPlayer.Play(song);
                 // повторять после завершения
-                MediaPlayer.IsRepeating = true;
-               
-            }
-            
-
+                MediaPlayer.IsRepeating = true;               
+            }   
         }
 
 
@@ -177,7 +196,6 @@ namespace KARC
         {
 
         }
-
 
         protected override void Update(GameTime gameTime)
         {
@@ -228,6 +246,15 @@ namespace KARC
                     }
                 case GameMode.game:
                     {
+                        //Управление машинкой========================================================
+                        if (initial)
+                        {
+                            scenesDict["level0"].scroll(new Vector2(0, -840*8));
+                            scenesDict["level0"].objectList[playerId].pos.Y = 400;
+                            initial = false;
+                        }
+                        
+                        Logic.Car Player = (Logic.Car)scenesDict["level0"].objectList[playerId];
                         if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                         {
                             if (showhitBox)
@@ -238,41 +265,74 @@ namespace KARC
 
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
                         {
-                            scenesDict["level0"].objectList[playerId].pos.Y -= 1;
+                            //scenesDict["level0"].objectList[playerId].pos.Y -= 1;
+                            if (!pushed)
+                            {
+                                Player.Speed += new Vector2(0, -Player.acceleration);
+                                pushed = true;
+                            }
+                           
                         }
 
                         if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                        {
-                            scenesDict["level0"].objectList[playerId].pos.Y += 1;
+                        {                           
+                            if (!pushed)
+                            {
+                                Player.Speed += new Vector2(0, Player.acceleration);
+                                pushed = true;
+                            }
                         }
                         if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                        {
-                            scenesDict["level0"].objectList[playerId].pos.X += 1;
+                        {                            
+                            if (Player.Speed.Y!=0)
+                            {
+                                Player.Speed += new Vector2(Player.maneuver, 0);
+                            }
                         }
 
                         if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                        {
-                            scenesDict["level0"].objectList[playerId].pos.X -= 1;
+                        {                            
+                            if (Player.Speed.Y != 0)
+                            {
+                                Player.Speed += new Vector2(-Player.maneuver, 0);                                
+                            }
                         }
 
-
-                        foreach (var obj in scenesDict["level0"].objectList)
+                        //Управление машинкой===========Конец=============================================
+                        //Отжатие ускорения===============================================================
+                        currentTimeforAccel += gameTime.ElapsedGameTime.Milliseconds;
+                        if (currentTimeforAccel > periodForAccel)
                         {
-                            if (obj.Value.physical)
+                            pushed = false;
+                            currentTimeforAccel -= periodForAccel;
+
+                        }
+                        //Обработка столкновений=============================================================
+                        
+                        for (int i =1; i <= scenesDict["level0"].objectList.Count; i++)
+                        {
+                            if (scenesDict["level0"].objectList[i].physical)
                             {
-                                foreach (var colObj in scenesDict["level0"].objectList)
+                                for (int j = i+1; j <= scenesDict["level0"].objectList.Count; j++)
                                 {
-                                    if (colObj.Value.physical&& obj.Value.id!= colObj.Value.id)
+                                    if (scenesDict["level0"].objectList[j].physical)//&& scenesDict["level0"].objectList[i].id!= scenesDict["level0"].objectList[j].id)
                                     {
-                                        Logic.PhysicalObject obj1 = (Logic.PhysicalObject)obj.Value;
-                                        Logic.PhysicalObject obj2 = (Logic.PhysicalObject)colObj.Value;
-                                        obj1.collision(obj2);
+                                        Logic.PhysicalObject obj1 = (Logic.PhysicalObject)scenesDict["level0"].objectList[i];
+                                        Logic.PhysicalObject obj2 = (Logic.PhysicalObject)scenesDict["level0"].objectList[j];
+
+                                        if (obj1.CheckNeighborhood(obj2))
+                                            obj1.collision(obj2);
                                     }
                                 }
                             }
-                            obj.Value.Update(gameTime.ElapsedGameTime.Milliseconds);                            
+                            
+                            //scenesDict["level0"].objectList[i].Update(gameTime.ElapsedGameTime.Milliseconds);                            
 
                         }
+                        //pushed = false;
+                        //Logic.Level upd = (Logic.Level)scenesDict["level0"];
+                        scenesDict["level0"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
+                        scenesDict["level0"].scroll(-Player.Speed);//Скроллинг
                         break;
                     }
             }
@@ -301,8 +361,11 @@ namespace KARC
                         string gameName = "           K.A.R.C.\n Adrenaline Racing";
                         foreach (var obj in scenesDict["MainMenu"].objectList)
                         {
-                            obj.Value.colDraw = new Color(load, load, load);
-                            obj.Value.drawObject(spriteBatch);
+                            
+                                obj.Value.colDraw = new Color(load, load, load);
+                                obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
+                            
+                            
                             if (load >= 255)
                             {
                                 Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[1];
@@ -360,7 +423,7 @@ namespace KARC
                     }
                 case GameMode.game:
                     {
-                        spriteBatch.DrawString(Content.Load<SpriteFont>("Title"), "Игра запущена", Vector2.Zero, Color.AliceBlue);
+                        
 
                         if (!songSwitched)
                         {
@@ -376,14 +439,16 @@ namespace KARC
 
                         foreach (var obj in scenesDict["level0"].objectList)
                         {                            
-                            obj.Value.drawObject(spriteBatch);
+                            obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                             if (showhitBox&& obj.Value.physical)
                             {
                                 Logic.PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
                                 spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
                             }
-
                         }
+
+                        Logic.Car Player = (Logic.Car)scenesDict["level0"].objectList[playerId];
+                        spriteBatch.DrawString(gameFont, "Скорость: " + (-Player.Speed.Y)/*Player.Speed.Length()*/, Vector2.Zero, Color.Yellow);
 
 
 

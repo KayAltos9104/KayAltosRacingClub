@@ -56,6 +56,12 @@ namespace KARC.Logic
             foreach (var obj in objectList)
             {
                 obj.Value.pos += _shift;
+                if (obj.Value.physical)
+                {
+                    Logic.PhysicalObject o = (Logic.PhysicalObject)obj.Value;
+                    o.hitBox.X = (int)o.pos.X;
+                    o.hitBox.Y = (int)o.pos.Y;
+                }
             }
         }
 

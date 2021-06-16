@@ -16,7 +16,9 @@ namespace KARC.Logic
         protected float layer = 1.0f; //Слой отрисовки
         public Color colDraw = Color.White;
         public bool player = false;
+        protected int angle = 0;
 
+       public Dictionary<string, Animation> animationDict = new Dictionary<string, Animation>();
         //Физика
         public Vector2 pos; //Текущая позиция
 
@@ -48,6 +50,7 @@ namespace KARC.Logic
             physical = false;
         }
 
+       
 
         public virtual void Update(int _time) //Обновление состояния объекта
         {            
@@ -78,11 +81,13 @@ namespace KARC.Logic
             images.Add(_key, _image);
         }
 
-        public virtual void drawObject (SpriteBatch _spriteBatch)//Метод отрисовки объекта
+        public virtual void drawObject (SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
-            _spriteBatch.Draw(currentImage,pos,null, colDraw, 0, Vector2.Zero,1.0f, SpriteEffects.None,layer);
+            _spriteBatch.Draw(currentImage,pos,null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero,1.0f, SpriteEffects.None,layer);
             //_spriteBatch.Draw(currentImage, pos, new Rectangle((int)pos.X,(int)pos.Y,Game1.windoWidth,Game1.windowHeight), colDraw, 0, Vector2.Zero, 1.0f, SpriteEffects.None, layer);
         }
+
+       
 
     }
 }

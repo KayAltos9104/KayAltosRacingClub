@@ -12,7 +12,7 @@ namespace KARC.Logic
         public Rectangle hitBox;
         public bool movable;
         public int weight;//Вес объекта в килограммах
-
+        public bool live;
         Vector2 speed = Vector2.Zero;
 
         public virtual Vector2 Speed
@@ -51,8 +51,9 @@ namespace KARC.Logic
 
         public override void Update(int _time)
         {
-            base.Update(_time);
             hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+            base.Update(_time);
+            
         }
 
         public virtual void collision (Logic.PhysicalObject _object)//Обработка столкновения
@@ -97,9 +98,16 @@ namespace KARC.Logic
                     pos.Y -= 1;
                     _object.pos.Y += 1;
                 }
-
-
             }
+        }
+        public double CountDistance(PhysicalObject _CheckObj)//Возвращает расстояние между этим объектом и объектом в аргументе
+        {
+            return Math.Sqrt(Math.Pow(hitBox.Center.X - _CheckObj.hitBox.Center.X, 2) + Math.Pow(hitBox.Center.Y - _CheckObj.hitBox.Center.Y, 2));
+        }
+
+        public bool CheckNeighborhood (PhysicalObject _CheckObj)
+        {
+            return (CountDistance(_CheckObj) < Math.Max(this.hitBox.Width * 5, this.hitBox.Height * 5));
         }
 
         public virtual void move()

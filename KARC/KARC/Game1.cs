@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using KARC.Logic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -144,11 +145,14 @@ namespace KARC
                 }
             }
 
+            Animation carExplosion = new Animation(Content.Load<Texture2D>("Animations/exp2_0"),64,64,new Point(4,4),Vector2.Zero,false);
+
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
             Logic.Car Player = new Logic.Car(new Vector2(420, -800-200 ), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
             Player.player = true;
+            
             objList.Add(Player);
 
             textureDict.Clear();

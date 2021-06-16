@@ -9,7 +9,7 @@ namespace KARC.Logic
 {
     class Animation
     {
-        Texture2D image;
+        public Texture2D image;
         bool cycled;
         public Vector2 objectPos;
         int frameWidth;
@@ -22,7 +22,7 @@ namespace KARC.Logic
         int currentTime = 0; // сколько времени прошло
         public int period = 50; // период обновления в миллисекундах
 
-        
+
         public bool ended = false;
 
         public Animation(Texture2D _animImage, int _frameWidth, int _frameHeight, Point _spriteSize, Vector2 _pos, bool _cycle)
@@ -32,11 +32,11 @@ namespace KARC.Logic
             frameHeight = _frameHeight;
             spriteSize = _spriteSize;
             currentFrame = new Point(0, 0);
-            objectPos = _pos;            
+            objectPos = _pos;
             cycled = _cycle;
         }
 
-        
+
 
         public void scrollFrame(Vector2 curPos, int _time)
         {
@@ -50,7 +50,7 @@ namespace KARC.Logic
                 }
                 else
                 {
-                    objectPos = curPos;                   
+                    objectPos = curPos;
                     ++currentFrame.X;//Переходим к следующему кадру по горизонтали
                     if (currentFrame.X >= spriteSize.X)
                     {
@@ -67,10 +67,10 @@ namespace KARC.Logic
             }
         }
 
-        public virtual void drawObject(SpriteBatch _spriteBatch)//Метод отрисовки объекта
+        public virtual void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
             _spriteBatch.Draw(image, objectPos, new Rectangle(currentFrame.X * frameWidth, currentFrame.Y * frameHeight, frameWidth, frameHeight), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, layer);
-            
-        }   
+            scrollFrame(objectPos, _time);
+        }
     }
 }

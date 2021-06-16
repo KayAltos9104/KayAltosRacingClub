@@ -350,7 +350,7 @@ namespace KARC
                         {
                             
                                 obj.Value.colDraw = new Color(load, load, load);
-                                obj.Value.drawObject(spriteBatch);
+                                obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                             
                             
                             if (load >= 255)
@@ -426,7 +426,7 @@ namespace KARC
 
                         foreach (var obj in scenesDict["level0"].objectList)
                         {                            
-                            obj.Value.drawObject(spriteBatch);
+                            obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                             if (showhitBox&& obj.Value.physical)
                             {
                                 Logic.PhysicalObject hb = (Logic.PhysicalObject)obj.Value;

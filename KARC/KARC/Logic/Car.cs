@@ -8,13 +8,13 @@ using System.Text;
 
 namespace KARC.Logic
 {
-    class Car:PhysicalObject
+    class Car : PhysicalObject
     {
-        Vector2 speed=Vector2.Zero;
+        Vector2 speed = Vector2.Zero;
 
-        public int acceleration=5;
+        public int acceleration = 5;
         public int maneuver = 5;
-        
+
         public override Vector2 Speed
         {
             set
@@ -40,7 +40,7 @@ namespace KARC.Logic
             }
         }
 
-        public Car (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, Vector2 _speed, int _weight) :base(_pos, _layer, _loadTextList, _Id, _weight)
+        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, Vector2 _speed, int _weight) : base(_pos, _layer, _loadTextList, _Id, _weight)
         {
             Speed = _speed;
             movable = true;
@@ -52,7 +52,7 @@ namespace KARC.Logic
         public override void collision(PhysicalObject _object)
         {
             if (hitBox.Intersects(_object.hitBox))
-            {                
+            {
                 Rectangle inter;
                 Rectangle.Intersect(ref hitBox, ref _object.hitBox, out inter);
                 Vector2 intersecVect = pos - _object.pos;
@@ -100,7 +100,7 @@ namespace KARC.Logic
 
                 live = false;
                 _object.live = false;
-                
+
             }
         }
 
@@ -108,8 +108,26 @@ namespace KARC.Logic
         {
             if (!live)
             {
-                speed.Y = 0;
+                if (speed.Y > 0)
+                {
+                    speed.Y -= 5;
+                    speed.X -= 1;
+                }
+
+                else if (speed.Y < 0)
+                {
+                    speed.Y += 5;
+                    speed.X += 1;
+                }
+
+                else
+                {
+                    speed.Y = 0;
+                    speed.X = 0;
+                }
+
                 currentImage = images["CrushedModel"];
+
             }
 
             if (speed.X > 0)
@@ -128,14 +146,16 @@ namespace KARC.Logic
                 angle = 0;
                 hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
             }
-           
+
             currentTime += _time;
-            if (currentTime>period)
+            if (currentTime > period)
             {
                 currentTime = 0;
-                move();                
+                move();
             }
-            speed.X = 0;
+            if (live)
+                speed.X = 0;
+
         }
 
         public override void move()
@@ -143,8 +163,15 @@ namespace KARC.Logic
             pos += Speed;
         }
 
-        
+        public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
+        {
+            _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, SpriteEffects.None, layer);
+            if (!live)
+            {
+                animationDict["explosion"].objectPos = this.pos;
+                animationDict["explosion"].drawObject(_spriteBatch, _time);
+            }
 
-
+        }
     }
 }

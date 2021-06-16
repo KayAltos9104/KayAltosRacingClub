@@ -149,7 +149,7 @@ namespace KARC
             }
 
           
-            Animation explosion = new Animation(Content.Load<Texture2D>("Animations/exp2_0"), 64, 64, new Point(4, 4), Vector2.Zero, false);
+            //Animation explosion = new Animation(Content.Load<Texture2D>("Animations/exp2_0"), 64, 64, new Point(4, 4), Vector2.Zero, false);
           
 
             textureDict.Clear();
@@ -157,7 +157,7 @@ namespace KARC
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
             Logic.Car Player = new Logic.Car(new Vector2(420, -800-200 ), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
             Player.player = true;
-            Player.animationDict.Add("explosion",explosion);
+            //Player.animationDict.Add("explosion",explosion);
             objList.Add(Player);
            
 
@@ -165,7 +165,7 @@ namespace KARC
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
             Logic.Car enemy = new Logic.Car(new Vector2(420, -800 - 200), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
-            enemy.animationDict.Add("explosion", explosion);
+            //enemy.animationDict.Add("explosion", explosion);
             objList.Add(new Logic.Car(new Vector2(420, -800-400), 0.2f, textureDict, 1, new Vector2(0, 0), 5000));
 
 

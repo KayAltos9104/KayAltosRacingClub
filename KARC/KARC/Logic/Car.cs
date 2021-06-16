@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -11,7 +12,7 @@ namespace KARC.Logic
     class Car : PhysicalObject
     {
         Vector2 speed = Vector2.Zero;
-
+        bool explode=false;
         public int acceleration = 5;
         public int maneuver = 5;
 
@@ -127,7 +128,17 @@ namespace KARC.Logic
                 }
 
                 currentImage = images["CrushedModel"];
-
+                //SoundEffectInstance soundEffectInstance = soundEffectsDict["explosion"].CreateInstance();
+                //soundEffectInstance.IsLooped = false;
+                //if (!explode)
+                //{
+                //    soundEffectInstance.Play();
+                //    explode = true;
+                //}
+                //else
+                //{
+                //    soundEffectInstance.Resume();
+                //}
             }
 
             if (speed.X > 0)
@@ -168,7 +179,9 @@ namespace KARC.Logic
             _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, SpriteEffects.None, layer);
             if (!live)
             {
-                animationDict["explosion"].objectPos = this.pos;
+                //animationDict["explosion"].objectPos = this.pos;
+                animationDict["explosion"].objectPos.X = this.pos.X- 82;
+                animationDict["explosion"].objectPos.Y = this.pos.Y - 180;
                 animationDict["explosion"].drawObject(_spriteBatch, _time);
             }
 

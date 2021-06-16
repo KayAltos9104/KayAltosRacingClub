@@ -30,6 +30,7 @@ namespace KARC
     {
         int load = 0;//Время загрузки заставки
 
+        
 
         Dictionary<string, Texture2D> texturesDict;
         GraphicsDeviceManager graphics;
@@ -148,7 +149,10 @@ namespace KARC
                 }
             }
 
-            Animation carExplosion = new Animation(Content.Load<Texture2D>("Animations/exp2_0"),64,64,new Point(4,4),Vector2.Zero,false);
+            Animation carExplosion = new Animation(Content.Load<Texture2D>("Animations/boom3"), 128, 128, new Point(8, 8), Vector2.Zero, false);
+            carExplosion.scale = 2.0f;
+            SoundEffect explosionSound = Content.Load<SoundEffect>("Sound/DeathFlash");
+
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
@@ -156,6 +160,7 @@ namespace KARC
             Logic.Car Player = new Logic.Car(new Vector2(420, -800-200 ), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
             Player.player = true;
             Player.animationDict.Add("explosion", carExplosion);
+            Player.soundEffectsDict.Add("explosion",explosionSound);
             objList.Add(Player);
            
 
@@ -164,8 +169,13 @@ namespace KARC
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
             Car enemy = new Logic.Car(new Vector2(420, -800 - 400), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
 
-            carExplosion = new Animation(Content.Load<Texture2D>("Animations/exp2_0"), 64, 64, new Point(4, 4), Vector2.Zero, false);
+            carExplosion = new Animation(Content.Load<Texture2D>("Animations/boom3"), 128, 128, new Point(8, 8), Vector2.Zero, false);
+            carExplosion.scale = 2.0f;
+
             enemy.animationDict.Add("explosion", carExplosion);
+            explosionSound = Content.Load<SoundEffect>("Sound/DeathFlash");
+            enemy.soundEffectsDict.Add("explosion", explosionSound);
+
             objList.Add(enemy);
 
             
@@ -333,6 +343,8 @@ namespace KARC
                         //Logic.Level upd = (Logic.Level)scenesDict["level0"];
                         scenesDict["level0"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
                         scenesDict["level0"].scroll(-Player.Speed);//Скроллинг
+                        
+
                         break;
                     }
             }

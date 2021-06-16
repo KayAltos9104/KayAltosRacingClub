@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -17,6 +18,8 @@ namespace KARC.Logic
         public Color colDraw = Color.White;
         public bool player = false;
         protected int angle = 0;
+        public Dictionary<string, SoundEffect> soundEffectsDict = new Dictionary<string, SoundEffect>();
+
 
        public Dictionary<string, Animation> animationDict = new Dictionary<string, Animation>();
         //Физика

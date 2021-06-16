@@ -18,7 +18,7 @@ namespace KARC.Logic
         public bool player = false;
         protected int angle = 0;
 
-        protected Dictionary<string, Animation> animationDict = new Dictionary<string, Animation>();
+       public Dictionary<string, Animation> animationDict = new Dictionary<string, Animation>();
         //Физика
         public Vector2 pos; //Текущая позиция
 

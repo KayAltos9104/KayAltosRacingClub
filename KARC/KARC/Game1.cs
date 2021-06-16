@@ -100,6 +100,9 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
+           
+
+
             Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1, fontDict);
             objList.Add(backGround);
 
@@ -154,6 +157,7 @@ namespace KARC
             Player.player = true;
             Player.animationDict.Add("explosion", carExplosion);
             objList.Add(Player);
+           
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
@@ -164,6 +168,7 @@ namespace KARC
             enemy.animationDict.Add("explosion", carExplosion);
             objList.Add(enemy);
 
+            
 
 
             Logic.Level testLevel = new Logic.Level(map, 800, objList, true);

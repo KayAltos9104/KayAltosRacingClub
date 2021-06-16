@@ -18,9 +18,11 @@ namespace KARC.Logic
         Point spriteSize;//Через эту точку задается кол-во спрайтов - 4 по ширине и 3 по высоте
 
         public float layer;
+        public float scale = 1.0f;
+
 
         int currentTime = 0; // сколько времени прошло
-        public int period = 50; // период обновления в миллисекундах
+        public int period = 100; // период обновления в миллисекундах
 
 
         public bool ended = false;
@@ -69,8 +71,12 @@ namespace KARC.Logic
 
         public virtual void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
-            _spriteBatch.Draw(image, objectPos, new Rectangle(currentFrame.X * frameWidth, currentFrame.Y * frameHeight, frameWidth, frameHeight), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, layer);
-            scrollFrame(objectPos, _time);
+            if (!ended||cycled)
+            {
+                _spriteBatch.Draw(image, objectPos, new Rectangle(currentFrame.X * frameWidth, currentFrame.Y * frameHeight, frameWidth, frameHeight), Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, layer);
+                scrollFrame(objectPos, _time);
+            }
+            
         }
     }
 }

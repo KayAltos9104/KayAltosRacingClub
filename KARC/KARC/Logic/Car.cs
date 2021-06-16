@@ -108,8 +108,26 @@ namespace KARC.Logic
         {
             if (!live)
             {
-                speed.Y = 0;
+                if (speed.Y > 0)
+                {
+                    speed.Y -= 5;
+                    speed.X -= 1;
+                }
+                    
+                else if (speed.Y < 0)
+                {
+                    speed.Y += 5;
+                    speed.X += 1;
+                }
+                    
+                else
+                {
+                    speed.Y = 0;
+                    speed.X = 0;
+                }
+                    
                 currentImage = images["CrushedModel"];
+
             }
 
             if (speed.X > 0)
@@ -135,7 +153,9 @@ namespace KARC.Logic
                 currentTime = 0;
                 move();                
             }
+            if (live)
             speed.X = 0;
+            
         }
 
         public override void move()
@@ -143,8 +163,15 @@ namespace KARC.Logic
             pos += Speed;
         }
 
-        
-
-
+        public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
+        {
+            _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, SpriteEffects.None, layer);
+            if (!live)
+            {
+                animationDict["explosion"].objectPos = this.pos;
+                animationDict["explosion"].drawObject(_spriteBatch, _time);
+            }                
+                    
+        }
     }
 }

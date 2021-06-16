@@ -9,7 +9,7 @@ namespace KARC.Logic
 {
     class Animation
     {
-        Texture2D image;
+        public Texture2D image;
         bool cycled;
         public Vector2 objectPos;
         int frameWidth;
@@ -67,9 +67,10 @@ namespace KARC.Logic
             }
         }
 
-        public virtual void drawObject(SpriteBatch _spriteBatch)//Метод отрисовки объекта
+        public virtual void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
             _spriteBatch.Draw(image, objectPos, new Rectangle(currentFrame.X * frameWidth, currentFrame.Y * frameHeight, frameWidth, frameHeight), Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, layer);
+            scrollFrame(objectPos, _time);
             
         }   
     }

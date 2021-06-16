@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using KARC.Logic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -99,6 +100,9 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
+           
+
+
             Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1, fontDict);
             objList.Add(backGround);
 
@@ -144,19 +148,28 @@ namespace KARC
                 }
             }
 
+          
+            Animation explosion = new Animation(Content.Load<Texture2D>("Animations/exp2_0"), 64, 64, new Point(4, 4), Vector2.Zero, false);
+          
+
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
             Logic.Car Player = new Logic.Car(new Vector2(420, -800-200 ), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
             Player.player = true;
+            Player.animationDict.Add("explosion",explosion);
             objList.Add(Player);
+           
 
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
+            Logic.Car enemy = new Logic.Car(new Vector2(420, -800 - 200), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
+            enemy.animationDict.Add("explosion", explosion);
             objList.Add(new Logic.Car(new Vector2(420, -800-400), 0.2f, textureDict, 1, new Vector2(0, 0), 5000));
 
 
+            
 
             Logic.Level testLevel = new Logic.Level(map, 800, objList, true);
             scenesDict.Add("level0", testLevel);
@@ -350,7 +363,7 @@ namespace KARC
                         {
                             
                                 obj.Value.colDraw = new Color(load, load, load);
-                                obj.Value.drawObject(spriteBatch);
+                                obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                             
                             
                             if (load >= 255)
@@ -426,7 +439,7 @@ namespace KARC
 
                         foreach (var obj in scenesDict["level0"].objectList)
                         {                            
-                            obj.Value.drawObject(spriteBatch);
+                            obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                             if (showhitBox&& obj.Value.physical)
                             {
                                 Logic.PhysicalObject hb = (Logic.PhysicalObject)obj.Value;

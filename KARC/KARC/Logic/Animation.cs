@@ -22,7 +22,7 @@ namespace KARC.Logic
 
 
         int currentTime = 0; // сколько времени прошло
-        public int period = 50; // период обновления в миллисекундах
+        public int period = 20; // период обновления в миллисекундах
 
 
         public bool ended = false;

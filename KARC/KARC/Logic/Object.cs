@@ -20,6 +20,8 @@ namespace KARC.Logic
         protected int angle = 0;
         public Dictionary<string, SoundEffect> soundEffectsDict = new Dictionary<string, SoundEffect>();
 
+        
+
 
        public Dictionary<string, Animation> animationDict = new Dictionary<string, Animation>();
         //Физика

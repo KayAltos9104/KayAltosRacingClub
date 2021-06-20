@@ -165,23 +165,39 @@ namespace KARC
            
 
             textureDict.Clear();
-            textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
-            textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
-            Car enemy = new Logic.Car(new Vector2(420, -800 - 400), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
-
-            carExplosion = new Animation(Content.Load<Texture2D>("Animations/boom3"), 128, 128, new Point(8, 8), Vector2.Zero, false);
-            carExplosion.scale = 2.0f;
-
-            enemy.animationDict.Add("explosion", carExplosion);
-            explosionSound = Content.Load<SoundEffect>("Sound/DeathFlash");
-            enemy.soundEffectsDict.Add("explosion", explosionSound);
-
-            objList.Add(enemy);
-
+            textureDict.Add("MainModel2", Content.Load<Texture2D>("carModels/Model2"));
+            textureDict.Add("CrushedModel2", Content.Load<Texture2D>("carModels/Model2_Crushed"));
+            textureDict.Add("MainModel3", Content.Load<Texture2D>("carModels/Model3"));
+            textureDict.Add("CrushedModel3", Content.Load<Texture2D>("carModels/Model3_Crushed"));
+            textureDict.Add("MainModel4", Content.Load<Texture2D>("carModels/Model4"));
+            textureDict.Add("CrushedModel4", Content.Load<Texture2D>("carModels/Model4_Crushed"));
+            textureDict.Add("MainModel5", Content.Load<Texture2D>("carModels/Model5"));
+            textureDict.Add("CrushedModel5", Content.Load<Texture2D>("carModels/Model5_Crushed"));
+            textureDict.Add("MainModel6", Content.Load<Texture2D>("carModels/Model6"));
+            textureDict.Add("CrushedModel6", Content.Load<Texture2D>("carModels/Model6_Crushed"));
+            textureDict.Add("MainModel7", Content.Load<Texture2D>("carModels/Model7"));
+            textureDict.Add("CrushedModel7", Content.Load<Texture2D>("carModels/Model7_Crushed"));
+            textureDict.Add("MainModel8", Content.Load<Texture2D>("carModels/Model8"));
+            textureDict.Add("CrushedModel8", Content.Load<Texture2D>("carModels/Model8_Crushed"));
             
+            textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
+            //textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
+            //textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
+            //Car enemy = new Logic.Car(new Vector2(420, -800 - 400), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
+
+            //carExplosion = new Animation(Content.Load<Texture2D>("Animations/boom3"), 128, 128, new Point(8, 8), Vector2.Zero, false);
+            //carExplosion.scale = 2.0f;
+
+            //enemy.animationDict.Add("explosion", carExplosion);
+            //explosionSound = Content.Load<SoundEffect>("Sound/DeathFlash");
+            //enemy.soundEffectsDict.Add("explosion", explosionSound);
+
+            //objList.Add(enemy);
 
 
-            Logic.Level testLevel = new Logic.Level(map, 800, objList, true);
+
+
+            Logic.Level testLevel = new Logic.Level(map, 800, objList, true, textureDict);
             scenesDict.Add("level0", testLevel);
             //==============================Конец
 
@@ -265,48 +281,52 @@ namespace KARC
                         }
                         
                         Logic.Car Player = (Logic.Car)scenesDict["level0"].objectList[playerId];
-                        if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+                        if (Player.live)
                         {
-                            if (showhitBox)
-                                showhitBox = false;
-                            else
-                                showhitBox = true;
-                        }
+                            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+                            {
+                                if (showhitBox)
+                                    showhitBox = false;
+                                else
+                                    showhitBox = true;
+                            }
 
-                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                        {
-                            //scenesDict["level0"].objectList[playerId].pos.Y -= 1;
-                            if (!pushed)
+                            if (Keyboard.GetState().IsKeyDown(Keys.Up))
                             {
-                                Player.Speed += new Vector2(0, -Player.acceleration);
-                                pushed = true;
-                            }
-                           
-                        }
+                                //scenesDict["level0"].objectList[playerId].pos.Y -= 1;
+                                if (!pushed)
+                                {
+                                    Player.Speed += new Vector2(0, -Player.acceleration);
+                                    pushed = true;
+                                }
 
-                        if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                        {                           
-                            if (!pushed)
-                            {
-                                Player.Speed += new Vector2(0, Player.acceleration);
-                                pushed = true;
                             }
-                        }
-                        if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                        {                            
-                            if (Player.Speed.Y!=0)
-                            {
-                                Player.Speed += new Vector2(Player.maneuver, 0);
-                            }
-                        }
 
-                        if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                        {                            
-                            if (Player.Speed.Y != 0)
+                            //if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                            //{                           
+                            //    if (!pushed)
+                            //    {
+                            //        Player.Speed += new Vector2(0, Player.acceleration);
+                            //        pushed = true;
+                            //    }
+                            //}
+                            if (Keyboard.GetState().IsKeyDown(Keys.Right))
                             {
-                                Player.Speed += new Vector2(-Player.maneuver, 0);                                
+                                if (Player.Speed.Y != 0)
+                                {
+                                    Player.Speed += new Vector2(Player.maneuver, 0);
+                                }
+                            }
+
+                            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                            {
+                                if (Player.Speed.Y != 0)
+                                {
+                                    Player.Speed += new Vector2(-Player.maneuver, 0);
+                                }
                             }
                         }
+                       
 
                         //Управление машинкой===========Конец=============================================
                         //Отжатие ускорения===============================================================
@@ -318,31 +338,52 @@ namespace KARC
 
                         }
                         //Обработка столкновений=============================================================
-                        
-                        for (int i =1; i <= scenesDict["level0"].objectList.Count; i++)
+                       
+                        foreach (var object1 in scenesDict["level0"].objectList)
                         {
-                            if (scenesDict["level0"].objectList[i].physical)
+                            if (object1.Value.physical&& object1.Value.pos.Y<1000&&object1.Value.pos.Y>-1000)
                             {
-                                for (int j = i+1; j <= scenesDict["level0"].objectList.Count; j++)
+                                foreach (var object2 in scenesDict["level0"].objectList)
                                 {
-                                    if (scenesDict["level0"].objectList[j].physical)//&& scenesDict["level0"].objectList[i].id!= scenesDict["level0"].objectList[j].id)
+                                    if (object2.Value.physical&& object1.Key!=object2.Key)
                                     {
-                                        Logic.PhysicalObject obj1 = (Logic.PhysicalObject)scenesDict["level0"].objectList[i];
-                                        Logic.PhysicalObject obj2 = (Logic.PhysicalObject)scenesDict["level0"].objectList[j];
+                                        Logic.PhysicalObject obj1 = (Logic.PhysicalObject)object1.Value;
+                                        Logic.PhysicalObject obj2 = (Logic.PhysicalObject)object2.Value;
 
                                         if (obj1.CheckNeighborhood(obj2))
                                             obj1.collision(obj2);
                                     }
                                 }
-                            }
-                            
-                            //scenesDict["level0"].objectList[i].Update(gameTime.ElapsedGameTime.Milliseconds);                            
-
+                            }                            
                         }
+
+
+                        //for (int i =1; i <= scenesDict["level0"].objectList.Count; i++)
+                        //{
+                        //    if (scenesDict["level0"].objectList.ContainsKey(i) && scenesDict["level0"].objectList[i].physical)
+                        //    {
+                        //        for (int j = i+1; j <= scenesDict["level0"].objectList.Count; j++)
+                        //        {
+                        //            if (scenesDict["level0"].objectList.ContainsKey(j)&& scenesDict["level0"].objectList[j].physical)
+                        //            //&& scenesDict["level0"].objectList[i].id!= scenesDict["level0"].objectList[j].id)
+                        //            {
+                        //                Logic.PhysicalObject obj1 = (Logic.PhysicalObject)scenesDict["level0"].objectList[i];
+                        //                Logic.PhysicalObject obj2 = (Logic.PhysicalObject)scenesDict["level0"].objectList[j];
+
+                        //                if (obj1.CheckNeighborhood(obj2))
+                        //                    obj1.collision(obj2);
+                        //            }
+                        //        }
+                        //    }
+                            
+                        //    //scenesDict["level0"].objectList[i].Update(gameTime.ElapsedGameTime.Milliseconds);                            
+
+                        //}
                         //pushed = false;
                         //Logic.Level upd = (Logic.Level)scenesDict["level0"];
                         scenesDict["level0"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
-                        scenesDict["level0"].scroll(-Player.Speed);//Скроллинг
+                        Vector2 scrollVector = new Vector2(0, -Player.Speed.Y);
+                        scenesDict["level0"].scroll(scrollVector);//Скроллинг
                         
 
                         break;
@@ -450,7 +491,8 @@ namespace KARC
 
 
                         foreach (var obj in scenesDict["level0"].objectList)
-                        {                            
+                        {                 
+                            if (obj.Value.pos.Y>-1500&& obj.Value.pos.Y<1500)           
                             obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                             if (showhitBox&& obj.Value.physical)
                             {
@@ -461,6 +503,7 @@ namespace KARC
 
                         Logic.Car Player = (Logic.Car)scenesDict["level0"].objectList[playerId];
                         spriteBatch.DrawString(gameFont, "Скорость: " + (-Player.Speed.Y)/*Player.Speed.Length()*/, Vector2.Zero, Color.Yellow);
+                        spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы", new Vector2(0,500), Color.Red);
 
 
 

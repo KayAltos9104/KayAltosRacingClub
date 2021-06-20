@@ -15,6 +15,7 @@ namespace KARC.Logic
         bool explode=false;
         public int acceleration = 5;
         public int maneuver = 5;
+        public SpriteEffects orientation = SpriteEffects.None;
 
         public override Vector2 Speed
         {
@@ -27,8 +28,8 @@ namespace KARC.Logic
                 else
                     speed.X = value.X;
 
-                if (value.Y > 10)
-                    speed.Y = 10;
+                if (value.Y > 40)
+                    speed.Y = 40;
                 else if (value.Y < -40)
                     speed.Y = -40;
                 else
@@ -111,19 +112,30 @@ namespace KARC.Logic
             {
                 if (speed.Y > 0)
                 {
-                    speed.Y -= 5;
-                    speed.X -= 1;
+                    speed.Y -= 1;                    
                 }
 
                 else if (speed.Y < 0)
                 {
-                    speed.Y += 5;
-                    speed.X += 1;
+                    speed.Y += 1;                   
                 }
 
                 else
                 {
-                    speed.Y = 0;
+                    speed.Y = 0;                    
+                }
+
+                if (speed.X > 0)
+                {                    
+                    speed.X -= 1;
+                }
+
+                else if (speed.X < 0)
+                {                    
+                    speed.X += 1;
+                }
+                else
+                {                    
                     speed.X = 0;
                 }
 
@@ -176,7 +188,7 @@ namespace KARC.Logic
 
         public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
-            _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, SpriteEffects.None, layer);
+            _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, orientation, layer);
             if (!live)
             {
                 //animationDict["explosion"].objectPos = this.pos;

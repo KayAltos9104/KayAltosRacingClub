@@ -21,13 +21,11 @@ namespace KARC.Logic
         }
 
         public override void Update(int _time)
-        {
-            
+        {            
                 if (check)
                     currentImage = images["light"];
                 else
-                    currentImage = images["dark"];
-            
+                    currentImage = images["dark"];            
             
         }
         

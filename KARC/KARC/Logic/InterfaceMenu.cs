@@ -38,7 +38,6 @@ namespace KARC.Logic
 
         public override void updateScene(Keys key, int _time)
         {
-
             currentTime += _time;
             if (currentTime > period)            
             {

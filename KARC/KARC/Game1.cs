@@ -12,6 +12,7 @@ namespace KARC
     enum GameMode
     {
         mainMenu,
+        options,
         game,
         final
     }
@@ -341,17 +342,13 @@ namespace KARC
                        
                         foreach (var object1 in scenesDict["level0"].objectList)
                         {
-                            if (object1.Value.physical&& object1.Value.pos.Y<1000&&object1.Value.pos.Y>-1000)
+                            if (object1.Value.physical)
                             {
                                 foreach (var object2 in scenesDict["level0"].objectList)
                                 {
                                     if (object2.Value.physical&& object1.Key!=object2.Key)
-                                    {
-                                        Logic.PhysicalObject obj1 = (Logic.PhysicalObject)object1.Value;
-                                        Logic.PhysicalObject obj2 = (Logic.PhysicalObject)object2.Value;
-
-                                        if (obj1.CheckNeighborhood(obj2))
-                                            obj1.collision(obj2);
+                                    {                                        
+                                        LPhysics((PhysicalObject)object1.Value, (PhysicalObject)object2.Value, new int[2] { -1000, 500 });
                                     }
                                 }
                             }                            
@@ -393,7 +390,11 @@ namespace KARC
             base.Update(gameTime);
         }
 
-
+        private void LPhysics(PhysicalObject obj1, PhysicalObject obj2, int [] collisionArea)
+        {
+            if (obj1.CheckNeighborhood(obj2)&&obj1.pos.Y>collisionArea[0]&& obj1.pos.Y < collisionArea[1]&& obj2.pos.Y > collisionArea[0] && obj2.pos.Y < collisionArea[1])
+                obj1.collision(obj2);
+        }
 
 
         protected override void Draw(GameTime gameTime)

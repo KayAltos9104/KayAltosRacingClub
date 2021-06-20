@@ -16,6 +16,13 @@ namespace KARC.Logic
         bool toroidal;//Зацикливается ли карта
         protected int enemiesNum;
         protected int enemiesCur;
+
+        private int leftBorder;//Левый бортик трассы
+        private int rightBorder;//Правый бортик трассы
+        private int[] oncomingLane = new int[2];
+        private int[] lane = new int[2];
+
+
         public int EnemiesCur
         {
             set
@@ -44,7 +51,13 @@ namespace KARC.Logic
             {
                 texturesDict.Add(texture.Key, texture.Value);
             }
-            enemiesNum = 10;
+            enemiesNum = 15;
+            oncomingLane[0] = 180;
+            oncomingLane[1] = 410;
+            lane[0] = 430;
+            lane[1] = 660;
+            leftBorder = 139;
+            rightBorder = 702;
             initMapGen();      
         }
 
@@ -92,17 +105,28 @@ namespace KARC.Logic
 
                 for (int i = EnemiesCur; i < enemiesNum; i++)
                 {
-                    int x = rnd.Next(120, 630);
-                    int y = rnd.Next(-(map.GetLength(1) - 1) * scale, -(map.GetLength(1) - 4) * scale);
+                    int oncoming = rnd.Next(0, 2);
+                    int left = 0;
+                    int right = 0;
+                    Vector2 speed = Vector2.Zero;
+                    if (oncoming == 1)
+                    {
+                        left = oncomingLane[0];
+                        right = oncomingLane[1];
+                        speed = new Vector2(0, rnd.Next(5, 21));
+                    }
+                    else
+                    {
+                        left = lane[0];
+                        right = lane[1];
+                        speed = new Vector2(0, rnd.Next(-20, -5));
+                    }
 
                     int seed = rnd.Next(2, 9);
                     string carMainKey = "MainModel" + seed;
                     string carCrushedKey = "CrushedModel" + seed;
-                    Vector2 speed = Vector2.Zero;
-                    if (x < 350)
-                        speed = new Vector2(0, rnd.Next(0, 21));
-                    else
-                        speed = new Vector2(0, rnd.Next(-20, 0));
+                    int x = rnd.Next(left, right - texturesDict[carMainKey].Width);
+                    int y = rnd.Next(-(map.GetLength(1) - 1) * scale, -(map.GetLength(1) - 4) * scale);
 
                     Car car = CarGeneration(x, y, carMainKey, carCrushedKey, speed);
 
@@ -133,19 +157,33 @@ namespace KARC.Logic
 
         public void initMapGen ()
         {
+            
+
             for (int i = EnemiesCur; i < enemiesNum; i++)
             {
-                int x = rnd.Next(120, 630);
-                int y = rnd.Next(-(map.GetLength(1) - 1)*scale, -(map.GetLength(1) - 4)*scale);
-                //int y = rnd.Next(-10000, -5000);
+                int oncoming = rnd.Next(0, 2);
+                int left = 0;
+                int right = 0;
+                Vector2 speed = Vector2.Zero;
+                if (oncoming == 1)
+                {
+                    left = oncomingLane[0];
+                    right = oncomingLane[1];
+                    speed = new Vector2(0, rnd.Next(5, 21));
+                }
+                else
+                {
+                    left = lane[0];
+                    right = lane[1];
+                    speed = new Vector2(0, rnd.Next(-20, -5));
+                }                 
+                              
                 int seed = rnd.Next(2, 9);
                 string carMainKey = "MainModel" + seed;
                 string carCrushedKey = "CrushedModel" + seed;
-                Vector2 speed = Vector2.Zero;
-                if (x<350)
-                    speed = new Vector2(0, rnd.Next(0,21));
-                else
-                    speed = new Vector2(0, rnd.Next(-20, 0));
+                int x = rnd.Next(left, right - texturesDict[carMainKey].Width);
+                int y = rnd.Next(-(map.GetLength(1) - 1) * scale, -(map.GetLength(1) - 4) * scale);
+
                 Car car = CarGeneration(x, y, carMainKey, carCrushedKey, speed);
                        
                 objectList.Add(Id,car);

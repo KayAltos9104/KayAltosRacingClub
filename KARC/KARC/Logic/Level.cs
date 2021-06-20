@@ -17,8 +17,8 @@ namespace KARC.Logic
         protected int enemiesNum;
         protected int enemiesCur;
 
-        private int leftBorder;//Левый бортик трассы
-        private int rightBorder;//Правый бортик трассы
+        public int leftBorder { get; }//Левый бортик трассы
+        public int rightBorder { get; }//Правый бортик трассы
         private int[] oncomingLane = new int[2];
         private int[] lane = new int[2];
 

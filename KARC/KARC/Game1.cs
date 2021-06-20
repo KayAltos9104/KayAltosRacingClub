@@ -351,33 +351,11 @@ namespace KARC
                                         LPhysics((PhysicalObject)object1.Value, (PhysicalObject)object2.Value, new int[2] { -1000, 500 });
                                     }
                                 }
-                            }                            
+                                LPhysics((PhysicalObject)object1.Value, (Level)scenesDict["level0"]);
+                            }
+                                                 
                         }
-
-
-                        //for (int i =1; i <= scenesDict["level0"].objectList.Count; i++)
-                        //{
-                        //    if (scenesDict["level0"].objectList.ContainsKey(i) && scenesDict["level0"].objectList[i].physical)
-                        //    {
-                        //        for (int j = i+1; j <= scenesDict["level0"].objectList.Count; j++)
-                        //        {
-                        //            if (scenesDict["level0"].objectList.ContainsKey(j)&& scenesDict["level0"].objectList[j].physical)
-                        //            //&& scenesDict["level0"].objectList[i].id!= scenesDict["level0"].objectList[j].id)
-                        //            {
-                        //                Logic.PhysicalObject obj1 = (Logic.PhysicalObject)scenesDict["level0"].objectList[i];
-                        //                Logic.PhysicalObject obj2 = (Logic.PhysicalObject)scenesDict["level0"].objectList[j];
-
-                        //                if (obj1.CheckNeighborhood(obj2))
-                        //                    obj1.collision(obj2);
-                        //            }
-                        //        }
-                        //    }
-                            
-                        //    //scenesDict["level0"].objectList[i].Update(gameTime.ElapsedGameTime.Milliseconds);                            
-
-                        //}
-                        //pushed = false;
-                        //Logic.Level upd = (Logic.Level)scenesDict["level0"];
+                        
                         scenesDict["level0"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
                         Vector2 scrollVector = new Vector2(0, -Player.Speed.Y);
                         scenesDict["level0"].scroll(scrollVector);//Скроллинг
@@ -396,6 +374,12 @@ namespace KARC
                 obj1.collision(obj2);
         }
 
+        private void LPhysics (PhysicalObject obj, Level level)
+        {
+            if (obj.pos.X > level.rightBorder-obj.hitBox.Width || obj.pos.X < level.leftBorder)
+                obj.live = false;
+
+        }
 
         protected override void Draw(GameTime gameTime)
         {

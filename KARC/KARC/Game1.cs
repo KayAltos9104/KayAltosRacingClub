@@ -182,21 +182,6 @@ namespace KARC
             textureDict.Add("CrushedModel8", Content.Load<Texture2D>("carModels/Model8_Crushed"));
             
             textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
-            //textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model2"));
-            //textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model2_Crushed"));
-            //Car enemy = new Logic.Car(new Vector2(420, -800 - 400), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
-
-            //carExplosion = new Animation(Content.Load<Texture2D>("Animations/boom3"), 128, 128, new Point(8, 8), Vector2.Zero, false);
-            //carExplosion.scale = 2.0f;
-
-            //enemy.animationDict.Add("explosion", carExplosion);
-            //explosionSound = Content.Load<SoundEffect>("Sound/DeathFlash");
-            //enemy.soundEffectsDict.Add("explosion", explosionSound);
-
-            //objList.Add(enemy);
-
-
-
 
             Logic.Level testLevel = new Logic.Level(map, 800, objList, true, textureDict);
             scenesDict.Add("level0", testLevel);
@@ -276,7 +261,7 @@ namespace KARC
                         //Управление машинкой========================================================
                         if (initial)
                         {
-                            scenesDict["level0"].scroll(new Vector2(0, -840*8));
+                            scenesDict["level0"].scroll(new Vector2(0, -800 * 8));
                             scenesDict["level0"].objectList[playerId].pos.Y = 400;
                             initial = false;
                         }
@@ -325,6 +310,13 @@ namespace KARC
                                 {
                                     Player.Speed += new Vector2(-Player.maneuver, 0);
                                 }
+                            }
+                        }
+                        else
+                        {
+                            if (Keyboard.GetState().IsKeyDown(Keys.R))
+                            {
+                                ReloadLevel();
                             }
                         }
                        
@@ -378,7 +370,42 @@ namespace KARC
         {
             if (obj.pos.X > level.rightBorder-obj.hitBox.Width || obj.pos.X < level.leftBorder)
                 obj.live = false;
+        }
 
+        private void ReloadLevel ()
+        {
+            //initial = true;
+            //scenesDict["level0"].objectList.Clear(); 
+            scenesDict["level0"].objectList[playerId].pos.Y = 400;
+            scenesDict["level0"].objectList[playerId].pos.X = 420;
+            foreach (var obj in scenesDict["level0"].objectList)
+            {
+                if (obj.Value.player)
+                {
+                    Car p = (Car)obj.Value;
+                    p.live = true;
+                    p.currentImage = p.images["MainModel"];
+                    p.explode = false;
+                    p.animationDict["explosion"].ended = false;
+                    //p.pos = new Vector2(420, -1000);
+                }
+                
+            }
+
+            //int[,] map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+            //List<Object> objList = new List<Object>();
+            //Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
+            //objList.Clear();
+            //textureDict.Clear();
+            //textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
+
+            //for (int i = 0; i < map.GetLength(1); i++)
+            //{
+            //    if (map[0, i] != 0)
+            //    {
+
+            //    }
+            //}
         }
 
         protected override void Draw(GameTime gameTime)
@@ -488,7 +515,7 @@ namespace KARC
 
                         Logic.Car Player = (Logic.Car)scenesDict["level0"].objectList[playerId];
                         spriteBatch.DrawString(gameFont, "Скорость: " + (-Player.Speed.Y)/*Player.Speed.Length()*/, Vector2.Zero, Color.Yellow);
-                        spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы", new Vector2(0,500), Color.Red);
+                        spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить", new Vector2(0,400), Color.Red);
 
 
 

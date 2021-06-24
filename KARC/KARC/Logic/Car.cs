@@ -12,7 +12,7 @@ namespace KARC.Logic
     class Car : PhysicalObject
     {
         Vector2 speed = Vector2.Zero;
-        bool explode=false;
+        public bool explode=false;
         public int acceleration = 5;
         public int maneuver = 5;
         public SpriteEffects orientation = SpriteEffects.None;

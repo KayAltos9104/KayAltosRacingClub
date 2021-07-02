@@ -74,9 +74,12 @@ namespace KARC
         {
             base.Initialize();
             graphics.IsFullScreen = false;
+            //graphics.PreferredBackBufferWidth = 840;
+            //graphics.PreferredBackBufferHeight = 700;
             graphics.PreferredBackBufferWidth = 840;
+            graphics.PreferredBackBufferHeight = 900;
             //graphics.PreferredBackBufferHeight = 768;
-            graphics.PreferredBackBufferHeight = 700;
+
             graphics.ApplyChanges();
 
             windoWidth = Window.ClientBounds.Width;
@@ -93,7 +96,7 @@ namespace KARC
             //===================Загрузка начального экрана
             int[,] map = new int[1, 1];
 
-            List<Logic.Object> objList = new List<Logic.Object>();
+            List<Object> objList = new List<Logic.Object>();
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("background", Content.Load<Texture2D>("MenuBackGround"));
 
@@ -130,23 +133,30 @@ namespace KARC
             scenesDict.Add("MainMenu", mainMenu);
             //==============================Конец
 
+            //Загрузка игры
+            LoadLevel();
 
 
+           
+        }
 
-            //===================Загрузка игры
+        private void LoadLevel()
+        {         
+            //Тестовый уровень            
+            int [,] map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+            List<Object> objList = new List<Object>();
+            Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
+            scenesDict.Remove("level0");
 
-            //Тестовый уровень
-            //map =  new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
-            map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             objList.Clear();
             textureDict.Clear();
             textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
-           
-            for (int i = 0; i < map.GetLength(1);i++)
+
+            for (int i = 0; i < map.GetLength(1); i++)
             {
-                if (map[0,i]!=0)
+                if (map[0, i] != 0)
                 {
-                    objList.Add(new Logic.BackGround(new Vector2(0,i * 800), 0.9f, textureDict, 0));
+                    objList.Add(new BackGround(new Vector2(0, i * 800), 0.9f, textureDict, 0));
                 }
             }
 
@@ -154,17 +164,17 @@ namespace KARC
             carExplosion.scale = 2.0f;
             SoundEffect explosionSound = Content.Load<SoundEffect>("Sound/DeathFlash");
 
-
+            //Генерация игрока
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
-            Logic.Car Player = new Logic.Car(new Vector2(420, -800-200 ), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
+            Car Player = new Logic.Car(new Vector2(420, -800 - 200), 0.2f, textureDict, 1, new Vector2(0, 0), 5000);
             Player.player = true;
             Player.animationDict.Add("explosion", carExplosion);
-            Player.soundEffectsDict.Add("explosion",explosionSound);
+            Player.soundEffectsDict.Add("explosion", explosionSound);
             objList.Add(Player);
-           
 
+            //Загрузка текстур моделей машин
             textureDict.Clear();
             textureDict.Add("MainModel2", Content.Load<Texture2D>("carModels/Model2"));
             textureDict.Add("CrushedModel2", Content.Load<Texture2D>("carModels/Model2_Crushed"));
@@ -180,12 +190,11 @@ namespace KARC
             textureDict.Add("CrushedModel7", Content.Load<Texture2D>("carModels/Model7_Crushed"));
             textureDict.Add("MainModel8", Content.Load<Texture2D>("carModels/Model8"));
             textureDict.Add("CrushedModel8", Content.Load<Texture2D>("carModels/Model8_Crushed"));
-            
+
             textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
 
-            Logic.Level testLevel = new Logic.Level(map, 800, objList, true, textureDict);
-            scenesDict.Add("level0", testLevel);
-            //==============================Конец
+            Level testLevel = new Level(map, 800, objList, true, textureDict);
+            scenesDict.Add("level0", testLevel);           
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
         }
@@ -197,9 +206,9 @@ namespace KARC
             song = Content.Load<Song>("ME");
             if (mode == GameMode.mainMenu)
             {
-                MediaPlayer.Play(song);
+                //MediaPlayer.Play(song);
                 // повторять после завершения
-                MediaPlayer.IsRepeating = true;               
+                //MediaPlayer.IsRepeating = true;               
             }   
         }
 
@@ -218,21 +227,21 @@ namespace KARC
             {
                 case GameMode.mainMenu:
                     {
-
+                        InterfaceMenu currentForm = (InterfaceMenu) scenesDict["MainMenu"];
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
                         {
-                            scenesDict["MainMenu"].updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                            currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
                         }
                         else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                         {
-                            scenesDict["MainMenu"].updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                            currentForm.updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
                         }
                         else
-                            scenesDict["MainMenu"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
+                            currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
                         
                         if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
                         {
-                            Logic.InterfaceMenu menu = (Logic.InterfaceMenu)scenesDict["MainMenu"];
+                            InterfaceMenu menu = currentForm;
                             switch (menu.cursor)
                             {
                                 case 0:
@@ -247,26 +256,22 @@ namespace KARC
                                     }
                             }
 
-                        }
-
-                        //if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                        //{
-                        //    scenesDict["MainMenu"].scroll(new Vector2(1, 1));
-                        //}
+                        }                                           
                         
                         break;
                     }
                 case GameMode.game:
                     {
+                        Level currentLevel = (Level)scenesDict["level0"];
                         //Управление машинкой========================================================
                         if (initial)
                         {
-                            scenesDict["level0"].scroll(new Vector2(0, -800 * 8));
-                            scenesDict["level0"].objectList[playerId].pos.Y = 400;
+                            currentLevel.scroll(new Vector2(0, -800 * 8));
+                            currentLevel.objectList[playerId].pos.Y = (int)(windoWidth * 0.7);
                             initial = false;
                         }
                         
-                        Logic.Car Player = (Logic.Car)scenesDict["level0"].objectList[playerId];
+                        Car Player = (Car)currentLevel.objectList[playerId];
                         if (Player.live)
                         {
                             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
@@ -278,8 +283,7 @@ namespace KARC
                             }
 
                             if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                            {
-                                //scenesDict["level0"].objectList[playerId].pos.Y -= 1;
+                            {                                
                                 if (!pushed)
                                 {
                                     Player.Speed += new Vector2(0, -Player.acceleration);
@@ -330,29 +334,29 @@ namespace KARC
                             currentTimeforAccel -= periodForAccel;
 
                         }
-                        //Обработка столкновений=============================================================
-                       
-                        foreach (var object1 in scenesDict["level0"].objectList)
+                        if (!initial)
                         {
-                            if (object1.Value.physical)
+                            foreach (var object1 in currentLevel.objectList)
                             {
-                                foreach (var object2 in scenesDict["level0"].objectList)
+                                if (object1.Value.physical)
                                 {
-                                    if (object2.Value.physical&& object1.Key!=object2.Key)
-                                    {                                        
-                                        LPhysics((PhysicalObject)object1.Value, (PhysicalObject)object2.Value, new int[2] { -1000, 500 });
+                                    foreach (var object2 in currentLevel.objectList)
+                                    {
+                                        if (object2.Value.physical && object1.Key != object2.Key)
+                                        {
+                                            LPhysics((PhysicalObject)object1.Value, (PhysicalObject)object2.Value, new int[2] { (int)(Player.pos.Y-1000), (int)(Player.pos.Y + 1000) });
+                                        }
                                     }
+                                    LPhysics((PhysicalObject)object1.Value, currentLevel);
                                 }
-                                LPhysics((PhysicalObject)object1.Value, (Level)scenesDict["level0"]);
-                            }
-                                                 
-                        }
-                        
-                        scenesDict["level0"].updateScene(gameTime.ElapsedGameTime.Milliseconds);
-                        Vector2 scrollVector = new Vector2(0, -Player.Speed.Y);
-                        scenesDict["level0"].scroll(scrollVector);//Скроллинг
-                        
 
+                            }
+
+                            currentLevel.updateScene(gameTime.ElapsedGameTime.Milliseconds);
+                            Vector2 scrollVector = new Vector2(0, -Player.Speed.Y);
+                            currentLevel.scroll(scrollVector);//Скроллинг
+                        }
+                        //Обработка столкновений============================================================= 
                         break;
                     }
             }
@@ -374,38 +378,23 @@ namespace KARC
 
         private void ReloadLevel ()
         {
-            //initial = true;
+            initial = true;
+            LoadLevel();
             //scenesDict["level0"].objectList.Clear(); 
-            scenesDict["level0"].objectList[playerId].pos.Y = 400;
-            scenesDict["level0"].objectList[playerId].pos.X = 420;
-            foreach (var obj in scenesDict["level0"].objectList)
-            {
-                if (obj.Value.player)
-                {
-                    Car p = (Car)obj.Value;
-                    p.live = true;
-                    p.currentImage = p.images["MainModel"];
-                    p.explode = false;
-                    p.animationDict["explosion"].ended = false;
-                    //p.pos = new Vector2(420, -1000);
-                }
-                
-            }
-
-            //int[,] map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
-            //List<Object> objList = new List<Object>();
-            //Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
-            //objList.Clear();
-            //textureDict.Clear();
-            //textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
-
-            //for (int i = 0; i < map.GetLength(1); i++)
+            //scenesDict["level0"].objectList[playerId].pos.Y = 400;
+            //scenesDict["level0"].objectList[playerId].pos.X = 420;
+            //foreach (var obj in scenesDict["level0"].objectList)
             //{
-            //    if (map[0, i] != 0)
+            //    if (obj.Value.player)
             //    {
-
-            //    }
-            //}
+            //        Car p = (Car)obj.Value;
+            //        p.live = true;
+            //        p.currentImage = p.images["MainModel"];
+            //        p.explode = false;
+            //        p.animationDict["explosion"].ended = false;
+            //        //p.pos = new Vector2(420, -1000);
+            //    } 
+            //}            
         }
 
         protected override void Draw(GameTime gameTime)
@@ -492,7 +481,7 @@ namespace KARC
 
                         if (!songSwitched)
                         {
-                            MediaPlayer.Play(musicList[1]);
+                            //MediaPlayer.Play(musicList[1]);
                             songSwitched = true;
                         }
                         else

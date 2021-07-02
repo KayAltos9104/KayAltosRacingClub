@@ -139,18 +139,7 @@ namespace KARC.Logic
                     speed.X = 0;
                 }
 
-                currentImage = images["CrushedModel"];
-                //SoundEffectInstance soundEffectInstance = soundEffectsDict["explosion"].CreateInstance();
-                //soundEffectInstance.IsLooped = false;
-                //if (!explode)
-                //{
-                //    soundEffectInstance.Play();
-                //    explode = true;
-                //}
-                //else
-                //{
-                //    soundEffectInstance.Resume();
-                //}
+                currentImage = images["CrushedModel"];              
             }
 
             if (speed.X > 0)

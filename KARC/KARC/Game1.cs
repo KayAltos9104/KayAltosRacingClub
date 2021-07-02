@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace KARC
 {
 
-    enum GameMode
+    public enum GameMode
     {
         mainMenu,
         options,
@@ -27,16 +27,19 @@ namespace KARC
     }
 
 
+
     public class Game1 : Game
     {
-        int load = 0;//Время загрузки заставки
-
-        
+        int load = 0;//Время загрузки заставки        
 
         Dictionary<string, Texture2D> texturesDict;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        GameMode mode;
+
+        public static GameMode mode;
+        string currentSceneKey;
+        Scene currentScene;
+
         Song song;
         Song[] musicList;
         Dictionary<string, Logic.Scene> scenesDict = new Dictionary<string, Logic.Scene>();
@@ -73,6 +76,9 @@ namespace KARC
         protected override void Initialize()
         {
             base.Initialize();
+
+            
+
             graphics.IsFullScreen = false;
             //graphics.PreferredBackBufferWidth = 840;
             //graphics.PreferredBackBufferHeight = 700;
@@ -141,6 +147,8 @@ namespace KARC
             //Загрузка игры
             LoadLevel();
 
+            currentSceneKey = "MainMenu";
+            currentScene = scenesDict[currentSceneKey];
 
            
         }
@@ -228,11 +236,13 @@ namespace KARC
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            switch (mode)
+            currentScene = scenesDict[currentSceneKey];
+
+            switch (currentSceneKey)
             {
-                case GameMode.mainMenu:
+                case "MainMenu":
                     {
-                        InterfaceMenu currentForm = (InterfaceMenu) scenesDict["MainMenu"];
+                        InterfaceMenu currentForm = (InterfaceMenu) currentScene;
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
                         {
                             currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
@@ -245,16 +255,21 @@ namespace KARC
                             currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
                         
                         if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
-                        {
-                            InterfaceMenu menu = currentForm;
-                            switch (menu.cursor)
+                        {                            
+                            switch (currentForm.cursor)
                             {
                                 case 0:
                                     {
-                                        mode = GameMode.game;
+                                        //mode = GameMode.game;
+                                        currentSceneKey = "level0";
                                         break;
                                     }
                                 case 1:
+                                    {
+                                        currentSceneKey = "Options";
+                                        break;
+                                    }
+                                case 2:
                                     {
                                         this.Exit();
                                         break;
@@ -265,9 +280,14 @@ namespace KARC
                         
                         break;
                     }
-                case GameMode.game:
+                case "Options":
                     {
-                        Level currentLevel = (Level)scenesDict["level0"];
+
+                        break;
+                    }
+                case "level0":
+                    {
+                        Level currentLevel = (Level)currentScene;
                         //Управление машинкой========================================================
                         if (initial)
                         {
@@ -408,10 +428,10 @@ namespace KARC
 
             //spriteBatch.Begin();
 
-            switch (mode)
+            switch (currentSceneKey)
             {
 
-                case GameMode.mainMenu:
+                case "MainMenu":
                     {
                         int period = 50;
                         currentTime += gameTime.ElapsedGameTime.Milliseconds;
@@ -479,7 +499,7 @@ namespace KARC
                         break;
 
                     }
-                case GameMode.game:
+                case "level0"://Можно обобщить
                     {
                         
 
@@ -495,18 +515,18 @@ namespace KARC
                         }
 
 
-                        foreach (var obj in scenesDict["level0"].objectList)
+                        foreach (var obj in currentScene.objectList)
                         {                 
                             if (obj.Value.pos.Y>-1500&& obj.Value.pos.Y<1500)           
                             obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                             if (showhitBox&& obj.Value.physical)
                             {
-                                Logic.PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
+                                PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
                                 spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
                             }
                         }
 
-                        Logic.Car Player = (Logic.Car)scenesDict["level0"].objectList[playerId];
+                        Car Player = (Car)currentScene.objectList[playerId];
                         spriteBatch.DrawString(gameFont, "Скорость: " + (-Player.Speed.Y)/*Player.Speed.Length()*/, Vector2.Zero, Color.Yellow);
                         spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить", new Vector2(0,400), Color.Red);
 

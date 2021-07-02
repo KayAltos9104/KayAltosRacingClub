@@ -34,9 +34,7 @@ namespace KARC.Logic
                 if (obj.player)
                     Game1.playerId = Id;
                 Id++;
-            }
-                
-           
+            }   
         }
 
         public virtual void updateScene(int _time)
@@ -58,12 +56,11 @@ namespace KARC.Logic
                 obj.Value.pos += _shift;
                 if (obj.Value.physical)
                 {
-                    Logic.PhysicalObject o = (Logic.PhysicalObject)obj.Value;
+                    PhysicalObject o = (PhysicalObject)obj.Value;
                     o.hitBox.X = (int)o.pos.X;
                     o.hitBox.Y = (int)o.pos.Y;
                 }
             }
         }
-
     }
 }

@@ -18,8 +18,6 @@ namespace KARC.Logic
 
        
 
-
-
         public InterfaceMenu (int[,] _map, int _scale, List<Object> _objList, int _period) :base(_map, _scale,_objList)
         {
             cursor = 0;

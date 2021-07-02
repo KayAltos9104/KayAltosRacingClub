@@ -115,19 +115,24 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
-            Logic.Button btnStart = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0);
-            //Logic.Button btnStart = new Logic.Button(new Vector2(100, 100), 0.9f, textureDict, 2, 0, 50);
+            Button btnStart = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0);            
             btnStart.check = true;
             objList.Add(btnStart);
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Options_Select"));
+            textureDict.Add("dark", Content.Load<Texture2D>("OptionsButton"));
+            Button btnOptions = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 3, 1);
+            objList.Add(btnOptions);
 
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
-            Logic.Button btnExit = new Logic.Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 3, 1);
+            Button btnExit = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 + 20), 0.9f, textureDict, 4, 2);
             objList.Add(btnExit);
 
-            Logic.InterfaceMenu mainMenu = new Logic.InterfaceMenu(map, 600, objList, 100);
+            InterfaceMenu mainMenu = new Logic.InterfaceMenu(map, 600, objList, 100);
             //mainMenu.song = Content.Load<Song>("ME");
             //song = Content.Load<Song>("ME");
             scenesDict.Add("MainMenu", mainMenu);
@@ -322,8 +327,7 @@ namespace KARC
                             {
                                 ReloadLevel();
                             }
-                        }
-                       
+                        }                       
 
                         //Управление машинкой===========Конец=============================================
                         //Отжатие ускорения===============================================================

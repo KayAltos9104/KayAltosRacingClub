@@ -156,12 +156,12 @@ namespace KARC
             objList.Add(backGround);
 
             //TODO: период лучше в сцену вставлять. Или туда и туда
-            //textureDict = new Dictionary<string, Texture2D>();
-            //textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
-            //textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
-            //Button btnStart = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0);
-            //btnStart.check = true;
-            //objList.Add(btnStart);
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Dark"));
+            textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Light"));
+            SwitchBox swbScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.1 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, 0, Content.Load<SpriteFont>("ManualFont"), new string[] { "840x800", "1024x768", "1600x900", "1920x1080" });
+            swbScreen.check = true;
+            objList.Add(swbScreen);
 
             //textureDict = new Dictionary<string, Texture2D>();
             //textureDict.Add("light", Content.Load<Texture2D>("Options_Select"));

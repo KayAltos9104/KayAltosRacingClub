@@ -16,8 +16,10 @@ namespace KARC.Logic
         public SwitchBox(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _tabIndex, SpriteFont _font, string [] _valuesArray) : base(_pos, _layer, _loadTextList, _Id, _tabIndex)
         {
             tabIndex = _tabIndex;
+            font = _font;
             type = objType.switchbox;
             period = 50;
+            valuesArray = new string[_valuesArray.Length];
             _valuesArray.CopyTo(valuesArray, 0);
             currentIndex = 0;
         }
@@ -53,7 +55,7 @@ namespace KARC.Logic
         public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
             _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, scale, SpriteEffects.None, layer);
-            _spriteBatch.DrawString(font, valuesArray[currentIndex], pos, Color.White);            
+            _spriteBatch.DrawString(font, valuesArray[currentIndex], pos, Color.Black);            
         }
 
     }

@@ -261,12 +261,14 @@ namespace KARC
                                 case 0:
                                     {
                                         //mode = GameMode.game;
+                                        currentScene = scenesDict[currentSceneKey];
                                         currentSceneKey = "level0";
                                         break;
                                     }
                                 case 1:
                                     {
                                         currentSceneKey = "Options";
+                                        currentScene = scenesDict[currentSceneKey];
                                         break;
                                     }
                                 case 2:

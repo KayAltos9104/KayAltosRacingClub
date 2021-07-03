@@ -52,6 +52,7 @@
     <Compile Include="Logic\Level.cs" />
     <Compile Include="Logic\Object.cs" />
     <Compile Include="Logic\Scene.cs" />
+    <Compile Include="Logic\SwitchBox.cs" />
     <Compile Include="Logic\Tile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

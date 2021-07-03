@@ -30,8 +30,7 @@ namespace KARC.Logic
                 }
             }
             maxCursor = buttonDict.Count;
-            period = _period;
-           
+            period = _period;           
         }
 
         public override void updateScene(Keys key, int _time)
@@ -45,7 +44,6 @@ namespace KARC.Logic
                 {
                     cursor++;
                     if (cursor >= maxCursor)
-
 
                         cursor = 0;
                 }

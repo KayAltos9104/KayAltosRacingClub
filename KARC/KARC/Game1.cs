@@ -23,7 +23,8 @@ namespace KARC
     {
         background = 0,
         button = 1,
-        car = 2
+        car = 2,
+        switchbox = 3
     }
 
 
@@ -109,7 +110,7 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, 1, false, fontDict);
+            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, 1, true,fontDict);
             objList.Add(backGround);
 
             //TODO: период лучше в сцену вставлять. Или туда и туда
@@ -133,7 +134,7 @@ namespace KARC
             Button btnExit = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 + 20), 0.9f, textureDict, 4, 2);
             objList.Add(btnExit);
 
-            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 100);
+            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200);
             //mainMenu.song = Content.Load<Song>("ME");
             //song = Content.Load<Song>("ME");
             scenesDict.Add("MainMenu", mainMenu);

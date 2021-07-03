@@ -25,8 +25,7 @@ namespace KARC.Logic
                 if (check)
                     currentImage = images["light"];
                 else
-                    currentImage = images["dark"];            
-            
+                    currentImage = images["dark"];  
         }
         
 

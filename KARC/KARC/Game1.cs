@@ -60,7 +60,7 @@ namespace KARC
         int periodForAccel;
 
         SpriteFont gameFont;
-        bool initial=true;
+        bool initial = true;
 
         public Game1()
         {
@@ -77,13 +77,11 @@ namespace KARC
         {
             base.Initialize();
 
-            
-
             graphics.IsFullScreen = false;
             //graphics.PreferredBackBufferWidth = 840;
             //graphics.PreferredBackBufferHeight = 700;
             graphics.PreferredBackBufferWidth = 840;
-            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferHeight = 750;
             //graphics.PreferredBackBufferHeight = 768;
 
             graphics.ApplyChanges();
@@ -102,7 +100,7 @@ namespace KARC
             //===================Загрузка начального экрана
             int[,] map = new int[1, 1];
 
-            List<Object> objList = new List<Logic.Object>();
+            List<Object> objList = new List<Object>();
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("background", Content.Load<Texture2D>("MenuBackGround"));
 
@@ -111,17 +109,14 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-           
-
-
-            Logic.BackGround backGround = new Logic.BackGround(Vector2.Zero, 1.0f, textureDict, 1, fontDict);
+            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, 1, false, fontDict);
             objList.Add(backGround);
 
             //TODO: период лучше в сцену вставлять. Или туда и туда
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
-            Button btnStart = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0);            
+            Button btnStart = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0);
             btnStart.check = true;
             objList.Add(btnStart);
 
@@ -138,11 +133,52 @@ namespace KARC
             Button btnExit = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 + 20), 0.9f, textureDict, 4, 2);
             objList.Add(btnExit);
 
-            InterfaceMenu mainMenu = new Logic.InterfaceMenu(map, 600, objList, 100);
+            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 100);
             //mainMenu.song = Content.Load<Song>("ME");
             //song = Content.Load<Song>("ME");
             scenesDict.Add("MainMenu", mainMenu);
             //==============================Конец
+
+            //Загрузка экрана опций
+            map = new int[1, 1];
+
+            objList = new List<Object>();
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("background", Content.Load<Texture2D>("Garage_Options"));
+
+            gameName = Content.Load<SpriteFont>("Title");
+            fontDict = new Dictionary<string, SpriteFont>();
+            fontDict.Add("Title", gameName);
+            fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
+
+            backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, 1, true,fontDict);
+            objList.Add(backGround);
+
+            //TODO: период лучше в сцену вставлять. Или туда и туда
+            //textureDict = new Dictionary<string, Texture2D>();
+            //textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
+            //textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
+            //Button btnStart = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 2, 0);
+            //btnStart.check = true;
+            //objList.Add(btnStart);
+
+            //textureDict = new Dictionary<string, Texture2D>();
+            //textureDict.Add("light", Content.Load<Texture2D>("Options_Select"));
+            //textureDict.Add("dark", Content.Load<Texture2D>("OptionsButton"));
+            //Button btnOptions = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 3, 1);
+            //objList.Add(btnOptions);
+
+
+            //textureDict = new Dictionary<string, Texture2D>();
+            //textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
+            //textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
+            //Button btnExit = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 + 20), 0.9f, textureDict, 4, 2);
+            //objList.Add(btnExit);
+
+            InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 100);
+            //mainMenu.song = Content.Load<Song>("ME");
+            //song = Content.Load<Song>("ME");
+            scenesDict.Add("Options", Options);
 
             //Загрузка игры
             LoadLevel();
@@ -150,13 +186,13 @@ namespace KARC
             currentSceneKey = "MainMenu";
             currentScene = scenesDict[currentSceneKey];
 
-           
+
         }
 
         private void LoadLevel()
-        {         
+        {
             //Тестовый уровень            
-            int [,] map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
+            int[,] map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             List<Object> objList = new List<Object>();
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
             scenesDict.Remove("level0");
@@ -169,7 +205,7 @@ namespace KARC
             {
                 if (map[0, i] != 0)
                 {
-                    objList.Add(new BackGround(new Vector2(0, i * 800), 0.9f, textureDict, 0));
+                    objList.Add(new BackGround(new Vector2(0, i * 800), 0.9f, textureDict, 0, false));
                 }
             }
 
@@ -207,7 +243,7 @@ namespace KARC
             textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
 
             Level testLevel = new Level(map, 800, objList, true, textureDict);
-            scenesDict.Add("level0", testLevel);           
+            scenesDict.Add("level0", testLevel);
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
         }
@@ -222,7 +258,7 @@ namespace KARC
                 //MediaPlayer.Play(song);
                 // повторять после завершения
                 //MediaPlayer.IsRepeating = true;               
-            }   
+            }
         }
 
 
@@ -242,7 +278,7 @@ namespace KARC
             {
                 case "MainMenu":
                     {
-                        InterfaceMenu currentForm = (InterfaceMenu) currentScene;
+                        InterfaceMenu currentForm = (InterfaceMenu)currentScene;
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
                         {
                             currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
@@ -253,20 +289,23 @@ namespace KARC
                         }
                         else
                             currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
-                        
+
                         if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
-                        {                            
+                        {
                             switch (currentForm.cursor)
                             {
                                 case 0:
                                     {
                                         //mode = GameMode.game;
-                                        currentScene = scenesDict[currentSceneKey];
+                                        load = 0;
                                         currentSceneKey = "level0";
+                                        currentScene = scenesDict[currentSceneKey];
+                                        
                                         break;
                                     }
                                 case 1:
                                     {
+                                        load = 0;
                                         currentSceneKey = "Options";
                                         currentScene = scenesDict[currentSceneKey];
                                         break;
@@ -278,8 +317,8 @@ namespace KARC
                                     }
                             }
 
-                        }                                           
-                        
+                        }
+
                         break;
                     }
                 case "Options":
@@ -297,7 +336,7 @@ namespace KARC
                             currentLevel.objectList[playerId].pos.Y = (int)(windoWidth * 0.7);
                             initial = false;
                         }
-                        
+
                         Car Player = (Car)currentLevel.objectList[playerId];
                         if (Player.live)
                         {
@@ -310,7 +349,7 @@ namespace KARC
                             }
 
                             if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                            {                                
+                            {
                                 if (!pushed)
                                 {
                                     Player.Speed += new Vector2(0, -Player.acceleration);
@@ -349,7 +388,7 @@ namespace KARC
                             {
                                 ReloadLevel();
                             }
-                        }                       
+                        }
 
                         //Управление машинкой===========Конец=============================================
                         //Отжатие ускорения===============================================================
@@ -370,7 +409,7 @@ namespace KARC
                                     {
                                         if (object2.Value.physical && object1.Key != object2.Key)
                                         {
-                                            LPhysics((PhysicalObject)object1.Value, (PhysicalObject)object2.Value, new int[2] { (int)(Player.pos.Y-1000), (int)(Player.pos.Y + 1000) });
+                                            LPhysics((PhysicalObject)object1.Value, (PhysicalObject)object2.Value, new int[2] { (int)(Player.pos.Y - 1000), (int)(Player.pos.Y + 1000) });
                                         }
                                     }
                                     LPhysics((PhysicalObject)object1.Value, currentLevel);
@@ -390,37 +429,22 @@ namespace KARC
             base.Update(gameTime);
         }
 
-        private void LPhysics(PhysicalObject obj1, PhysicalObject obj2, int [] collisionArea)
+        private void LPhysics(PhysicalObject obj1, PhysicalObject obj2, int[] collisionArea)
         {
-            if (obj1.CheckNeighborhood(obj2)&&obj1.pos.Y>collisionArea[0]&& obj1.pos.Y < collisionArea[1]&& obj2.pos.Y > collisionArea[0] && obj2.pos.Y < collisionArea[1])
+            if (obj1.CheckNeighborhood(obj2) && obj1.pos.Y > collisionArea[0] && obj1.pos.Y < collisionArea[1] && obj2.pos.Y > collisionArea[0] && obj2.pos.Y < collisionArea[1])
                 obj1.collision(obj2);
         }
 
-        private void LPhysics (PhysicalObject obj, Level level)
+        private void LPhysics(PhysicalObject obj, Level level)
         {
-            if (obj.pos.X > level.rightBorder-obj.hitBox.Width || obj.pos.X < level.leftBorder)
+            if (obj.pos.X > level.rightBorder - obj.hitBox.Width || obj.pos.X < level.leftBorder)
                 obj.live = false;
         }
 
-        private void ReloadLevel ()
+        private void ReloadLevel()
         {
             initial = true;
             LoadLevel();
-            //scenesDict["level0"].objectList.Clear(); 
-            //scenesDict["level0"].objectList[playerId].pos.Y = 400;
-            //scenesDict["level0"].objectList[playerId].pos.X = 420;
-            //foreach (var obj in scenesDict["level0"].objectList)
-            //{
-            //    if (obj.Value.player)
-            //    {
-            //        Car p = (Car)obj.Value;
-            //        p.live = true;
-            //        p.currentImage = p.images["MainModel"];
-            //        p.explode = false;
-            //        p.animationDict["explosion"].ended = false;
-            //        //p.pos = new Vector2(420, -1000);
-            //    } 
-            //}            
         }
 
         protected override void Draw(GameTime gameTime)
@@ -432,29 +456,26 @@ namespace KARC
 
             switch (currentSceneKey)
             {
-
                 case "MainMenu":
                     {
                         int period = 50;
                         currentTime += gameTime.ElapsedGameTime.Milliseconds;
-                       
+
                         string gameName = "           K.A.R.C.\n Adrenaline Racing";
-                        foreach (var obj in scenesDict["MainMenu"].objectList)
+                        foreach (var obj in currentScene.objectList)
                         {
-                            
-                                obj.Value.colDraw = new Color(load, load, load);
-                                obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
-                            
-                            
+
+                            obj.Value.colDraw = new Color(load, load, load);
+                            obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
+
+
                             if (load >= 255)
                             {
-                                Logic.BackGround title = (Logic.BackGround)scenesDict["MainMenu"].objectList[1];
+                                BackGround title = (BackGround)scenesDict["MainMenu"].objectList[1];
                                 title.drawString("Title", titleLoad, new Vector2(windoWidth / 2 - 165, windowHeight / 2 - 220), new Color(load, 0, 0), spriteBatch);
 
 
                             }
-
-
                         }
                         if (titleLoad != gameName)
                         {
@@ -485,7 +506,7 @@ namespace KARC
                             }
                             else if (currentTime > period && currentTime < 2 * period)
                             {
-                                Logic.BackGround pressStart = (Logic.BackGround)scenesDict["MainMenu"].objectList[1];
+                                BackGround pressStart = (BackGround)scenesDict["MainMenu"].objectList[1];
                                 pressStart.drawString("ManualFont", "Нажмите пробел для выбора", new Vector2(windoWidth / 2 - 120, windowHeight - 300), Color.FloralWhite, spriteBatch);
 
                             }
@@ -494,16 +515,25 @@ namespace KARC
                                 currentTime = 0;
                             }
                         }
-
-
-
-
                         break;
 
                     }
+                case "Options":
+                    {                       
+                        currentTime += gameTime.ElapsedGameTime.Milliseconds;
+
+                        foreach (var obj in currentScene.objectList)
+                        {
+
+                            obj.Value.colDraw = new Color(load, load, load);
+                            obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
+                            load += 3;
+                        }
+                        break;
+                    }
                 case "level0"://Можно обобщить
                     {
-                        
+
 
                         if (!songSwitched)
                         {
@@ -518,10 +548,10 @@ namespace KARC
 
 
                         foreach (var obj in currentScene.objectList)
-                        {                 
-                            if (obj.Value.pos.Y>-1500&& obj.Value.pos.Y<1500)           
-                            obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
-                            if (showhitBox&& obj.Value.physical)
+                        {
+                            if (obj.Value.pos.Y > -1500 && obj.Value.pos.Y < 1500)
+                                obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
+                            if (showhitBox && obj.Value.physical)
                             {
                                 PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
                                 spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
@@ -530,7 +560,7 @@ namespace KARC
 
                         Car Player = (Car)currentScene.objectList[playerId];
                         spriteBatch.DrawString(gameFont, "Скорость: " + (-Player.Speed.Y)/*Player.Speed.Length()*/, Vector2.Zero, Color.Yellow);
-                        spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить", new Vector2(0,400), Color.Red);
+                        spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить", new Vector2(0, 400), Color.Red);
 
 
 

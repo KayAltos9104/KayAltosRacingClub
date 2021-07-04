@@ -12,10 +12,13 @@ namespace KARC.Logic
         Dictionary<string, SpriteFont> fontDict=new Dictionary<string, SpriteFont>();
         //protected Rectangle drawRect;
         protected bool isSized=false;
-        public BackGround(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, bool isSized) : base(_pos, _layer, _loadTextList, _Id)
+        protected Vector2 sizePoint;
+
+        public BackGround(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, bool isSized, Vector2 _sizePoint) : base(_pos, _layer, _loadTextList, _Id)
         {           
             type = objType.background;
             this.isSized = isSized;
+            sizePoint = _sizePoint;
             if (isSized)
             {
                 //float maxImage = Math.Max(currentImage.Width, currentImage.Height);
@@ -24,9 +27,10 @@ namespace KARC.Logic
             }
         }
 
-        public BackGround (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, bool isSized, Dictionary<string, SpriteFont> _fontDict) :base (_pos,_layer,_loadTextList, _Id)
+        public BackGround (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, bool isSized, Dictionary<string, SpriteFont> _fontDict, Vector2 _sizePoint) :base (_pos,_layer,_loadTextList, _Id)
         {
             this.isSized = isSized;
+            sizePoint = _sizePoint;
             if (isSized)
             {
                 //float maxImage = Math.Max(currentImage.Width, currentImage.Height);
@@ -43,7 +47,7 @@ namespace KARC.Logic
         {
             if (isSized)
                 //_spriteBatch.Draw(currentImage, pos, new Rectangle((int)pos.X, (int)pos.Y, Game1.windoWidth, Game1.windowHeight), colDraw, 0, Vector2.Zero, 1.0f, SpriteEffects.None, layer);
-                _spriteBatch.Draw(currentImage, new Rectangle((int)pos.X, (int)pos.Y, Game1.windoWidth, Game1.windowHeight), new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height), colDraw, 0, Vector2.Zero, SpriteEffects.None, layer);
+                _spriteBatch.Draw(currentImage, new Rectangle((int)pos.X, (int)pos.Y, (int)(pos.X+sizePoint.X), (int)(pos.Y+sizePoint.Y)), new Rectangle((int)pos.X, (int)pos.Y, (int)(pos.X + currentImage.Width), (int)(pos.Y + currentImage.Height)), colDraw, 0, Vector2.Zero, SpriteEffects.None, layer);
 
             else
                 _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, scale, SpriteEffects.None, layer);

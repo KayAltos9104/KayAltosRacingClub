@@ -33,6 +33,11 @@ namespace KARC.Logic
                     SwitchBox newBut = (SwitchBox)obj;
                     buttonDict.Add(newBut.tabIndex, newBut);
                 }
+                if (obj.type == objType.label)
+                {
+                    Label newBut = (Label)obj;
+                    buttonDict.Add(newBut.tabIndex, newBut);
+                }
             }
             maxCursor = buttonDict.Count;
             period = _period;           

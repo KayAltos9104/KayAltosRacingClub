@@ -24,7 +24,8 @@ namespace KARC
         background = 0,
         button = 1,
         car = 2,
-        switchbox = 3
+        switchbox = 3,
+        label = 4
     }
 
 
@@ -110,7 +111,7 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, 1, true,fontDict);
+            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, 1, true,fontDict, new Vector2 (windoWidth, windowHeight));
             objList.Add(backGround);
 
             //TODO: период лучше в сцену вставлять. Или туда и туда
@@ -152,7 +153,7 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, 1, true,fontDict);
+            backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, 1, true,fontDict, new Vector2(windoWidth, windowHeight));
             objList.Add(backGround);
 
             //TODO: период лучше в сцену вставлять. Или туда и туда
@@ -174,6 +175,28 @@ namespace KARC
             textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
             SwitchBox swbMusic = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.3 + textureDict["light"].Height / 2)), 0.9f, textureDict, 4, 2, Content.Load<SpriteFont>("ManualFont"), new string[] { "0", "25", "50", "75", "100" },4);           
             objList.Add(swbMusic);
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("ApplyChanges_Select"));
+            textureDict.Add("dark", Content.Load<Texture2D>("ApplyChanges_Button"));
+            Button btnApplyChanges = new Button(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.4 + textureDict["light"].Height / 2)), 0.9f, textureDict, 5, 3);           
+            objList.Add(btnApplyChanges);
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
+            textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
+            Label lblInstructions = new Label(new Vector2((float)(windoWidth * 0.7 - textureDict["light"].Width / 2), (float)(windowHeight * 0.5 + textureDict["light"].Height / 2)), 0.9f, textureDict, 6, 4, Content.Load<SpriteFont>("ManualFont"), new string[] { "Press up and down arrows to choose       ", "Right and left arrows to change value" }, 0);
+            objList.Add(lblInstructions);
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Planshet"));
+            textureDict.Add("dark", Content.Load<Texture2D>("Planshet"));
+            //BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.7 - textureDict["light"].Width / 2), (float)(windowHeight * 0.5 + textureDict["light"].Height / 2)), 0.9f, textureDict, 7, 5, Content.Load<SpriteFont>("ManualFont"), new string[] { "                                             ", "                                             ", "                                             ", "                                             ", "                                             ", "                                             " }, 0);
+            //BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.7), (float)(windowHeight * 0.6)), 0.8f, textureDict, 7, true, new Vector2(100, 100));
+            BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.1), 0), 0.8f, textureDict, 7, true, new Vector2(400, 400));
+
+            objList.Add(Planshet);
+
 
 
             InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 100);
@@ -206,7 +229,7 @@ namespace KARC
             {
                 if (map[0, i] != 0)
                 {
-                    objList.Add(new BackGround(new Vector2(0, i * 800), 0.9f, textureDict, 0, false));
+                    objList.Add(new BackGround(new Vector2(0, i * 800), 0.9f, textureDict, 0, false, new Vector2(windoWidth, windowHeight)));
                 }
             }
 
@@ -337,51 +360,38 @@ namespace KARC
                         else
                             currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
 
-                        if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                        if (Keyboard.GetState().IsKeyDown(Keys.Right)|| Keyboard.GetState().IsKeyDown(Keys.Left))
                         {
+                            string dirValue = "";
+                            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                                dirValue = "right";
+                            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                                dirValue = "left";
+
+
                             switch (currentForm.cursor)
                             {
                                 case 0:
                                     {
                                         SwitchBox s = (SwitchBox)currentScene.objectList[2];//TODO: Да-да, я знаю
-                                        s.ChangeIndex("right", gameTime.ElapsedGameTime.Milliseconds);                                       
+                                        s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);                                       
                                         break;
                                     }
                                 case 1:
                                     {
-                                        
+                                        SwitchBox s = (SwitchBox)currentScene.objectList[3];//TODO: Да-да, я знаю
+                                        s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                         break;
                                     }
                                 case 2:
                                     {
-                                        
+                                        SwitchBox s = (SwitchBox)currentScene.objectList[4];//TODO: Да-да, я знаю
+                                        s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                         break;
                                     }
                             }
                         }
-
-                        if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                        {
-                            switch (currentForm.cursor)
-                            {
-                                case 0:
-                                    {
-                                        SwitchBox s = (SwitchBox)currentScene.objectList[2];//TODO: Да-да, я знаю
-                                        s.ChangeIndex("left", gameTime.ElapsedGameTime.Milliseconds);
-                                        break;
-                                    }
-                                case 1:
-                                    {
-
-                                        break;
-                                    }
-                                case 2:
-                                    {
-
-                                        break;
-                                    }
-                            }
-                        }
+                      
 
                         break;
                     }

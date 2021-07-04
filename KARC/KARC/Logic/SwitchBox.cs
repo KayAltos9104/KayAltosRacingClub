@@ -11,9 +11,9 @@ namespace KARC.Logic
 {
     class SwitchBox:Button
     {
-        SpriteFont font;
-        string[] valuesArray;
-        int currentIndex;
+        protected SpriteFont font;
+        protected string[] valuesArray;
+        protected int currentIndex;
         public SwitchBox(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _tabIndex, SpriteFont _font, string [] _valuesArray, int _currentIndex) : base(_pos, _layer, _loadTextList, _Id, _tabIndex)
         {
             tabIndex = _tabIndex;

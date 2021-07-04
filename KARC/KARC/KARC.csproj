@@ -47,6 +47,7 @@
     <Compile Include="Logic\BackGround.cs" />
     <Compile Include="Logic\Button.cs" />
     <Compile Include="Logic\Car.cs" />
+    <Compile Include="Logic\Label.cs" />
     <Compile Include="Logic\PhysicalObject.cs" />
     <Compile Include="Logic\InterfaceMenu.cs" />
     <Compile Include="Logic\Level.cs" />

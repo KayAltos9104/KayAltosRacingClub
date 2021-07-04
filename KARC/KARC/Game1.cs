@@ -290,9 +290,9 @@ namespace KARC
                         }
                         else
                             currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
-
+                        
                         if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
-                        {
+                        {    
                             switch (currentForm.cursor)
                             {
                                 case 0:
@@ -319,6 +319,7 @@ namespace KARC
                             }
 
                         }
+                        //TODO: Обобщить работу с интерфейсом
 
                         break;
                     }
@@ -335,6 +336,53 @@ namespace KARC
                         }
                         else
                             currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                        {
+                            switch (currentForm.cursor)
+                            {
+                                case 0:
+                                    {
+                                        SwitchBox s = (SwitchBox)currentScene.objectList[2];//TODO: Да-да, я знаю
+                                        s.ChangeIndex("right", gameTime.ElapsedGameTime.Milliseconds);                                       
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        
+                                        break;
+                                    }
+                            }
+                        }
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                        {
+                            switch (currentForm.cursor)
+                            {
+                                case 0:
+                                    {
+                                        SwitchBox s = (SwitchBox)currentScene.objectList[2];//TODO: Да-да, я знаю
+                                        s.ChangeIndex("left", gameTime.ElapsedGameTime.Milliseconds);
+                                        break;
+                                    }
+                                case 1:
+                                    {
+
+                                        break;
+                                    }
+                                case 2:
+                                    {
+
+                                        break;
+                                    }
+                            }
+                        }
+
                         break;
                     }
                 case "level0":
@@ -464,7 +512,8 @@ namespace KARC
             spriteBatch.Begin(SpriteSortMode.BackToFront);
 
             //spriteBatch.Begin();
-
+            if (load > 255)
+                load = 255;//TODO: сделать свойство!
             switch (currentSceneKey)
             {
                 case "MainMenu":

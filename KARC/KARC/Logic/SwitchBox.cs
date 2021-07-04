@@ -19,7 +19,7 @@ namespace KARC.Logic
             tabIndex = _tabIndex;
             font = _font;
             type = objType.switchbox;
-            period = 50;
+            period = 100;
             valuesArray = new string[_valuesArray.Length];
             _valuesArray.CopyTo(valuesArray, 0);
             currentIndex = _currentIndex;            
@@ -33,24 +33,29 @@ namespace KARC.Logic
                 currentImage = images["dark"];            
         }
 
-        public void ChangeIndex (string direction)
+        public void ChangeIndex (string direction, int _time)
         {
-            switch (direction)
+            currentTime += _time;
+            if (currentTime > period)
             {
-                case "right":
-                    {
-                        currentIndex++;
-                        if (currentIndex >= valuesArray.Length)
-                            currentIndex = 0;
-                        break;
-                    }
-                case "left":
-                    {
-                        currentIndex--;
-                        if (currentIndex <0)
-                            currentIndex = valuesArray.Length-1;
-                        break;
-                    }
+                currentTime = 0;
+                switch (direction)
+                {
+                    case "right":
+                        {
+                            currentIndex++;
+                            if (currentIndex >= valuesArray.Length)
+                                currentIndex = 0;
+                            break;
+                        }
+                    case "left":
+                        {
+                            currentIndex--;
+                            if (currentIndex < 0)
+                                currentIndex = valuesArray.Length - 1;
+                            break;
+                        }
+                }
             }
         }
 

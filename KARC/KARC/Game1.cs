@@ -157,24 +157,24 @@ namespace KARC
 
             //TODO: период лучше в сцену вставлять. Или туда и туда
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Dark"));
-            textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Light"));
-            SwitchBox swbScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.1 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, 0, Content.Load<SpriteFont>("ManualFont"), new string[] { "840x800", "1024x768", "1600x900", "1920x1080" });
+            textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
+            textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
+            SwitchBox swbScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.1 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, 0, Content.Load<SpriteFont>("ManualFont"), new string[] { "840x800", "1024x768", "1600x900", "1920x1080" },0);
             swbScreen.check = true;
             objList.Add(swbScreen);
 
-            //textureDict = new Dictionary<string, Texture2D>();
-            //textureDict.Add("light", Content.Load<Texture2D>("Options_Select"));
-            //textureDict.Add("dark", Content.Load<Texture2D>("OptionsButton"));
-            //Button btnOptions = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 3, 1);
-            //objList.Add(btnOptions);
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
+            textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
+            SwitchBox swbFullScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.2 + textureDict["light"].Height / 2)), 0.9f, textureDict, 3, 1, Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No"}, 1);
+            objList.Add(swbFullScreen);
 
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
+            textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
+            SwitchBox swbMusic = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.3 + textureDict["light"].Height / 2)), 0.9f, textureDict, 4, 2, Content.Load<SpriteFont>("ManualFont"), new string[] { "0", "25", "50", "75", "100" },4);           
+            objList.Add(swbMusic);
 
-            //textureDict = new Dictionary<string, Texture2D>();
-            //textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
-            //textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
-            //Button btnExit = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 + 20), 0.9f, textureDict, 4, 2);
-            //objList.Add(btnExit);
 
             InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 100);
             //mainMenu.song = Content.Load<Song>("ME");
@@ -324,7 +324,17 @@ namespace KARC
                     }
                 case "Options":
                     {
-
+                        InterfaceMenu currentForm = (InterfaceMenu)currentScene;
+                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                        {
+                            currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                        }
+                        else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                        {
+                            currentForm.updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                        }
+                        else
+                            currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
                         break;
                     }
                 case "level0":

@@ -27,7 +27,5 @@ namespace KARC.Logic
                 else
                     currentImage = images["dark"];  
         }
-        
-
     }
 }

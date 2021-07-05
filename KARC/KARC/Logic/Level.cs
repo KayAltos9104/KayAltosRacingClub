@@ -145,7 +145,7 @@ namespace KARC.Logic
             carTexturesDict.Add("MainModel", texturesDict[_mainKey]);
             carTexturesDict.Add("CrushedModel", texturesDict[_crushedKey]);
             
-            Car car = new Car(new Vector2(_x, _y), 0.2f, carTexturesDict, Id, _speed, 5000);
+            Car car = new Car(new Vector2(_x, _y), 0.2f, carTexturesDict, _speed, 5000, Id);
             if (_speed.Y >0)
                 car.orientation = SpriteEffects.FlipVertically;
             Animation carExplosion = new Animation(texturesDict["explosion"], 128, 128, new Point(8, 8), Vector2.Zero, false);

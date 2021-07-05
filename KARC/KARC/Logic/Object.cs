@@ -43,7 +43,7 @@ namespace KARC.Logic
 
         }
 
-        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList, int _Id)
+        public Object (Vector2 _pos, float _layer, Dictionary <string, Texture2D> _loadTextList)
         {
             layer = _layer;
             pos = _pos;   
@@ -52,7 +52,7 @@ namespace KARC.Logic
                 loadImages(img.Key, img.Value);
             }  
             currentImage = images.ElementAt(0).Value;
-            id = _Id;
+            //id = _Id;
             //period = _period;
             physical = false;
         }

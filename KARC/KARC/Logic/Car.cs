@@ -42,12 +42,22 @@ namespace KARC.Logic
             }
         }
 
-        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, Vector2 _speed, int _weight) : base(_pos, _layer, _loadTextList, _Id, _weight)
+        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight) : base(_pos, _layer, _loadTextList, _weight)
         {
             Speed = _speed;
             movable = true;
             type = objType.car;
             period = 10;
+            live = true;
+        }
+
+        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight, int _Id) : base(_pos, _layer, _loadTextList, _weight)
+        {
+            Speed = _speed;
+            movable = true;
+            type = objType.car;
+            period = 10;
+            id = _Id;
             live = true;
         }
 

@@ -14,7 +14,7 @@ namespace KARC.Logic
         protected SpriteFont font;
         protected string[] valuesArray;
         protected int currentIndex;
-        public SwitchBox(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _tabIndex, SpriteFont _font, string [] _valuesArray, int _currentIndex) : base(_pos, _layer, _loadTextList, _Id, _tabIndex)
+        public SwitchBox(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList,  int _tabIndex, SpriteFont _font, string [] _valuesArray, int _currentIndex) : base(_pos, _layer, _loadTextList, _tabIndex)
         {
             tabIndex = _tabIndex;
             font = _font;
@@ -59,6 +59,10 @@ namespace KARC.Logic
             }
         }
 
+        public string GetValue ()
+        {
+            return valuesArray[currentIndex];
+        }
         public static bool ParseValue (string _inputValue, out int [] _dimensions)
         {
             bool correct = true;

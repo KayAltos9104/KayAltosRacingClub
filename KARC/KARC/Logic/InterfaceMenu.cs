@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
@@ -13,14 +14,24 @@ namespace KARC.Logic
         public int cursor;
         int maxCursor;
 
+        int rowWidth;
+        int colWidth;
+        int rows;
+        int columns;
+
         protected int currentTime; //Текущее время игры
         protected int period;
 
        
 
-        public InterfaceMenu (int[,] _map, int _scale, List<Object> _objList, int _period) :base(_map, _scale,_objList)
+        public InterfaceMenu (int[,] _map, int _scale, List<Object> _objList, int _period, int _rows, int _columns) :base(_map, _scale,_objList)
         {
             cursor = 0;
+            rows = _rows;
+            columns = _columns;
+            rowWidth = Game1.windoWidth / rows;
+            colWidth = Game1.windowHeight / columns;
+
             foreach (var obj in _objList)
             {
                 if (obj.type==objType.button)
@@ -43,6 +54,14 @@ namespace KARC.Logic
             period = _period;           
         }
 
+        public static Vector2 GetCoord (int row, int column, int _rows, int _columns)
+        {
+            return new Vector2(row * (Game1.windoWidth / _rows), column * (Game1.windowHeight / _columns));
+        }
+        public Vector2 GetCoord (int row, int column)//TODO: Сделать проверку
+        {
+            return new Vector2(row * rowWidth, column * colWidth);
+        }
         public override void updateScene(Keys key, int _time)
         {
             currentTime += _time;

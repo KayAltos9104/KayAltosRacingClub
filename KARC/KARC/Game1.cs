@@ -84,9 +84,6 @@ namespace KARC
             graphics.PreferredBackBufferWidth = 840;
             graphics.PreferredBackBufferHeight = 750;
 
-            //graphics.PreferredBackBufferWidth = 1600;
-            //graphics.PreferredBackBufferHeight = 900;
-
             graphics.ApplyChanges();
 
             windoWidth = Window.ClientBounds.Width;
@@ -119,24 +116,28 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
-            Button btnStart = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 0);
+            //Button btnStart = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 0);
+            Vector2 place = InterfaceMenu.GetCoord(16, 17, 29, 50);
+            Button btnStart = new Button(new Vector2(place.X-textureDict["light"].Width/2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 0);
             btnStart.check = true;
             objList.Add(btnStart);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Options_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("OptionsButton"));
-            Button btnOptions = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 40), 0.9f, textureDict, 1);
+            place = InterfaceMenu.GetCoord(16, 21, 29, 50);
+            Button btnOptions = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 1);
             objList.Add(btnOptions);
 
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
-            Button btnExit = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 + 20), 0.9f, textureDict, 2);
+            place = InterfaceMenu.GetCoord(16, 25, 29, 50);
+            Button btnExit = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 2);
             objList.Add(btnExit);
 
-            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200);
+            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200, 10,9);
             //mainMenu.song = Content.Load<Song>("ME");
             song = Content.Load<Song>("ME");
             scenesDict.Add("MainMenu", mainMenu);
@@ -251,7 +252,7 @@ namespace KARC
 
 
 
-            InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150);
+            InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150,4,6);
            
             scenesDict.Add("Options", Options);
 
@@ -709,8 +710,7 @@ namespace KARC
                         }
                         else
                         {
-                            MediaPlayer.Resume();
-                            MediaPlayer.Volume = 1.0f;
+                            MediaPlayer.Resume();                           
                         }
 
 

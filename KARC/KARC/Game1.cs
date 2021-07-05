@@ -194,8 +194,8 @@ namespace KARC
 
             //Кнопка "Вернуться"
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("ApplyChanges_Select"));
-            textureDict.Add("dark", Content.Load<Texture2D>("ApplyChanges_Button"));
+            textureDict.Add("light", Content.Load<Texture2D>("BackButton_Select"));
+            textureDict.Add("dark", Content.Load<Texture2D>("BackButton"));
             Button btnBack = new Button(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.5 + textureDict["light"].Height / 2)), 0.9f, textureDict, 4);
             objList.Add(btnBack);
 

@@ -417,7 +417,7 @@
 /processorParam:TextureFormat=Color
 /build:Resources/ApplyChanges_Select.png
 
-#begin Resources/Planshet.png
+#begin Resources/Planhset2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -426,5 +426,5 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
-/build:Resources/Planshet.png
+/build:Resources/Planhset2.png
 

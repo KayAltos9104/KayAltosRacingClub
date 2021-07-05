@@ -80,11 +80,12 @@ namespace KARC
             base.Initialize();
 
             graphics.IsFullScreen = false;
-            //graphics.PreferredBackBufferWidth = 840;
-            //graphics.PreferredBackBufferHeight = 700;
+
             graphics.PreferredBackBufferWidth = 840;
             graphics.PreferredBackBufferHeight = 750;
-            //graphics.PreferredBackBufferHeight = 768;
+
+            //graphics.PreferredBackBufferWidth = 1600;
+            //graphics.PreferredBackBufferHeight = 900;
 
             graphics.ApplyChanges();
 
@@ -185,16 +186,14 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
             textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
-            Label lblInstructions = new Label(new Vector2((float)(windoWidth * 0.7 - textureDict["light"].Width / 2), (float)(windowHeight * 0.5 + textureDict["light"].Height / 2)), 0.9f, textureDict, 6, 4, Content.Load<SpriteFont>("ManualFont"), new string[] { "Press up and down arrows to choose       ", "Right and left arrows to change value" }, 0);
+            Label lblInstructions = new Label(new Vector2((float)(windoWidth * 0.75 - textureDict["light"].Width / 2), (float)(windowHeight * 0.6 + textureDict["light"].Height / 2)), 0.9f, textureDict, 6, 4, Content.Load<SpriteFont>("ManualFont"), new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0);
             objList.Add(lblInstructions);
 
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Planshet"));
-            textureDict.Add("dark", Content.Load<Texture2D>("Planshet"));
-            //BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.7 - textureDict["light"].Width / 2), (float)(windowHeight * 0.5 + textureDict["light"].Height / 2)), 0.9f, textureDict, 7, 5, Content.Load<SpriteFont>("ManualFont"), new string[] { "                                             ", "                                             ", "                                             ", "                                             ", "                                             ", "                                             " }, 0);
-            //BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.7), (float)(windowHeight * 0.6)), 0.8f, textureDict, 7, true, new Vector2(100, 100));
-            BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.1), 0), 0.8f, textureDict, 7, true, new Vector2(400, 400));
-
+            textureDict.Add("light", Content.Load<Texture2D>("Planhset2"));
+            textureDict.Add("dark", Content.Load<Texture2D>("Planhset2"));
+             BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.47), (float)(windowHeight * 0.7)), 0.95f, textureDict, 7, true, new Vector2((float)(windoWidth * 0.54), (float)(windowHeight*0.45)));
+            
             objList.Add(Planshet);
 
 

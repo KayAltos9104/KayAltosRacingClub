@@ -184,17 +184,20 @@ namespace KARC
             objList.Add(btnApplyChanges);
 
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
-            textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
-            Label lblInstructions = new Label(new Vector2((float)(windoWidth * 0.75 - textureDict["light"].Width / 2), (float)(windowHeight * 0.6 + textureDict["light"].Height / 2)), 0.9f, textureDict, 6, 4, Content.Load<SpriteFont>("ManualFont"), new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0);
-            objList.Add(lblInstructions);
-
-            textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Planhset2"));
             textureDict.Add("dark", Content.Load<Texture2D>("Planhset2"));
-             BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.47), (float)(windowHeight * 0.7)), 0.95f, textureDict, 7, true, new Vector2((float)(windoWidth * 0.54), (float)(windowHeight*0.45)));
-            
+            Vector2 planshetActSize = new Vector2((float)(windoWidth * 0.5), (float)(windowHeight * 0.45));
+            BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.5), (float)(windowHeight * 0.7)), 0.95f, textureDict, 7, true, planshetActSize);
             objList.Add(Planshet);
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
+            textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
+            Label lblInstructions = new Label(new Vector2((float)(Planshet.pos.X+ planshetActSize.X*0.07), (float)(Planshet.pos.Y + planshetActSize.Y * 0.4)), 0.9f, textureDict, 6, 4, Content.Load<SpriteFont>("ManualFont"), new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0);
+            objList.Add(lblInstructions);
+
+            
+            
 
 
 

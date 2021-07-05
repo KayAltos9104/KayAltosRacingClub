@@ -29,7 +29,7 @@ namespace KARC.Logic
             //_spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, scale, SpriteEffects.None, layer);
             _spriteBatch.Draw(currentImage, new Rectangle((int)pos.X, (int)pos.Y, (int)stringLength.X, (int)stringLength.Y* valuesArray.Length), new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height), colDraw, 0, Vector2.Zero, SpriteEffects.None, layer);
             for (int i = 0; i < valuesArray.Length; i++)
-                _spriteBatch.DrawString(font, valuesArray[i], new Vector2(pos.X + (currentImage.Width - stringLength.X) / 2, (int)(stringLength.Y*i*1.1)+pos.Y), Color.Black);
+                _spriteBatch.DrawString(font, valuesArray[i], new Vector2(pos.X, (int)(stringLength.Y*i*1.1)+pos.Y), Color.Black);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace KARC
 
         Song song;
         Song[] musicList;
-        Dictionary<string, Logic.Scene> scenesDict = new Dictionary<string, Logic.Scene>();
+        Dictionary<string, Scene> scenesDict = new Dictionary<string, Logic.Scene>();
 
         public static int windoWidth;
         public static int windowHeight;
@@ -138,7 +138,7 @@ namespace KARC
 
             InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200);
             //mainMenu.song = Content.Load<Song>("ME");
-            //song = Content.Load<Song>("ME");
+            song = Content.Load<Song>("ME");
             scenesDict.Add("MainMenu", mainMenu);
             //==============================Конец
 
@@ -165,11 +165,18 @@ namespace KARC
             swbScreen.check = true;
             objList.Add(swbScreen);
 
-            textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
-            textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
-            Label lblScreen = new Label(new Vector2((float)(windoWidth * 0.55 - swbScreen.currentImage.Width / 2), (float)(swbScreen.pos.Y + swbScreen.currentImage.Height / 4)), 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), new string[] {"Screen Resolution"}, 0);
+            textureDict = new Dictionary<string, Texture2D>();            
+            textureDict.Add("light", Content.Load<Texture2D>("Table"));
+            Label lblScreen = new Label(new Vector2((float)(windoWidth * 0.55 - swbScreen.currentImage.Width / 2), (float)(swbScreen.pos.Y + swbScreen.currentImage.Height / 4)), 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), new string[] { "Screen Resolution"}, 0);
             objList.Add(lblScreen);
+
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Table"));
+            textureDict.Add("dark", Content.Load<Texture2D>("Table"));
+            Vector2 tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbScreen.currentImage.Height));
+            BackGround table = new BackGround(new Vector2((float)(windoWidth * 0.45), (float)(swbScreen.pos.Y)), 0.85f, textureDict, true, tableSize);
+            objList.Add(table);
 
             //Настройки оконного/полноэкранного режима
             textureDict = new Dictionary<string, Texture2D>();
@@ -178,12 +185,38 @@ namespace KARC
             SwitchBox swbFullScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.2 + textureDict["light"].Height / 2)), 0.9f, textureDict, 1, Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No"}, 1);
             objList.Add(swbFullScreen);
 
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Table"));
+            Label lblScreenFull = new Label(new Vector2((float)(windoWidth * 0.55 - swbFullScreen.currentImage.Width / 2), (float)(swbFullScreen.pos.Y + swbFullScreen.currentImage.Height / 4)), 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), new string[] { "Fullscreen" }, 0);
+            objList.Add(lblScreenFull);
+
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Table"));
+            textureDict.Add("dark", Content.Load<Texture2D>("Table"));
+            tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbFullScreen.currentImage.Height));
+            table = new BackGround(new Vector2((float)(windoWidth * 0.45), (float)(swbFullScreen.pos.Y)), 0.85f, textureDict, true, tableSize);
+            objList.Add(table);
+
             //Настройки громкости музыки
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
             textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
             SwitchBox swbMusic = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.3 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"), new string[] { "0", "25", "50", "75", "100" },4);           
             objList.Add(swbMusic);
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Table"));
+            Label lblMusic = new Label(new Vector2((float)(windoWidth * 0.55 - swbMusic.currentImage.Width / 2), (float)(swbMusic.pos.Y + swbMusic.currentImage.Height / 4)), 0.9f, textureDict, 8, Content.Load<SpriteFont>("ManualFont"), new string[] { "Music Volume" }, 0);
+            objList.Add(lblMusic);
+
+
+            textureDict = new Dictionary<string, Texture2D>();
+            textureDict.Add("light", Content.Load<Texture2D>("Table"));
+            textureDict.Add("dark", Content.Load<Texture2D>("Table"));
+            tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbMusic.currentImage.Height));
+            table = new BackGround(new Vector2((float)(windoWidth * 0.45), (float)(swbMusic.pos.Y)), 0.85f, textureDict, true, tableSize);
+            objList.Add(table);
 
             //Кнопка "Принять изменения"
             textureDict = new Dictionary<string, Texture2D>();
@@ -219,8 +252,7 @@ namespace KARC
 
 
             InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150);
-            //mainMenu.song = Content.Load<Song>("ME");
-            //song = Content.Load<Song>("ME");
+           
             scenesDict.Add("Options", Options);
 
             //Загрузка игры
@@ -298,9 +330,10 @@ namespace KARC
             song = Content.Load<Song>("ME");
             if (mode == GameMode.mainMenu)
             {
-                //MediaPlayer.Play(song);
+                MediaPlayer.Play(song);
                 // повторять после завершения
-                //MediaPlayer.IsRepeating = true;               
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Volume = 1.0f;
             }
         }
 
@@ -398,13 +431,13 @@ namespace KARC
                                     }
                                 case 1:
                                     {
-                                        SwitchBox s = (SwitchBox)currentScene.objectList[3];//TODO: Да-да, я знаю
+                                        SwitchBox s = (SwitchBox)currentScene.objectList[5];//TODO: Да-да, я знаю
                                         s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                         break;
                                     }
                                 case 2:
                                     {
-                                        SwitchBox s = (SwitchBox)currentScene.objectList[4];//TODO: Да-да, я знаю
+                                        SwitchBox s = (SwitchBox)currentScene.objectList[8];//TODO: Да-да, я знаю
                                         s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                         break;
                                     }
@@ -429,13 +462,19 @@ namespace KARC
                                             windowHeight = Window.ClientBounds.Height;
                                         }
 
-                                        s = (SwitchBox)currentScene.objectList[3];
-                                        bool fullScreen = false;
+                                        s = (SwitchBox)currentScene.objectList[5];
+                                        bool fullScreen;
                                         if (SwitchBox.ParseValue(s.GetValue(), out fullScreen))
                                         {
                                             graphics.IsFullScreen = fullScreen;
                                         }
                                         graphics.ApplyChanges();
+                                        s = (SwitchBox)currentScene.objectList[8];
+                                        float musicVolume;
+                                        if (SwitchBox.ParseValue(s.GetValue(), out musicVolume))
+                                        {
+                                            MediaPlayer.Volume = musicVolume;                                            
+                                        }
                                         break;
                                     }
                                 case 4:
@@ -665,7 +704,7 @@ namespace KARC
 
                         if (!songSwitched)
                         {
-                            //MediaPlayer.Play(musicList[1]);
+                            MediaPlayer.Play(musicList[1]);
                             songSwitched = true;
                         }
                         else

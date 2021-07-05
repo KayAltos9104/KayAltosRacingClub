@@ -393,7 +393,12 @@ namespace KARC
                                     }
                             }
                         }
-                      
+
+                        if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                        {
+                            
+                        }
+
 
                         break;
                     }

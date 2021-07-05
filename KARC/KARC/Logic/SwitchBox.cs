@@ -59,6 +59,67 @@ namespace KARC.Logic
             }
         }
 
+        public static bool ParseValue (string _inputValue, out int [] _dimensions)
+        {
+            bool correct = true;
+            _dimensions = null;
+            if (_inputValue.Contains("x"))
+            {
+                try
+                {
+                    string[] dimensionsArray = _inputValue.Split('x');
+                    int width = Convert.ToInt32(dimensionsArray[0]);
+                    int height = Convert.ToInt32(dimensionsArray[1]);
+                    _dimensions = new int[2] { width, height };
+                }
+                catch
+                {
+                    correct = false;
+                }
+            }
+            else
+            {
+                correct = false;                
+            }     
+            return correct;
+        }
+
+        public static bool ParseValue(string _inputValue, out bool _flag)
+        {
+            bool correct = true;
+            _flag = false;
+            string input = _inputValue.ToLower();
+            if (input == "да" || input == "yes")
+                _flag = true;
+            else if (input == "нет" || input == "no")
+                _flag = false;
+            else
+                correct = false;
+            return correct;
+        }
+
+        public static bool ParseValue(string _inputValue, out float _value)
+        {
+            bool correct = true;
+
+            float outValue = 0.0f;
+            _value = 0.0f;
+            if (float.TryParse(_inputValue, out outValue))
+            {
+                _value = outValue / 100.0f;
+                if (_value > 1.0f || _value < 0.0f)
+                {
+                    _value = 0.0f;
+                    correct = false;
+                }                    
+            }
+            else
+            {
+                correct = false;
+            }
+            return correct;
+        }
+
         public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
             _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, scale, SpriteEffects.None, layer);

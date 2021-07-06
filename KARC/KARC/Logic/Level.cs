@@ -71,20 +71,19 @@ namespace KARC.Logic
                 {
                     if (obj.Value.pos.Y>2*scale)
                     {
-                        if (obj.Value.type == objType.background)
+                        if (obj.Value.GetType() == typeof(BackGround))
                         {
                             obj.Value.pos.Y = -(map.GetLength(1) - 3) * scale;
                         }
                         else
                         {
-                            delObj.Add(obj.Key);
-                            
+                            delObj.Add(obj.Key);                            
                         }
                     }
 
                     if (obj.Value.pos.Y < -(map.GetLength(1)+1) * scale)
                     {
-                        if (obj.Value.type == objType.background)
+                        if (obj.Value.GetType() == typeof(BackGround))
                         {
                             obj.Value.pos.Y = 0;
                         }

@@ -33,22 +33,17 @@ namespace KARC.Logic
             colWidth = Game1.windowHeight / columns;
 
             foreach (var obj in _objList)
-            {
-                if (obj.type==objType.button)
+            {                
+                if (obj.GetType()==typeof(Button))
                 {
                     Button newBut = (Button)obj;
                     buttonDict.Add(newBut.tabIndex, newBut);
-                }
-                if (obj.type == objType.switchbox)
+                }               
+                if (obj.GetType() == typeof(SwitchBox))
                 {
                     SwitchBox newBut = (SwitchBox)obj;
                     buttonDict.Add(newBut.tabIndex, newBut);
-                }
-                //if (obj.type == objType.label)
-                //{
-                //    Label newBut = (Label)obj;
-                //    buttonDict.Add(newBut.tabIndex, newBut);
-                //}
+                }                
             }
             maxCursor = buttonDict.Count;
             period = _period;           

@@ -33,7 +33,7 @@ namespace KARC.Logic
         protected int currentTime; //Текущее время игры
         protected int period;
         public int id; //Id объекта
-        public objType type; //Тип объекта
+        
 
         public bool physical;
 

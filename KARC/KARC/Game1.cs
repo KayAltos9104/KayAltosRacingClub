@@ -17,19 +17,6 @@ namespace KARC
         final
     }
 
-
-
-    public enum objType : byte
-    {
-        background = 0,
-        button = 1,
-        car = 2,
-        switchbox = 3,
-        label = 4
-    }
-
-
-
     public class Game1 : Game
     {
         int load = 0;//Время загрузки заставки        

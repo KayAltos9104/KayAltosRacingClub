@@ -46,7 +46,7 @@ namespace KARC.Logic
         {
             Speed = _speed;
             movable = true;
-            type = objType.car;
+            
             period = 10;
             live = true;
         }
@@ -55,7 +55,7 @@ namespace KARC.Logic
         {
             Speed = _speed;
             movable = true;
-            type = objType.car;
+           
             period = 10;
             id = _Id;
             live = true;

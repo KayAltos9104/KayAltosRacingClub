@@ -16,7 +16,6 @@ namespace KARC.Logic
         public Button (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _tabIndex) :base(_pos, _layer, _loadTextList)
         {
             tabIndex = _tabIndex;
-            type = objType.button;
             period = 50;
         }
 

@@ -12,7 +12,7 @@ namespace KARC.Logic
     {
         public Label(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _tabIndex, SpriteFont _font, string[] _valuesArray, int _currentIndex) : base(_pos, _layer, _loadTextList, _tabIndex, _font, _valuesArray, _currentIndex)
         {
-            type = objType.label;
+          
         }
 
         public override void Update(int _time)

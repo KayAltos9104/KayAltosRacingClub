@@ -15,8 +15,7 @@ namespace KARC.Logic
         protected Vector2 sizePoint;
 
         public BackGround(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, bool isSized, Vector2 _sizePoint) : base(_pos, _layer, _loadTextList)
-        {           
-            type = objType.background;
+        { 
             this.isSized = isSized;
             sizePoint = _sizePoint;
             if (isSized)
@@ -40,8 +39,7 @@ namespace KARC.Logic
             foreach (var f in _fontDict)
             {
                 fontDict.Add(f.Key, f.Value);
-            }
-            type = objType.background;
+            }           
         }
         public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {

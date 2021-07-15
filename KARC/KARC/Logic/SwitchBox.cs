@@ -17,8 +17,7 @@ namespace KARC.Logic
         public SwitchBox(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList,  int _tabIndex, SpriteFont _font, string [] _valuesArray, int _currentIndex) : base(_pos, _layer, _loadTextList, _tabIndex)
         {
             tabIndex = _tabIndex;
-            font = _font;
-            type = objType.switchbox;
+            font = _font;            
             period = 100;
             valuesArray = new string[_valuesArray.Length];
             _valuesArray.CopyTo(valuesArray, 0);

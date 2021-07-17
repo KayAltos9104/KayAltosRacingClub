@@ -24,6 +24,7 @@ namespace KARC
         Dictionary<string, Texture2D> texturesDict;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        delegate void PushAction(Keys key, int time);
 
         public static GameMode mode;
         string currentSceneKey;
@@ -41,10 +42,14 @@ namespace KARC
 
         int currentTime = 0;
         bool songSwitched = false;
+       
 
         bool showhitBox = false;
         public static int playerId;
         bool pushed = false;
+        int currentTimePushed;
+        int periodPushed;
+
         int currentTimeforAccel;
         int periodForAccel;
 
@@ -56,6 +61,7 @@ namespace KARC
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content/Resources";
             texturesDict = new Dictionary<string, Texture2D>();
+            
             mode = GameMode.mainMenu;
         }
 
@@ -65,7 +71,7 @@ namespace KARC
         protected override void Initialize()
         {
             base.Initialize();
-
+            periodPushed = 100;
             graphics.IsFullScreen = false;
 
             graphics.PreferredBackBufferWidth = 840;
@@ -83,79 +89,111 @@ namespace KARC
 
             currentTimeforAccel = 0;
             periodForAccel = 500;
-
+            //Загрузка текстур в общий пул
+            texturesDict.Add("MenuBackGround", Content.Load<Texture2D>("MenuBackGround"));
+            texturesDict.Add("Start_Select", Content.Load<Texture2D>("Start_Select"));
+            texturesDict.Add("StartButton", Content.Load<Texture2D>("StartButton"));
+            texturesDict.Add("Options_Select", Content.Load<Texture2D>("Options_Select"));
+            texturesDict.Add("OptionsButton", Content.Load<Texture2D>("OptionsButton"));
+            texturesDict.Add("Exit_Select", Content.Load<Texture2D>("Exit_Select"));
+            texturesDict.Add("ExitButton", Content.Load<Texture2D>("Exit"));
+            texturesDict.Add("Garage_Options", Content.Load<Texture2D>("Garage_Options"));
+            texturesDict.Add("SwitchBox_Select", Content.Load<Texture2D>("SwitchBox_Light"));
+            texturesDict.Add("SwitchBox", Content.Load<Texture2D>("SwitchBox_Dark"));
+            texturesDict.Add("Table", Content.Load<Texture2D>("Table"));
+            texturesDict.Add("ApplyChanges_Select", Content.Load<Texture2D>("ApplyChanges_Select"));
+            texturesDict.Add("ApplyChangesButton", Content.Load<Texture2D>("ApplyChanges_Button"));
+            texturesDict.Add("BackButton_Select", Content.Load<Texture2D>("BackButton_Select"));
+            texturesDict.Add("BackButton", Content.Load<Texture2D>("BackButton"));
+            texturesDict.Add("Planhset2", Content.Load<Texture2D>("Planhset2"));
+            texturesDict.Add("hitBoxBlank", Content.Load<Texture2D>("hitBoxBlank"));
             //===================Загрузка начального экрана
-            int[,] map = new int[1, 1];
+            LoadMainMenu();
+            LoadOptions();
+            //==============================Конец
+            
 
+            //Загрузка игры
+            LoadLevel();
+
+            currentSceneKey = "MainMenu";
+            currentScene = scenesDict[currentSceneKey];
+
+
+        }
+
+        private void LoadMainMenu()
+        {
+            int[,] map = new int[1, 1];
+            scenesDict.Remove("MainMenu");
             List<Object> objList = new List<Object>();
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("background", Content.Load<Texture2D>("MenuBackGround"));
+            textureDict.Add("background", texturesDict["MenuBackGround"]);
 
             SpriteFont gameName = Content.Load<SpriteFont>("Title");
             Dictionary<string, SpriteFont> fontDict = new Dictionary<string, SpriteFont>();
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, true,fontDict, new Vector2 (windoWidth, windowHeight));
+            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, true, fontDict, new Vector2(windoWidth, windowHeight));
             objList.Add(backGround);
 
-            //TODO: период лучше в сцену вставлять. Или туда и туда
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Start_Select"));
-            textureDict.Add("dark", Content.Load<Texture2D>("StartButton"));
-            //Button btnStart = new Button(new Vector2(windoWidth / 2 - 30, windowHeight / 2 - 100), 0.9f, textureDict, 0);
+            textureDict.Add("light", texturesDict["Start_Select"]);
+            textureDict.Add("dark", texturesDict["StartButton"]);
             Vector2 place = InterfaceMenu.GetCoord(16, 17, 29, 50);
-            Button btnStart = new Button(new Vector2(place.X-textureDict["light"].Width/2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 0);
+            Button btnStart = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 0);
             btnStart.check = true;
             objList.Add(btnStart);
 
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Options_Select"));
-            textureDict.Add("dark", Content.Load<Texture2D>("OptionsButton"));
+            textureDict.Add("light", texturesDict["Options_Select"]);
+            textureDict.Add("dark", texturesDict["OptionsButton"]);
             place = InterfaceMenu.GetCoord(16, 21, 29, 50);
             Button btnOptions = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 1);
             objList.Add(btnOptions);
 
 
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Exit_Select"));
-            textureDict.Add("dark", Content.Load<Texture2D>("Exit"));
+            textureDict.Add("light", texturesDict["Exit_Select"]);
+            textureDict.Add("dark", texturesDict["ExitButton"]);
             place = InterfaceMenu.GetCoord(16, 25, 29, 50);
             Button btnExit = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 2);
             objList.Add(btnExit);
 
-            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200, 10,9);
-            //mainMenu.song = Content.Load<Song>("ME");
+            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200, 10, 9);
             song = Content.Load<Song>("ME");
             scenesDict.Add("MainMenu", mainMenu);
-            //==============================Конец
+        }
 
-            //Загрузка экрана опций
-            map = new int[1, 1];
+        private void LoadOptions ()
+        {
+            int[,] map = new int[1, 1];
+            scenesDict.Remove("Options");
 
-            objList = new List<Object>();
-            textureDict = new Dictionary<string, Texture2D>();
+            List<Object> objList = new List<Object>();
+            Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("background", Content.Load<Texture2D>("Garage_Options"));
 
-            gameName = Content.Load<SpriteFont>("Title");
-            fontDict = new Dictionary<string, SpriteFont>();
+            SpriteFont gameName = Content.Load<SpriteFont>("Title");
+            Dictionary<string, SpriteFont> fontDict = new Dictionary<string, SpriteFont>();
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, true,fontDict, new Vector2(windoWidth, windowHeight));
+            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, true, fontDict, new Vector2(windoWidth, windowHeight));
             objList.Add(backGround);
 
             //Настройки экрана
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
             textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
-            SwitchBox swbScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.1 + textureDict["light"].Height / 2)), 0.9f, textureDict, 0, Content.Load<SpriteFont>("ManualFont"), new string[] { "840x800", "1024x768", "1600x900", "1920x1080" },0);
+            SwitchBox swbScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.1 + textureDict["light"].Height / 2)), 0.9f, textureDict, 0, Content.Load<SpriteFont>("ManualFont"), new string[] { "840x800", "1024x768", "1600x900", "1920x1080" }, 0);
             swbScreen.check = true;
             objList.Add(swbScreen);
 
-            textureDict = new Dictionary<string, Texture2D>();            
+            textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Table"));
-            Label lblScreen = new Label(new Vector2((float)(windoWidth * 0.55 - swbScreen.currentImage.Width / 2), (float)(swbScreen.pos.Y + swbScreen.currentImage.Height / 4)), 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), new string[] { "Screen Resolution"}, 0);
+            Label lblScreen = new Label(new Vector2((float)(windoWidth * 0.55 - swbScreen.currentImage.Width / 2), (float)(swbScreen.pos.Y + swbScreen.currentImage.Height / 4)), 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), new string[] { "Screen Resolution" }, 0);
             objList.Add(lblScreen);
 
 
@@ -170,7 +208,7 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
             textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
-            SwitchBox swbFullScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.2 + textureDict["light"].Height / 2)), 0.9f, textureDict, 1, Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No"}, 1);
+            SwitchBox swbFullScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.2 + textureDict["light"].Height / 2)), 0.9f, textureDict, 1, Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No" }, 1);
             objList.Add(swbFullScreen);
 
             textureDict = new Dictionary<string, Texture2D>();
@@ -190,7 +228,7 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
             textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
-            SwitchBox swbMusic = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.3 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"), new string[] { "0", "25", "50", "75", "100" },4);           
+            SwitchBox swbMusic = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.3 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"), new string[] { "0", "25", "50", "75", "100" }, 4);
             objList.Add(swbMusic);
 
             textureDict = new Dictionary<string, Texture2D>();
@@ -210,7 +248,7 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("ApplyChanges_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("ApplyChanges_Button"));
-            Button btnApplyChanges = new Button(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.4 + textureDict["light"].Height / 2)), 0.9f, textureDict, 3);           
+            Button btnApplyChanges = new Button(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.4 + textureDict["light"].Height / 2)), 0.9f, textureDict, 3);
             objList.Add(btnApplyChanges);
 
             //Кнопка "Вернуться"
@@ -231,27 +269,12 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
             textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
-            Label lblInstructions = new Label(new Vector2((float)(Planshet.pos.X+ planshetActSize.X*0.07), (float)(Planshet.pos.Y + planshetActSize.Y * 0.4)), 0.9f, textureDict, 5, Content.Load<SpriteFont>("ManualFont"), new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0);
+            Label lblInstructions = new Label(new Vector2((float)(Planshet.pos.X + planshetActSize.X * 0.07), (float)(Planshet.pos.Y + planshetActSize.Y * 0.4)), 0.9f, textureDict, 5, Content.Load<SpriteFont>("ManualFont"), new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0);
             objList.Add(lblInstructions);
+            InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150, 4, 6);
 
-            
-            
-
-
-
-            InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150,4,6);
-           
             scenesDict.Add("Options", Options);
-
-            //Загрузка игры
-            LoadLevel();
-
-            currentSceneKey = "MainMenu";
-            currentScene = scenesDict[currentSceneKey];
-
-
         }
-
         private void LoadLevel()
         {
             //Тестовый уровень            
@@ -330,152 +353,170 @@ namespace KARC
         {
 
         }
-
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            currentScene = scenesDict[currentSceneKey];
-
+            currentTime += gameTime.ElapsedGameTime.Milliseconds;
+            currentScene = scenesDict[currentSceneKey];             
             switch (currentSceneKey)
             {
                 case "MainMenu":
                     {
                         InterfaceMenu currentForm = (InterfaceMenu)currentScene;
+                        currentTimePushed += gameTime.ElapsedGameTime.Milliseconds;
+                        if (currentTimePushed>periodPushed)
+                        {                            
+                            pushed = false;
+                        }
+                        PushAction update = currentForm.updateScene;
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                        {
-                            currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                        {                           
+                            PushCalc(update, Keys.Up, gameTime.ElapsedGameTime.Milliseconds);                            
                         }
                         else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                        {
-                            currentForm.updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                        {                            
+                            PushCalc(update, Keys.Down, gameTime.ElapsedGameTime.Milliseconds);                           
                         }
                         else
-                            currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
-                        
-                        if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
-                        {    
-                            switch (currentForm.cursor)
-                            {
-                                case 0:
-                                    {
-                                        //mode = GameMode.game;
-                                        load = 0;
-                                        currentSceneKey = "level0";
-                                        currentScene = scenesDict[currentSceneKey];
-                                        
-                                        break;
-                                    }
-                                case 1:
-                                    {
-                                        load = 0;
-                                        currentSceneKey = "Options";
-                                        currentScene = scenesDict[currentSceneKey];
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        this.Exit();
-                                        break;
-                                    }
-                            }
+                            currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);                        
 
+                        if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                        {
+                            if (!pushed)
+                            {
+                                switch (currentForm.cursor)
+                                {
+                                    case 0:
+                                        {
+                                            load = 0;
+                                            currentSceneKey = "level0";
+                                            currentScene = scenesDict[currentSceneKey];
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            load = 0;
+                                            currentSceneKey = "Options";
+                                            currentScene = scenesDict[currentSceneKey];
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            this.Exit();
+                                            break;
+                                        }
+                                }
+
+                                pushed = true;
+                                currentTimePushed = 0;
+                            }
                         }
                         //TODO: Обобщить работу с интерфейсом
-
                         break;
                     }
                 case "Options":
                     {
                         InterfaceMenu currentForm = (InterfaceMenu)currentScene;
-                        if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                        currentTimePushed += gameTime.ElapsedGameTime.Milliseconds;
+                        if (currentTimePushed > periodPushed)
                         {
-                            currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                            pushed = false;
                         }
-                        else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                        if (!pushed)
                         {
-                            currentForm.updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
-                        }
-                        else
-                            currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
-
-                        if (Keyboard.GetState().IsKeyDown(Keys.Right)|| Keyboard.GetState().IsKeyDown(Keys.Left))
-                        {
-                            string dirValue = "";
-                            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                                dirValue = "right";
-                            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                                dirValue = "left";
-
-
-                            switch (currentForm.cursor)
+                            if (Keyboard.GetState().IsKeyDown(Keys.Up))
                             {
-                                case 0:
-                                    {
-                                        SwitchBox s = (SwitchBox)currentScene.objectList[2];//TODO: Да-да, я знаю
-                                        s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);                                       
-                                        break;
-                                    }
-                                case 1:
-                                    {
-                                        SwitchBox s = (SwitchBox)currentScene.objectList[5];//TODO: Да-да, я знаю
-                                        s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        SwitchBox s = (SwitchBox)currentScene.objectList[8];//TODO: Да-да, я знаю
-                                        s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
-                                        break;
-                                    }
+                                currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
                             }
-                        }
-
-                        if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
-                        {
-                            switch (currentForm.cursor)
+                            else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                             {
-                                case 3://TODO: Да-да, это крайне плохо!
-                                    {
-                                        SwitchBox s = (SwitchBox)currentScene.objectList[2];
-                                        int[] screenDimension;
-                                        if (SwitchBox.ParseValue(s.GetValue(), out screenDimension))
-                                        {
-
-                                            graphics.PreferredBackBufferWidth = screenDimension[0];
-                                            graphics.PreferredBackBufferHeight = screenDimension[1];
-                                            
-                                            windoWidth = Window.ClientBounds.Width;
-                                            windowHeight = Window.ClientBounds.Height;
-                                        }
-
-                                        s = (SwitchBox)currentScene.objectList[5];
-                                        bool fullScreen;
-                                        if (SwitchBox.ParseValue(s.GetValue(), out fullScreen))
-                                        {
-                                            graphics.IsFullScreen = fullScreen;
-                                        }
-                                        graphics.ApplyChanges();
-                                        s = (SwitchBox)currentScene.objectList[8];
-                                        float musicVolume;
-                                        if (SwitchBox.ParseValue(s.GetValue(), out musicVolume))
-                                        {
-                                            MediaPlayer.Volume = musicVolume;                                            
-                                        }
-                                        break;
-                                    }
-                                case 4:
-                                    {
-                                        load = 0;
-                                        titleLoad = "";
-                                        currentSceneKey = "MainMenu";
-                                        currentScene = scenesDict[currentSceneKey];
-                                        break;
-                                    }
-
+                                currentForm.updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
                             }
+                            else
+                                currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
+
+                            if (Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Left))
+                            {
+                                string dirValue = "";
+                                if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                                    dirValue = "right";
+                                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                                    dirValue = "left";
+
+                                switch (currentForm.cursor)
+                                {
+                                    case 0:
+                                        {
+                                            SwitchBox s = (SwitchBox)currentScene.objectList[2];//TODO: Да-да, я знаю
+                                            s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            SwitchBox s = (SwitchBox)currentScene.objectList[5];//TODO: Да-да, я знаю
+                                            s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            SwitchBox s = (SwitchBox)currentScene.objectList[8];//TODO: Да-да, я знаю
+                                            s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
+                                            break;
+                                        }
+                                }
+                            }
+
+                            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+                            {
+                                switch (currentForm.cursor)
+                                {
+                                    case 3://TODO: Да-да, это крайне плохо!
+                                        {
+                                            SwitchBox s = (SwitchBox)currentScene.objectList[2];
+                                            int[] screenDimension;
+                                            if (SwitchBox.ParseValue(s.GetValue(), out screenDimension))
+                                            {
+
+                                                graphics.PreferredBackBufferWidth = screenDimension[0];
+                                                graphics.PreferredBackBufferHeight = screenDimension[1];
+
+                                                windoWidth = graphics.PreferredBackBufferWidth;
+                                                windowHeight = graphics.PreferredBackBufferHeight;
+                                                LoadMainMenu();
+                                                LoadOptions();
+                                            }
+
+                                            s = (SwitchBox)currentScene.objectList[5];
+                                            bool fullScreen;
+                                            if (SwitchBox.ParseValue(s.GetValue(), out fullScreen))
+                                            {
+                                                graphics.IsFullScreen = fullScreen;
+                                            }
+                                            graphics.ApplyChanges();
+                                            s = (SwitchBox)currentScene.objectList[8];
+                                            float musicVolume;
+                                            if (SwitchBox.ParseValue(s.GetValue(), out musicVolume))
+                                            {
+                                                MediaPlayer.Volume = musicVolume;
+                                            }
+                                            break;
+                                        }
+                                    case 4:
+                                        {
+                                            load = 0;
+                                            titleLoad = "";
+                                            currentSceneKey = "MainMenu";
+                                            currentScene = scenesDict[currentSceneKey];
+                                            break;
+                                        }
+
+                                }
+                            }
+                            pushed = true;
+                            currentTimePushed = 0;
                         }
+                        
 
 
                         break;
@@ -599,6 +640,17 @@ namespace KARC
         {
             initial = true;
             LoadLevel();
+        }
+
+        private void PushCalc(PushAction p, Keys k, int t)
+        {
+            PushAction act = p;
+            if (!pushed)
+            {
+                act(k, t);            
+                pushed = true;
+                currentTimePushed = 0;
+            }          
         }
 
         protected override void Draw(GameTime gameTime)

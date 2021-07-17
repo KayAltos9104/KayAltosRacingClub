@@ -12,6 +12,7 @@ namespace KARC.Logic
     class Scene //Класс, который содержит в себе объекты и карту их расстановки
     {
         public Dictionary<int,Object> objectList;//Список всех объектов сцены
+        private Dictionary<int, Object> initialObjectList;//Начальное состояние сцены
         protected int[,] map;//Клетки карты (одна клетка, по идее, один экран)
         protected int scale;// Масштаб одного тайла(клетки) карты
         public int Id=1;
@@ -27,6 +28,7 @@ namespace KARC.Logic
 
             scale = _scale;
             objectList = new Dictionary<int, Object>();
+            
             foreach (var obj in _objList)
             {
                 obj.id = Id;
@@ -35,6 +37,7 @@ namespace KARC.Logic
                     Game1.playerId = Id;
                 Id++;
             }   
+            
         }
 
         public virtual void updateScene(int _time)

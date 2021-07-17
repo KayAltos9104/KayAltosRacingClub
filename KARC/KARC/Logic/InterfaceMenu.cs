@@ -58,10 +58,7 @@ namespace KARC.Logic
             return new Vector2(row * rowWidth, column * colWidth);
         }
         public override void updateScene(Keys key, int _time)
-        {
-            currentTime += _time;
-            if (currentTime > period)            
-            {
+        {           
                 currentTime = 0;
                 
                 if (key == Keys.Down)
@@ -83,11 +80,8 @@ namespace KARC.Logic
                         but.Value.check = true;
                     else
                         but.Value.check = false;
-                }
-            }
-            
-            base.updateScene(key, _time);
-            
+                }           
+            base.updateScene(key, _time);            
         }
     }
 }

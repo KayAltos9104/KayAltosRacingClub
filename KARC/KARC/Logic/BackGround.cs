@@ -32,9 +32,7 @@ namespace KARC.Logic
             sizePoint = _sizePoint;
             if (isSized)
             {
-                //float maxImage = Math.Max(currentImage.Width, currentImage.Height);
-                //float maxDimension = Math.Max(Game1.windoWidth, Game1.windowHeight);
-                //scale = maxDimension / maxImage;
+                
             }
             foreach (var f in _fontDict)
             {
@@ -44,9 +42,6 @@ namespace KARC.Logic
         public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
             if (isSized)
-                //_spriteBatch.Draw(currentImage, pos, new Rectangle((int)pos.X, (int)pos.Y, Game1.windoWidth, Game1.windowHeight), colDraw, 0, Vector2.Zero, 1.0f, SpriteEffects.None, layer);
-                //_spriteBatch.Draw(currentImage, new Rectangle((int)pos.X, (int)pos.Y, (int)(pos.X+sizePoint.X), (int)(pos.Y+sizePoint.Y)), new Rectangle(0, 0, (int)(0 + 
-                //    currentImage.Width), (int)(0 + currentImage.Height)), colDraw, 0, Vector2.Zero, SpriteEffects.None, layer);
                 _spriteBatch.Draw(currentImage, new Rectangle((int)pos.X, (int)pos.Y, (int)(sizePoint.X), (int)(sizePoint.Y)), new Rectangle(0, 0, (int)(0 +
                     currentImage.Width), (int)(0 + currentImage.Height)), colDraw, 0, Vector2.Zero, SpriteEffects.None, layer);
 

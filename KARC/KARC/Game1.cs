@@ -90,6 +90,7 @@ namespace KARC
             currentTimeforAccel = 0;
             periodForAccel = 500;
             //Загрузка текстур в общий пул
+            texturesDict.Add("Grass1", Content.Load<Texture2D>("mapTiles/Grass"));
             texturesDict.Add("MenuBackGround", Content.Load<Texture2D>("MenuBackGround"));
             texturesDict.Add("Start_Select", Content.Load<Texture2D>("Start_Select"));
             texturesDict.Add("StartButton", Content.Load<Texture2D>("StartButton"));
@@ -302,12 +303,24 @@ namespace KARC
             objList.Clear();
             textureDict.Clear();
             textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
-
+            
+            int shiftX = windoWidth / 2 - textureDict["Road"].Width / 2;
             for (int i = 0; i < map.GetLength(1); i++)
             {
                 if (map[0, i] != 0)
                 {
-                    objList.Add(new BackGround(new Vector2(windoWidth/2- textureDict["Road"].Width/2, i * (int)(textureDict["Road"].Height*0.95)), 0.9f, textureDict, false, new Vector2(windoWidth, windowHeight)));
+                    objList.Add(new BackGround(new Vector2(shiftX, i * (int)(textureDict["Road"].Height*0.9)), 0.9f, textureDict, false, new Vector2(windoWidth, windowHeight)));
+                    
+                }
+            }
+            textureDict.Clear();
+            textureDict.Add("Grass", texturesDict["Grass1"]);
+            for (int i = 0; i < map.GetLength(1); i++)
+            {
+                if (map[0, i] != 0)
+                {
+                    objList.Add(new BackGround(new Vector2(0, i * (int)(windowHeight * 0.9)), 0.91f, textureDict, true, new Vector2(windoWidth, windowHeight)));
+
                 }
             }
 
@@ -345,7 +358,7 @@ namespace KARC
 
             textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
 
-            Level testLevel = new Level(map, windowHeight, objList, true, textureDict);
+            Level testLevel = new Level(map, 800, objList, true, textureDict, shiftX+139, shiftX+702);
             scenesDict.Add("level0", testLevel);
 
             gameFont = Content.Load<SpriteFont>("ManualFont");

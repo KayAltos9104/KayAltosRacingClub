@@ -43,7 +43,7 @@ namespace KARC.Logic
 
         Random rnd = new Random();
 
-        public Level (int[,] _map, int _scale, List<Object> _objList, bool _toroidal, Dictionary<string, Texture2D> _textures) :base(_map, _scale, _objList)
+        public Level (int[,] _map, int _scale, List<Object> _objList, bool _toroidal, Dictionary<string, Texture2D> _textures, int _leftBorder, int _rightBorder) :base(_map, _scale, _objList)
         {
             toroidal = _toroidal;
             texturesDict = new Dictionary<string, Texture2D>();
@@ -51,13 +51,14 @@ namespace KARC.Logic
             {
                 texturesDict.Add(texture.Key, texture.Value);
             }
-            enemiesNum = 15;
-            oncomingLane[0] = 180;
-            oncomingLane[1] = 410;
-            lane[0] = 430;
-            lane[1] = 660;
-            leftBorder = 139;
-            rightBorder = 702;
+            enemiesNum = 10;
+            leftBorder = _leftBorder;
+            rightBorder = _rightBorder;
+            oncomingLane[0] = 180+leftBorder-139;
+            oncomingLane[1] = 410 + leftBorder-139;
+            lane[0] = 430 + leftBorder-139;
+            lane[1] = 660 + leftBorder-139;
+            
             initMapGen();      
         }
 

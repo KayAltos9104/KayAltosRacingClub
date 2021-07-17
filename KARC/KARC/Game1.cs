@@ -109,8 +109,7 @@ namespace KARC
             texturesDict.Add("hitBoxBlank", Content.Load<Texture2D>("hitBoxBlank"));
             //===================Загрузка начального экрана
             LoadMainMenu();
-            LoadOptions();
-            //==============================Конец
+            LoadOptions();         
             
 
             //Загрузка игры
@@ -187,7 +186,19 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
             textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
-            SwitchBox swbScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.1 + textureDict["light"].Height / 2)), 0.9f, textureDict, 0, Content.Load<SpriteFont>("ManualFont"), new string[] { "840x800", "1024x768", "1600x900", "1920x1080" }, 0);
+
+
+            string currentWidth = windoWidth.ToString();
+            string [] screenArray = new string[] { "840x800", "1024x768", "1600x900", "1920x1080" };
+            int screenIndex = 0;
+            while (currentWidth != screenArray[screenIndex].Split('x')[0])
+            {
+                screenIndex++;
+            }
+
+            SwitchBox swbScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), 
+                (float)(windowHeight * 0.1 + textureDict["light"].Height / 2)), 0.9f, textureDict, 0, Content.Load<SpriteFont>("ManualFont"), 
+                screenArray, screenIndex);
             swbScreen.check = true;
             objList.Add(swbScreen);
 
@@ -208,7 +219,13 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
             textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
-            SwitchBox swbFullScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.2 + textureDict["light"].Height / 2)), 0.9f, textureDict, 1, Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No" }, 1);
+
+            int fullScreenIndex = 0;
+            if (graphics.IsFullScreen)
+                fullScreenIndex = 0;
+            else
+                fullScreenIndex = 1;
+            SwitchBox swbFullScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.2 + textureDict["light"].Height / 2)), 0.9f, textureDict, 1, Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No" }, fullScreenIndex);
             objList.Add(swbFullScreen);
 
             textureDict = new Dictionary<string, Texture2D>();
@@ -228,7 +245,18 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
             textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
-            SwitchBox swbMusic = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.3 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"), new string[] { "0", "25", "50", "75", "100" }, 4);
+
+            string currentVolumeMusic = (100*MediaPlayer.Volume).ToString();
+            string[] volumeArray = new string[] { "0", "25", "50", "75", "100" };
+            int volumeIndex = 0;
+            while (currentVolumeMusic != volumeArray[volumeIndex])
+            {
+                volumeIndex++;
+            }
+
+            SwitchBox swbMusic = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), 
+                (float)(windowHeight * 0.3 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"), 
+                volumeArray, volumeIndex);
             objList.Add(swbMusic);
 
             textureDict = new Dictionary<string, Texture2D>();
@@ -428,10 +456,14 @@ namespace KARC
                             if (Keyboard.GetState().IsKeyDown(Keys.Up))
                             {
                                 currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                                pushed = true;
+                                currentTimePushed = 0;
                             }
                             else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                             {
                                 currentForm.updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                                pushed = true;
+                                currentTimePushed = 0;
                             }
                             else
                                 currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
@@ -465,6 +497,8 @@ namespace KARC
                                             break;
                                         }
                                 }
+                                pushed = true;
+                                currentTimePushed = 0;
                             }
 
                             if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
@@ -512,9 +546,10 @@ namespace KARC
                                         }
 
                                 }
+                                pushed = true;
+                                currentTimePushed = 0;
                             }
-                            pushed = true;
-                            currentTimePushed = 0;
+                            
                         }
                         
 
@@ -552,15 +587,6 @@ namespace KARC
                                 }
 
                             }
-
-                            //if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                            //{                           
-                            //    if (!pushed)
-                            //    {
-                            //        Player.Speed += new Vector2(0, Player.acceleration);
-                            //        pushed = true;
-                            //    }
-                            //}
                             if (Keyboard.GetState().IsKeyDown(Keys.Right))
                             {
                                 if (Player.Speed.Y != 0)

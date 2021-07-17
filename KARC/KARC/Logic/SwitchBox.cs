@@ -34,9 +34,9 @@ namespace KARC.Logic
 
         public void ChangeIndex (string direction, int _time)
         {
-            currentTime += _time;
-            if (currentTime > period)
-            {
+            //currentTime += _time;
+            //if (currentTime > period)
+           // {
                 currentTime = 0;
                 switch (direction)
                 {
@@ -55,7 +55,7 @@ namespace KARC.Logic
                             break;
                         }
                 }
-            }
+           // }
         }
 
         public string GetValue ()

@@ -194,23 +194,25 @@ namespace KARC
             {
                 screenIndex++;
             }
-
-            SwitchBox swbScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), 
-                (float)(windowHeight * 0.1 + textureDict["light"].Height / 2)), 0.9f, textureDict, 0, Content.Load<SpriteFont>("ManualFont"), 
+            Vector2 place = InterfaceMenu.GetCoord(21, 2, 29, 51);
+            SwitchBox swbScreen = new SwitchBox(new Vector2(place.X, place.Y), 
+                0.9f, textureDict, 0, Content.Load<SpriteFont>("ManualFont"), 
                 screenArray, screenIndex);
             swbScreen.check = true;
             objList.Add(swbScreen);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Table"]);
-            Label lblScreen = new Label(new Vector2((float)(windoWidth * 0.55 - swbScreen.currentImage.Width / 2), (float)(swbScreen.pos.Y + swbScreen.currentImage.Height / 4)), 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), new string[] { "Screen Resolution" }, 0);
+            place = InterfaceMenu.GetCoord(13, 2, 29, 51);
+            Label lblScreen = new Label(place, 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), 
+                new string[] { "Screen Resolution" }, 0);
             objList.Add(lblScreen);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Table"]);
-            textureDict.Add("dark", texturesDict["Table"]);
+            textureDict.Add("dark", texturesDict["Table"]);            
             Vector2 tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbScreen.currentImage.Height));
-            BackGround table = new BackGround(new Vector2((float)(windoWidth * 0.45), (float)(swbScreen.pos.Y)), 0.85f, textureDict, true, tableSize);
+            BackGround table = new BackGround(place, 0.85f, textureDict, true, tableSize);
             objList.Add(table);
 
             //Настройки оконного/полноэкранного режима
@@ -223,12 +225,16 @@ namespace KARC
                 fullScreenIndex = 0;
             else
                 fullScreenIndex = 1;
-            SwitchBox swbFullScreen = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.2 + textureDict["light"].Height / 2)), 0.9f, textureDict, 1, Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No" }, fullScreenIndex);
+            place = InterfaceMenu.GetCoord(21, 6, 29, 51);
+            SwitchBox swbFullScreen = new SwitchBox(place, 0.9f, textureDict, 1, 
+                Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No" }, fullScreenIndex);
             objList.Add(swbFullScreen);
+
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Table"]);
-            Label lblScreenFull = new Label(new Vector2((float)(windoWidth * 0.55 - swbFullScreen.currentImage.Width / 2), (float)(swbFullScreen.pos.Y + swbFullScreen.currentImage.Height / 4)), 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), new string[] { "Fullscreen" }, 0);
+            place = InterfaceMenu.GetCoord(13, 6, 29, 51);
+            Label lblScreenFull = new Label(place, 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), new string[] { "Fullscreen" }, 0);
             objList.Add(lblScreenFull);
 
 
@@ -236,7 +242,7 @@ namespace KARC
             textureDict.Add("light", texturesDict["Table"]);
             textureDict.Add("dark", texturesDict["Table"]);
             tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbFullScreen.currentImage.Height));
-            table = new BackGround(new Vector2((float)(windoWidth * 0.45), (float)(swbFullScreen.pos.Y)), 0.85f, textureDict, true, tableSize);
+            table = new BackGround(place, 0.85f, textureDict, true, tableSize);
             objList.Add(table);
 
             //Настройки громкости музыки
@@ -251,15 +257,15 @@ namespace KARC
             {
                 volumeIndex++;
             }
-
-            SwitchBox swbMusic = new SwitchBox(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), 
-                (float)(windowHeight * 0.3 + textureDict["light"].Height / 2)), 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"), 
+            place = InterfaceMenu.GetCoord(21, 10, 29, 51);
+            SwitchBox swbMusic = new SwitchBox(place, 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"), 
                 volumeArray, volumeIndex);
             objList.Add(swbMusic);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Table"));
-            Label lblMusic = new Label(new Vector2((float)(windoWidth * 0.55 - swbMusic.currentImage.Width / 2), (float)(swbMusic.pos.Y + swbMusic.currentImage.Height / 4)), 0.9f, textureDict, 8, Content.Load<SpriteFont>("ManualFont"), new string[] { "Music Volume" }, 0);
+            place = InterfaceMenu.GetCoord(13, 10, 29, 51);
+            Label lblMusic = new Label(place, 0.9f, textureDict, 8, Content.Load<SpriteFont>("ManualFont"), new string[] { "Music Volume" }, 0);
             objList.Add(lblMusic);
 
 
@@ -267,21 +273,23 @@ namespace KARC
             textureDict.Add("light", Content.Load<Texture2D>("Table"));
             textureDict.Add("dark", Content.Load<Texture2D>("Table"));
             tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbMusic.currentImage.Height));
-            table = new BackGround(new Vector2((float)(windoWidth * 0.45), (float)(swbMusic.pos.Y)), 0.85f, textureDict, true, tableSize);
+            table = new BackGround(place, 0.85f, textureDict, true, tableSize);
             objList.Add(table);
 
             //Кнопка "Принять изменения"
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("ApplyChanges_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("ApplyChanges_Button"));
-            Button btnApplyChanges = new Button(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.4 + textureDict["light"].Height / 2)), 0.9f, textureDict, 3);
+            place = InterfaceMenu.GetCoord(21, 14, 29, 51);
+            Button btnApplyChanges = new Button(place, 0.9f, textureDict, 3);
             objList.Add(btnApplyChanges);
 
             //Кнопка "Вернуться"
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("BackButton_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("BackButton"));
-            Button btnBack = new Button(new Vector2((float)(windoWidth * 0.8 - textureDict["light"].Width / 2), (float)(windowHeight * 0.5 + textureDict["light"].Height / 2)), 0.9f, textureDict, 4);
+            place = InterfaceMenu.GetCoord(21, 18, 29, 51);
+            Button btnBack = new Button(place, 0.9f, textureDict, 4);
             objList.Add(btnBack);
 
             //Рисунок планшета и инструкции на нем
@@ -289,7 +297,8 @@ namespace KARC
             textureDict.Add("light", Content.Load<Texture2D>("Planhset2"));
             textureDict.Add("dark", Content.Load<Texture2D>("Planhset2"));
             Vector2 planshetActSize = new Vector2((float)(windoWidth * 0.5), (float)(windowHeight * 0.45));
-            BackGround Planshet = new BackGround(new Vector2((float)(windoWidth * 0.5), (float)(windowHeight * 0.7)), 0.95f, textureDict, true, planshetActSize);
+            place = InterfaceMenu.GetCoord(14, 34, 29, 51);
+            BackGround Planshet = new BackGround(place, 0.95f, textureDict, true, planshetActSize);
             objList.Add(Planshet);
 
             textureDict = new Dictionary<string, Texture2D>();

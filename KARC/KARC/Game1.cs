@@ -172,7 +172,7 @@ namespace KARC
 
             List<Object> objList = new List<Object>();
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("background", Content.Load<Texture2D>("Garage_Options"));
+            textureDict.Add("background", texturesDict["Garage_Options"]);
 
             SpriteFont gameName = Content.Load<SpriteFont>("Title");
             Dictionary<string, SpriteFont> fontDict = new Dictionary<string, SpriteFont>();
@@ -184,9 +184,8 @@ namespace KARC
 
             //Настройки экрана
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
-            textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
-
+            textureDict.Add("light", texturesDict["SwitchBox_Select"]);
+            textureDict.Add("dark", texturesDict["SwitchBox"]);
 
             string currentWidth = windoWidth.ToString();
             string [] screenArray = new string[] { "840x800", "1024x768", "1600x900", "1920x1080" };
@@ -203,22 +202,21 @@ namespace KARC
             objList.Add(swbScreen);
 
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Table"));
+            textureDict.Add("light", texturesDict["Table"]);
             Label lblScreen = new Label(new Vector2((float)(windoWidth * 0.55 - swbScreen.currentImage.Width / 2), (float)(swbScreen.pos.Y + swbScreen.currentImage.Height / 4)), 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), new string[] { "Screen Resolution" }, 0);
             objList.Add(lblScreen);
 
-
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Table"));
-            textureDict.Add("dark", Content.Load<Texture2D>("Table"));
+            textureDict.Add("light", texturesDict["Table"]);
+            textureDict.Add("dark", texturesDict["Table"]);
             Vector2 tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbScreen.currentImage.Height));
             BackGround table = new BackGround(new Vector2((float)(windoWidth * 0.45), (float)(swbScreen.pos.Y)), 0.85f, textureDict, true, tableSize);
             objList.Add(table);
 
             //Настройки оконного/полноэкранного режима
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
-            textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
+            textureDict.Add("light", texturesDict["SwitchBox_Select"]);
+            textureDict.Add("dark", texturesDict["SwitchBox"]);
 
             int fullScreenIndex = 0;
             if (graphics.IsFullScreen)
@@ -229,22 +227,22 @@ namespace KARC
             objList.Add(swbFullScreen);
 
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Table"));
+            textureDict.Add("light", texturesDict["Table"]);
             Label lblScreenFull = new Label(new Vector2((float)(windoWidth * 0.55 - swbFullScreen.currentImage.Width / 2), (float)(swbFullScreen.pos.Y + swbFullScreen.currentImage.Height / 4)), 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), new string[] { "Fullscreen" }, 0);
             objList.Add(lblScreenFull);
 
 
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Table"));
-            textureDict.Add("dark", Content.Load<Texture2D>("Table"));
+            textureDict.Add("light", texturesDict["Table"]);
+            textureDict.Add("dark", texturesDict["Table"]);
             tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbFullScreen.currentImage.Height));
             table = new BackGround(new Vector2((float)(windoWidth * 0.45), (float)(swbFullScreen.pos.Y)), 0.85f, textureDict, true, tableSize);
             objList.Add(table);
 
             //Настройки громкости музыки
             textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("SwitchBox_Light"));
-            textureDict.Add("dark", Content.Load<Texture2D>("SwitchBox_Dark"));
+            textureDict.Add("light", texturesDict["SwitchBox_Select"]);
+            textureDict.Add("dark", texturesDict["SwitchBox"]);
 
             string currentVolumeMusic = (100*MediaPlayer.Volume).ToString();
             string[] volumeArray = new string[] { "0", "25", "50", "75", "100" };

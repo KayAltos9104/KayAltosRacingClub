@@ -127,7 +127,8 @@ namespace KARC.Logic
         {
             _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, scale, SpriteEffects.None, layer);
             Vector2 stringLength = font.MeasureString(valuesArray[currentIndex]);
-            _spriteBatch.DrawString(font, valuesArray[currentIndex], new Vector2(pos.X+(currentImage.Width-stringLength.X)/2, pos.Y + (currentImage.Height - stringLength.Y) / 2), Color.Black);            
+            _spriteBatch.DrawString(font, valuesArray[currentIndex], new Vector2(pos.X+(currentImage.Width-stringLength.X)/2, 
+                pos.Y + (currentImage.Height - stringLength.Y) / 2), Color.Black);            
         }
 
     }

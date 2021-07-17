@@ -75,7 +75,7 @@ namespace KARC
             graphics.IsFullScreen = false;
 
             graphics.PreferredBackBufferWidth = 840;
-            graphics.PreferredBackBufferHeight = 750;
+            graphics.PreferredBackBufferHeight = 800;
 
             graphics.ApplyChanges();
 
@@ -204,16 +204,10 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Table"]);
             place = InterfaceMenu.GetCoord(13, 2, 29, 51);
-            Label lblScreen = new Label(place, 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), 
-                new string[] { "Screen Resolution" }, 0);
-            objList.Add(lblScreen);
-
-            textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", texturesDict["Table"]);
-            textureDict.Add("dark", texturesDict["Table"]);            
             Vector2 tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbScreen.currentImage.Height));
-            BackGround table = new BackGround(place, 0.85f, textureDict, true, tableSize);
-            objList.Add(table);
+            Label lblScreen = new Label(place, 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"), 
+                new string[] { "Screen Resolution" }, 0, tableSize);
+            objList.Add(lblScreen);
 
             //Настройки оконного/полноэкранного режима
             textureDict = new Dictionary<string, Texture2D>();
@@ -234,16 +228,8 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Table"]);
             place = InterfaceMenu.GetCoord(13, 6, 29, 51);
-            Label lblScreenFull = new Label(place, 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), new string[] { "Fullscreen" }, 0);
+            Label lblScreenFull = new Label(place, 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), new string[] { "Fullscreen" }, 0, tableSize);
             objList.Add(lblScreenFull);
-
-
-            textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", texturesDict["Table"]);
-            textureDict.Add("dark", texturesDict["Table"]);
-            tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbFullScreen.currentImage.Height));
-            table = new BackGround(place, 0.85f, textureDict, true, tableSize);
-            objList.Add(table);
 
             //Настройки громкости музыки
             textureDict = new Dictionary<string, Texture2D>();
@@ -265,16 +251,9 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Table"));
             place = InterfaceMenu.GetCoord(13, 10, 29, 51);
-            Label lblMusic = new Label(place, 0.9f, textureDict, 8, Content.Load<SpriteFont>("ManualFont"), new string[] { "Music Volume" }, 0);
+            Label lblMusic = new Label(place, 0.9f, textureDict, 8, Content.Load<SpriteFont>("ManualFont"), new string[] { "Music Volume" }, 0, tableSize);
             objList.Add(lblMusic);
-
-
-            textureDict = new Dictionary<string, Texture2D>();
-            textureDict.Add("light", Content.Load<Texture2D>("Table"));
-            textureDict.Add("dark", Content.Load<Texture2D>("Table"));
-            tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbMusic.currentImage.Height));
-            table = new BackGround(place, 0.85f, textureDict, true, tableSize);
-            objList.Add(table);
+           
 
             //Кнопка "Принять изменения"
             textureDict = new Dictionary<string, Texture2D>();
@@ -304,7 +283,9 @@ namespace KARC
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
             textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
-            Label lblInstructions = new Label(new Vector2((float)(Planshet.pos.X + planshetActSize.X * 0.07), (float)(Planshet.pos.Y + planshetActSize.Y * 0.4)), 0.9f, textureDict, 5, Content.Load<SpriteFont>("ManualFont"), new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0);
+            place = InterfaceMenu.GetCoord(75, 44, 100, 51);
+            Label lblInstructions = new Label(place, 0.9f, textureDict, 5, Content.Load<SpriteFont>("ManualFont"), 
+                new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0, Vector2.Zero);
             objList.Add(lblInstructions);
             InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150, 4, 6);
 
@@ -493,13 +474,13 @@ namespace KARC
                                         }
                                     case 1:
                                         {
-                                            SwitchBox s = (SwitchBox)currentScene.objectList[5];//TODO: Да-да, я знаю
+                                            SwitchBox s = (SwitchBox)currentScene.objectList[4];//TODO: Да-да, я знаю
                                             s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                             break;
                                         }
                                     case 2:
                                         {
-                                            SwitchBox s = (SwitchBox)currentScene.objectList[8];//TODO: Да-да, я знаю
+                                            SwitchBox s = (SwitchBox)currentScene.objectList[6];//TODO: Да-да, я знаю
                                             s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                             break;
                                         }
@@ -518,29 +499,38 @@ namespace KARC
                                             int[] screenDimension;
                                             if (SwitchBox.ParseValue(s.GetValue(), out screenDimension))
                                             {
+                                                if (graphics.PreferredBackBufferWidth != screenDimension[0] || graphics.PreferredBackBufferHeight != screenDimension[1])
+                                                {
+                                                    graphics.PreferredBackBufferWidth = screenDimension[0];
+                                                    graphics.PreferredBackBufferHeight = screenDimension[1];
 
-                                                graphics.PreferredBackBufferWidth = screenDimension[0];
-                                                graphics.PreferredBackBufferHeight = screenDimension[1];
-
-                                                windoWidth = graphics.PreferredBackBufferWidth;
-                                                windowHeight = graphics.PreferredBackBufferHeight;
-                                                LoadMainMenu();
-                                                LoadOptions();
+                                                    windoWidth = graphics.PreferredBackBufferWidth;
+                                                    windowHeight = graphics.PreferredBackBufferHeight;
+                                                    graphics.ApplyChanges();
+                                                    LoadMainMenu();
+                                                    LoadOptions();
+                                                }
                                             }
 
-                                            s = (SwitchBox)currentScene.objectList[5];
+                                            s = (SwitchBox)currentScene.objectList[4];
                                             bool fullScreen;
                                             if (SwitchBox.ParseValue(s.GetValue(), out fullScreen))
                                             {
-                                                graphics.IsFullScreen = fullScreen;
+                                                if (graphics.IsFullScreen!= fullScreen)
+                                                {
+                                                    graphics.IsFullScreen = fullScreen;
+                                                    graphics.ApplyChanges();
+                                                }
+                                                
                                             }
-                                            graphics.ApplyChanges();
-                                            s = (SwitchBox)currentScene.objectList[8];
+                                            
+                                            s = (SwitchBox)currentScene.objectList[6];
                                             float musicVolume;
                                             if (SwitchBox.ParseValue(s.GetValue(), out musicVolume))
                                             {
                                                 MediaPlayer.Volume = musicVolume;
                                             }
+                                            
                                             break;
                                         }
                                     case 4:

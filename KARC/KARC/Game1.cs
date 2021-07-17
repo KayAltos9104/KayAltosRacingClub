@@ -307,7 +307,7 @@ namespace KARC
             {
                 if (map[0, i] != 0)
                 {
-                    objList.Add(new BackGround(new Vector2(0, i * 800), 0.9f, textureDict, false, new Vector2(windoWidth, windowHeight)));
+                    objList.Add(new BackGround(new Vector2(windoWidth/2- textureDict["Road"].Width/2, i * (int)(textureDict["Road"].Height*0.95)), 0.9f, textureDict, false, new Vector2(windoWidth, windowHeight)));
                 }
             }
 
@@ -319,7 +319,8 @@ namespace KARC
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
-            Car Player = new Car(new Vector2(420, -800 - 200), 0.2f, textureDict, new Vector2(0, 0), 5000);
+            Vector2 place = InterfaceMenu.GetCoord(0, 0, 100, 100);
+            Car Player = new Car(place, 0.2f, textureDict, new Vector2(0, 0), 5000);
             Player.player = true;
             Player.animationDict.Add("explosion", carExplosion);
             Player.soundEffectsDict.Add("explosion", explosionSound);
@@ -344,7 +345,7 @@ namespace KARC
 
             textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
 
-            Level testLevel = new Level(map, 800, objList, true, textureDict);
+            Level testLevel = new Level(map, windowHeight, objList, true, textureDict);
             scenesDict.Add("level0", testLevel);
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
@@ -509,6 +510,7 @@ namespace KARC
                                                     graphics.ApplyChanges();
                                                     LoadMainMenu();
                                                     LoadOptions();
+                                                    LoadLevel();
                                                 }
                                             }
 
@@ -559,8 +561,8 @@ namespace KARC
                         //Управление машинкой========================================================
                         if (initial)
                         {
-                            currentLevel.scroll(new Vector2(0, -800 * 8));
-                            currentLevel.objectList[playerId].pos.Y = (int)(windoWidth * 0.7);
+                            currentLevel.scroll(new Vector2(0, -windowHeight * 5));
+                            currentLevel.objectList[playerId].pos = InterfaceMenu.GetCoord(50, 70, 100, 100);
                             initial = false;
                         }
 

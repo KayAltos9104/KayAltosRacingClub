@@ -157,8 +157,6 @@ namespace KARC.Logic
 
         public void initMapGen ()
         {
-            
-
             for (int i = EnemiesCur; i < enemiesNum; i++)
             {
                 int oncoming = rnd.Next(0, 2);

@@ -19,7 +19,7 @@ namespace KARC
 
     public class Game1 : Game
     {
-        int load = 0;//Время загрузки заставки        
+        int load = 255;//Время загрузки заставки        
 
         Dictionary<string, Texture2D> texturesDict;
         GraphicsDeviceManager graphics;
@@ -358,7 +358,7 @@ namespace KARC
 
             textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
 
-            Level testLevel = new Level(map, 800, objList, true, textureDict, shiftX+139, shiftX+702);
+            Level testLevel = new Level(map, 840, objList, true, textureDict, shiftX+139, shiftX+702);
             scenesDict.Add("level0", testLevel);
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
@@ -419,14 +419,14 @@ namespace KARC
                                 {
                                     case 0:
                                         {
-                                            load = 0;
+                                            //load = 0;
                                             currentSceneKey = "level0";
                                             currentScene = scenesDict[currentSceneKey];
                                             break;
                                         }
                                     case 1:
                                         {
-                                            load = 0;
+                                            //load = 0;
                                             currentSceneKey = "Options";
                                             currentScene = scenesDict[currentSceneKey];
                                             break;
@@ -550,8 +550,9 @@ namespace KARC
                                         }
                                     case 4:
                                         {
-                                            load = 0;
+                                            //load = 0;
                                             titleLoad = "";
+                                            nameIndex = 1;
                                             currentSceneKey = "MainMenu";
                                             currentScene = scenesDict[currentSceneKey];
                                             break;
@@ -706,7 +707,8 @@ namespace KARC
                         int period = 50;
                         currentTime += gameTime.ElapsedGameTime.Milliseconds;
 
-                        string gameName = "           K.A.R.C.\n Adrenaline Racing";
+                        string[] gameName = new string[] { "       K.A.R.C.", "Adrenaline Racing" };
+                            
                         foreach (var obj in currentScene.objectList)
                         {
 
@@ -714,15 +716,23 @@ namespace KARC
                             obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
 
 
-                            if (load >= 255)
-                            {
-                                BackGround title = (BackGround)scenesDict["MainMenu"].objectList[1];
-                                title.drawString("Title", titleLoad, new Vector2(windoWidth / 2 - 165, windowHeight / 2 - 220), new Color(load, 0, 0), spriteBatch);
+                            //if (load >= 255)
+                            //{
+                        //        BackGround title = (BackGround)scenesDict["MainMenu"].objectList[1];
+
+                        //        Vector2 place = InterfaceMenu.GetCoord(12, 10, 29, 50);  
+                        //        for (int i =0; i<gameName.Length;i++)
+                        //        {
+                        //            Vector2 stringLength = Content.Load<SpriteFont>("ManualFont").MeasureString(gameName[i]);
+                        //            title.drawString("Title", gameName[i], new Vector2(place.X - stringLength.X / 2,
+                        //place.Y - stringLength.Y / 2+(int)(stringLength.Y * i*1.7)), new Color(load, 0, 0), spriteBatch);
+                        //        }
+                                
 
 
-                            }
+                           // }
                         }
-                        if (titleLoad != gameName)
+                        /*if (titleLoad != gameName)
                         {
                             if (currentTime > period)
                             {
@@ -743,7 +753,7 @@ namespace KARC
                             }
                         }
                         else
-                        {
+                        {*/
                             period = 300;
                             if (currentTime < period)
                             {
@@ -752,14 +762,18 @@ namespace KARC
                             else if (currentTime > period && currentTime < 2 * period)
                             {
                                 BackGround pressStart = (BackGround)scenesDict["MainMenu"].objectList[1];
-                                pressStart.drawString("ManualFont", "Нажмите пробел для выбора", new Vector2(windoWidth / 2 - 120, windowHeight - 300), Color.FloralWhite, spriteBatch);
+                                Vector2 place = InterfaceMenu.GetCoord(16, 32, 29, 50);
+                                string s = "Нажмите пробел для выбора";
+                                Vector2 stringLength = Content.Load<SpriteFont>("ManualFont").MeasureString(s);
+                                pressStart.drawString("ManualFont", s, new Vector2(place.X - stringLength.X / 2,
+                    place.Y - stringLength.Y / 2), Color.FloralWhite, spriteBatch);
 
                             }
                             else
                             {
                                 currentTime = 0;
                             }
-                        }
+                        //}
                         break;
 
                     }
@@ -772,7 +786,7 @@ namespace KARC
 
                             obj.Value.colDraw = new Color(load, load, load);
                             obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
-                            load += 3;
+                            //load += 3;
                         }
                         break;
                     }

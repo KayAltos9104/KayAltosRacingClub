@@ -74,8 +74,8 @@ namespace KARC
             periodPushed = 100;
             graphics.IsFullScreen = false;
 
-            graphics.PreferredBackBufferWidth = 840;
-            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
 
             graphics.ApplyChanges();
 
@@ -91,6 +91,7 @@ namespace KARC
             periodForAccel = 500;
             //Загрузка текстур в общий пул
             texturesDict.Add("Grass1", Content.Load<Texture2D>("mapTiles/Grass"));
+            texturesDict.Add("Road1", Content.Load<Texture2D>("mapTiles/Road1"));
             texturesDict.Add("MenuBackGround", Content.Load<Texture2D>("MenuBackGround"));
             texturesDict.Add("Start_Select", Content.Load<Texture2D>("Start_Select"));
             texturesDict.Add("StartButton", Content.Load<Texture2D>("StartButton"));
@@ -114,7 +115,7 @@ namespace KARC
             
 
             //Загрузка игры
-            LoadLevel();
+            //LoadLevel();
 
             currentSceneKey = "MainMenu";
             currentScene = scenesDict[currentSceneKey];
@@ -294,7 +295,8 @@ namespace KARC
         }
         private void LoadLevel()
         {
-            //Тестовый уровень            
+            //Тестовый уровень
+            initial = true;
             int[,] map = new int[1, 10] { { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 } };
             List<Object> objList = new List<Object>();
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
@@ -358,7 +360,8 @@ namespace KARC
 
             textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
 
-            Level testLevel = new Level(map, 840, objList, true, textureDict, shiftX+139, shiftX+702);
+            //Level testLevel = new Level(map, 840, objList, true, textureDict, shiftX+139, shiftX+702);
+            Level testLevel = new Level(map, (int)(texturesDict["Road1"].Height * 0.9), objList, true, textureDict, shiftX + 139, shiftX + 702);
             scenesDict.Add("level0", testLevel);
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
@@ -385,8 +388,8 @@ namespace KARC
         }
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
             currentTime += gameTime.ElapsedGameTime.Milliseconds;
             currentScene = scenesDict[currentSceneKey];             
             switch (currentSceneKey)
@@ -421,6 +424,7 @@ namespace KARC
                                         {
                                             //load = 0;
                                             currentSceneKey = "level0";
+                                            LoadLevel();
                                             currentScene = scenesDict[currentSceneKey];
                                             break;
                                         }
@@ -572,6 +576,11 @@ namespace KARC
                 case "level0":
                     {
                         Level currentLevel = (Level)currentScene;
+                        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                        {
+                            currentSceneKey = "MainMenu";
+                            currentScene = scenesDict[currentSceneKey];
+                        }
                         //Управление машинкой========================================================
                         if (initial)
                         {
@@ -620,7 +629,7 @@ namespace KARC
                         {
                             if (Keyboard.GetState().IsKeyDown(Keys.R))
                             {
-                                ReloadLevel();
+                                LoadLevel();
                             }
                         }
 
@@ -675,11 +684,8 @@ namespace KARC
                 obj.live = false;
         }
 
-        private void ReloadLevel()
-        {
-            initial = true;
-            LoadLevel();
-        }
+       
+        
 
         private void PushCalc(PushAction p, Keys k, int t)
         {

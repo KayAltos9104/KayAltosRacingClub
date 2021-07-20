@@ -18,11 +18,14 @@ namespace KARC.Logic
             angle = 180;
         }
         public override void Update(int _time)
-        {
-            if ((angle-180) <= Game1.curSpeed)
+        {            
+            if ((angle - 180) <= Game1.curSpeed)
+            {               
                 angle++;
+            }
             else
-                angle--;
+                angle--;            
+            
         }
         public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {

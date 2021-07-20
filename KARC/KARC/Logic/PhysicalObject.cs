@@ -56,7 +56,7 @@ namespace KARC.Logic
             
         }
 
-        public virtual void collision (Logic.PhysicalObject _object)//Обработка столкновения
+        public virtual bool collision (Logic.PhysicalObject _object)//Обработка столкновения
         {
             if (hitBox.Intersects(_object.hitBox))
             {
@@ -66,7 +66,7 @@ namespace KARC.Logic
                 //}
                 Rectangle inter;
                 Rectangle.Intersect(ref hitBox, ref _object.hitBox, out inter);
-                Vector2 intersecVect = pos - _object.pos;                
+                Vector2 intersecVect = pos - _object.pos;
                 //Vector2 intersecVect = pos - _object.pos;
                 //pos += intersecVect;
                 int xShift = inter.Width;
@@ -76,8 +76,8 @@ namespace KARC.Logic
                     pos.X += 1;
                     _object.pos.X -= 1;
                 }
-                    
-                else if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 ==0)
+
+                else if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 == 0)
                 { }
                 else
                 {
@@ -98,7 +98,10 @@ namespace KARC.Logic
                     pos.Y -= 1;
                     _object.pos.Y += 1;
                 }
+                return true;
             }
+            else
+                return false;
         }
         public double CountDistance(PhysicalObject _CheckObj)//Возвращает расстояние между этим объектом и объектом в аргументе
         {

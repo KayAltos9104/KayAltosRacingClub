@@ -25,6 +25,8 @@ namespace KARC
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         delegate void PushAction(Keys key, int time);
+        SoundEffect soundEffect;
+
 
         public static GameMode mode;
         string currentSceneKey;
@@ -380,7 +382,7 @@ namespace KARC
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            soundEffect = Content.Load<SoundEffect>("Sound/DeathFlash");
             song = Content.Load<Song>("ME");
             if (mode == GameMode.mainMenu)
             {
@@ -408,6 +410,7 @@ namespace KARC
                     {
                         InterfaceMenu currentForm = (InterfaceMenu)currentScene;
                         currentTimePushed += gameTime.ElapsedGameTime.Milliseconds;
+                        
                         if (currentTimePushed>periodPushed)
                         {                            
                             pushed = false;
@@ -686,7 +689,13 @@ namespace KARC
         private void LPhysics(PhysicalObject obj1, PhysicalObject obj2, int[] collisionArea)
         {
             if (obj1.CheckNeighborhood(obj2) && obj1.pos.Y > collisionArea[0] && obj1.pos.Y < collisionArea[1] && obj2.pos.Y > collisionArea[0] && obj2.pos.Y < collisionArea[1])
-                obj1.collision(obj2);
+                if(obj1.collision(obj2))
+                {
+                    SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
+                    soundEffectInstance.IsLooped = false;
+                    soundEffectInstance.Play();
+                }
+            
         }
 
         private void LPhysics(PhysicalObject obj, Level level)
@@ -811,15 +820,15 @@ namespace KARC
                     {
 
 
-                        if (!songSwitched)
-                        {
-                            MediaPlayer.Play(musicList[1]);
-                            songSwitched = true;
-                        }
-                        else
-                        {
-                            MediaPlayer.Resume();                           
-                        }
+                        //if (!songSwitched)
+                        //{
+                        //    MediaPlayer.Play(musicList[1]);
+                        //    songSwitched = true;
+                        //}
+                        //else
+                        //{
+                        //    MediaPlayer.Resume();                           
+                        //}
 
 
                         foreach (var obj in currentScene.objectList)
@@ -835,7 +844,7 @@ namespace KARC
 
                         Car Player = (Car)currentScene.objectList[playerId];
                         int speedKm = -(int)(Player.Speed.Y * 3.6);
-                        spriteBatch.DrawString(gameFont, "Скорость: " + speedKm +" км/ч", Vector2.Zero, Color.Yellow);
+                        //spriteBatch.DrawString(gameFont, "Скорость: " + speedKm +" км/ч", Vector2.Zero, Color.Yellow);
                         spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить\nEsc - Выход в меню", new Vector2(0, 400), Color.Red);
 
 

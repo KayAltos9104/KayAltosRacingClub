@@ -61,7 +61,7 @@ namespace KARC.Logic
             live = true;
         }
 
-        public override void collision(PhysicalObject _object)
+        public override bool collision(PhysicalObject _object)
         {
             if (hitBox.Intersects(_object.hitBox))
             {
@@ -112,8 +112,10 @@ namespace KARC.Logic
 
                 live = false;
                 _object.live = false;
-
+                return true;
             }
+            else
+                return false;
         }
 
         public override void Update(int _time)

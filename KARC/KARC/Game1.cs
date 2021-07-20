@@ -46,6 +46,7 @@ namespace KARC
 
         bool showhitBox = false;
         public static int playerId;
+        public static int curSpeed;
         bool pushed = false;
         int currentTimePushed;
         int periodPushed;
@@ -633,6 +634,7 @@ namespace KARC
                                     Player.Speed += new Vector2(-Player.maneuver, 0);
                                 }
                             }
+                            
                         }
                         else
                         {
@@ -641,7 +643,7 @@ namespace KARC
                                 LoadLevel();
                             }
                         }
-
+                        curSpeed = (int)System.Math.Abs(Player.Speed.Y * 3.6);
                         //Управление машинкой===========Конец=============================================
                         //Отжатие ускорения===============================================================
                         currentTimeforAccel += gameTime.ElapsedGameTime.Milliseconds;

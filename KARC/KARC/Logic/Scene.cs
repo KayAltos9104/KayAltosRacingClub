@@ -56,6 +56,8 @@ namespace KARC.Logic
         {
             foreach (var obj in objectList)
             {
+                if (obj.Value.GetType() == typeof(Speedometer))
+                    continue;
                 obj.Value.pos += _shift;
                 if (obj.Value.physical)
                 {

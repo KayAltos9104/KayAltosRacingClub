@@ -13,7 +13,7 @@ namespace KARC.Logic
     {
         Vector2 speed = Vector2.Zero;
         public bool explode=false;
-        public int acceleration = 5;
+        public int acceleration = 1;
         public int maneuver = 5;
         public SpriteEffects orientation = SpriteEffects.None;
 

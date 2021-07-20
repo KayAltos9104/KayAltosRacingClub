@@ -88,7 +88,7 @@ namespace KARC
 
 
             currentTimeforAccel = 0;
-            periodForAccel = 500;
+            periodForAccel = 100;
             //Загрузка текстур в общий пул
             texturesDict.Add("Grass1", Content.Load<Texture2D>("mapTiles/Grass"));
             texturesDict.Add("Road1", Content.Load<Texture2D>("mapTiles/Road1"));
@@ -109,6 +109,8 @@ namespace KARC
             texturesDict.Add("BackButton", Content.Load<Texture2D>("BackButton"));
             texturesDict.Add("Planhset2", Content.Load<Texture2D>("Planhset2"));
             texturesDict.Add("hitBoxBlank", Content.Load<Texture2D>("hitBoxBlank"));
+            texturesDict.Add("Speedometer1", Content.Load<Texture2D>("Speedometer"));
+            texturesDict.Add("Speedometer1_Arrow", Content.Load<Texture2D>("Speedometer_Arrow"));
             //===================Загрузка начального экрана
             LoadMainMenu();
             LoadOptions();         
@@ -190,7 +192,7 @@ namespace KARC
             textureDict.Add("dark", texturesDict["SwitchBox"]);
 
             string currentWidth = windoWidth.ToString();
-            string [] screenArray = new string[] { "840x800", "1024x768", "1600x900", "1920x1080" };
+            string [] screenArray = new string[] { "1440x900", "1600x900", "1920x1080" };
             int screenIndex = 0;
             while (currentWidth != screenArray[screenIndex].Split('x')[0])
             {
@@ -326,6 +328,13 @@ namespace KARC
                 }
             }
 
+            textureDict.Clear();
+            textureDict.Add("Speedometer", texturesDict["Speedometer1"]);
+            textureDict.Add("Arrow", texturesDict["Speedometer1_Arrow"]);
+            int shiftY = windowHeight - textureDict["Speedometer"].Height;
+            Speedometer playerSpeedometer = new Speedometer(new Vector2(0, shiftY), 0.89f, textureDict);
+            objList.Add(playerSpeedometer);
+
             Animation carExplosion = new Animation(Content.Load<Texture2D>("Animations/boom3"), 128, 128, new Point(8, 8), Vector2.Zero, false);
             carExplosion.scale = 2.0f;
             SoundEffect explosionSound = Content.Load<SoundEffect>("Sound/DeathFlash");
@@ -377,7 +386,7 @@ namespace KARC
                 MediaPlayer.Play(song);
                 // повторять после завершения
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Volume = 1.0f;
+                MediaPlayer.Volume = 0.0f;
             }
         }
 
@@ -823,8 +832,9 @@ namespace KARC
                         }
 
                         Car Player = (Car)currentScene.objectList[playerId];
-                        spriteBatch.DrawString(gameFont, "Скорость: " + (-Player.Speed.Y)/*Player.Speed.Length()*/, Vector2.Zero, Color.Yellow);
-                        spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить", new Vector2(0, 400), Color.Red);
+                        int speedKm = -(int)(Player.Speed.Y * 3.6);
+                        spriteBatch.DrawString(gameFont, "Скорость: " + speedKm +" км/ч", Vector2.Zero, Color.Yellow);
+                        spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить\nEsc - Выход в меню", new Vector2(0, 400), Color.Red);
 
 
 

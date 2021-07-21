@@ -347,7 +347,7 @@ namespace KARC
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
             textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
             Vector2 place = InterfaceMenu.GetCoord(0, 0, 100, 100);
-            Car Player = new Car(place, 0.2f, textureDict, new Vector2(0, 0), 5000);
+            Car Player = new Car(place, 0.2f, textureDict, new Vector2(0, 0), 5000,"Player");
             Player.player = true;
             Player.animationDict.Add("explosion", carExplosion);
             Player.soundEffectsDict.Add("explosion", explosionSound);

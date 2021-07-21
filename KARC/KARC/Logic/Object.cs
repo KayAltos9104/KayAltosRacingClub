@@ -16,7 +16,20 @@ namespace KARC.Logic
         public Texture2D currentImage; //Текущее изображение        
         protected float layer = 1.0f; //Слой отрисовки
         protected float scale = 1.0f;
-        
+
+        public string Tag
+        {
+            set
+            {
+
+            }
+            get
+            {
+                return tag;
+            }
+        }
+        protected string tag;
+
         public Color colDraw = Color.White;
         public bool player = false;
         protected int angle = 0;

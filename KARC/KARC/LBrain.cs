@@ -18,8 +18,16 @@ namespace KARC
         }
         public Vector2 Act(List<PhysicalObject> _obj)
         {
-            Dictionary<PhysicalObject, int> dangerDict = new Dictionary<PhysicalObject, int>();
+           
             Vector2 changeSpeed = Vector2.Zero;
+            if (!driver.live)
+                return driver.Speed;
+            if (_obj.Count==0)
+                return driver.Speed;
+            int[] neighborhood = new int[4];
+            PhysicalObject dangerous = _obj[0];
+            int danger = 0;
+            
             if (driver.Tag == "Player")
                 return driver.Speed;
             foreach (var currentObj in _obj)
@@ -27,47 +35,48 @@ namespace KARC
                 float sumSpeedX = driver.Speed.X + currentObj.Speed.X;
                 float sumSpeedY = driver.Speed.Y + currentObj.Speed.Y;
                 double distance = driver.CountDistance(currentObj);
-                int danger = 4;
-
-                Vector2 futurePosOther = currentObj.pos + new Vector2(currentObj.Speed.X, currentObj.Speed.Y);
-                Vector2 futurePosThis = driver.pos + new Vector2(driver.Speed.X, driver.Speed.Y);
-                double futureDistance = Math.Sqrt((futurePosOther.X - futurePosThis.X) * (futurePosOther.X - futurePosThis.X) + (futurePosOther.Y - futurePosThis.Y) * (futurePosOther.Y - futurePosThis.Y));
-
                 
-
-                if (futureDistance >= distance)
-                    danger = 0;
-                else
+                for (int i = 1; i <=8;i++)
                 {
-                    Rectangle hitBoxThis = new Rectangle((int)futurePosThis.X, (int)futurePosThis.Y, driver.currentImage.Width, driver.currentImage.Height);
-                    Rectangle hitBoxOther = new Rectangle((int)futurePosOther.X, (int)futurePosOther.Y, currentObj.currentImage.Width, currentObj.currentImage.Height);
-                    if (hitBoxThis.Intersects(hitBoxOther))
-                        changeSpeed += new Vector2(currentObj.Speed.X, currentObj.Speed.Y);
+                    Vector2 futurePosOther = currentObj.pos + new Vector2(currentObj.Speed.X*i, currentObj.Speed.Y*i);
+                    Vector2 futurePosThis = driver.pos + new Vector2(driver.Speed.X*i, driver.Speed.Y*i);
+                    double futureDistance = Math.Sqrt((futurePosOther.X - futurePosThis.X) * (futurePosOther.X - futurePosThis.X) + (futurePosOther.Y - futurePosThis.Y) * (futurePosOther.Y - futurePosThis.Y));
+                    if (futureDistance >= distance)
+                    {
+                        danger = 0;
+                        break;
+                    }
+                    else
+                    {
+                        Rectangle hitBoxThis = new Rectangle((int)futurePosThis.X, (int)futurePosThis.Y, driver.currentImage.Width, driver.currentImage.Height);
+                        Rectangle hitBoxOther = new Rectangle((int)futurePosOther.X, (int)futurePosOther.Y, currentObj.currentImage.Width, currentObj.currentImage.Height);
+                        if (hitBoxThis.Intersects(hitBoxOther))
+                        {
+                            if (danger<9-i)
+                            {
+                                danger = 9 - i;
+                                dangerous = currentObj;
+                            }
+                        }                            
+                    }
+                }
+                if (danger==0)
+                {
 
                 }
-                //else if (futureDistance < 2*(Math.Sqrt(driver.hitBox.Width* driver.hitBox.Width+ driver.hitBox.Height*driver.hitBox.Height)))
-
-                //else if (futureDistance / distance < 0.8)
-                //    danger = 1;
-                //else if (futureDistance / distance < 0.5)
-                //    danger = 2;
-                //else if (futureDistance / distance < 0.2)
-                //    danger = 3;
-                //else if (futureDistance / distance < 0.1)
-                //    danger = 4;
-
-
+                else
+                {
+                    if (dangerous.calcCenter().X < driver.calcCenter().X)
+                        changeSpeed += new Vector2(5 * danger, 0);
+                    else
+                        changeSpeed += new Vector2(-5 * danger, 0);
+                    if (dangerous.calcCenter().Y < driver.calcCenter().Y)
+                        changeSpeed += new Vector2(0, 5 * danger);
+                    else
+                        changeSpeed += new Vector2(0, -5 * danger);
+                }
             }
             return driver.Speed+changeSpeed;
-            //switch (type)
-            //{
-            //    case "general":
-            //        {
-
-            //            break;
-            //        }
-            //}
-
         }
     }
 }

@@ -51,7 +51,7 @@ namespace KARC.Logic
             {
                 texturesDict.Add(texture.Key, texture.Value);
             }
-            enemiesNum = 30;
+            enemiesNum = 12;
             leftBorder = _leftBorder;
             rightBorder = _rightBorder;
             oncomingLane[0] = 180+leftBorder-139;

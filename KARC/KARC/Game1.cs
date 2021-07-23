@@ -27,6 +27,7 @@ namespace KARC
         delegate void PushAction(Keys key, int time);
         SoundEffect soundEffect;
 
+        public static System.Random rnd = new System.Random();
 
         public static GameMode mode;
         string currentSceneKey;

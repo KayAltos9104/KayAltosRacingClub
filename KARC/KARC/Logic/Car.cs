@@ -113,7 +113,12 @@ namespace KARC.Logic
                 _object.Speed = buf;
 
                 live = false;
+                if (Tag == "Player")
+                    live = true;
+
                 _object.live = false;
+                if (_object.Tag == "Player")
+                    _object.live = true; ;
                 return true;
             }
             else

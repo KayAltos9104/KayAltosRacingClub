@@ -16,7 +16,7 @@ namespace KARC.Logic
         public int acceleration = 1;
         public int maneuver = 5;
         public SpriteEffects orientation = SpriteEffects.None;
-
+        public LBrain AI;
         public override Vector2 Speed
         {
             set
@@ -49,6 +49,7 @@ namespace KARC.Logic
             tag = _tag;
             period = 10;
             live = true;
+            AI = new LBrain(this);
         }
 
         public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight, int _Id, string _tag) : base(_pos, _layer, _loadTextList, _weight)
@@ -59,6 +60,7 @@ namespace KARC.Logic
             period = 10;
             id = _Id;
             live = true;
+            AI = new LBrain(this);
         }
 
         public override bool collision(PhysicalObject _object)

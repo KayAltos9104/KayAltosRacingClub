@@ -660,14 +660,20 @@ namespace KARC
                         {
                             foreach (var object1 in currentLevel.objectList)
                             {
+                                List<PhysicalObject> nearObj = new List<PhysicalObject>();
                                 if (object1.Value.physical)
                                 {
                                     foreach (var object2 in currentLevel.objectList)
                                     {
                                         if (object2.Value.physical && object1.Key != object2.Key)
                                         {
-                                            LPhysics((PhysicalObject)object1.Value, (PhysicalObject)object2.Value, new int[2] { (int)(Player.pos.Y - 1000), (int)(Player.pos.Y + 1000) });
+                                            LPhysics((PhysicalObject)object1.Value, (PhysicalObject)object2.Value, new int[2] { (int)(Player.pos.Y - 1000), (int)(Player.pos.Y + 1000) },nearObj);
                                         }
+                                    }
+                                    if (object1.Value.GetType()==typeof(Car))
+                                    {
+                                        Car driver = (Car)object1.Value;
+                                        driver.Speed=driver.AI.Act(nearObj);
                                     }
                                     LPhysics((PhysicalObject)object1.Value, currentLevel);
                                 }
@@ -686,15 +692,19 @@ namespace KARC
             base.Update(gameTime);
         }
 
-        private void LPhysics(PhysicalObject obj1, PhysicalObject obj2, int[] collisionArea)
+        private void LPhysics(PhysicalObject obj1, PhysicalObject obj2, int[] collisionArea, List<PhysicalObject>nearList)
         {
             if (obj1.CheckNeighborhood(obj2) && obj1.pos.Y > collisionArea[0] && obj1.pos.Y < collisionArea[1] && obj2.pos.Y > collisionArea[0] && obj2.pos.Y < collisionArea[1])
-                if(obj1.collision(obj2))
+                if (obj1.collision(obj2))
                 {
                     SoundEffectInstance soundEffectInstance = soundEffect.CreateInstance();
                     soundEffectInstance.IsLooped = false;
                     soundEffectInstance.Play();
                 }
+                else
+                    nearList.Add(obj2);
+            
+
             
         }
 

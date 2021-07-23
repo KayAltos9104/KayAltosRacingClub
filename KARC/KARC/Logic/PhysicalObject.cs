@@ -117,5 +117,10 @@ namespace KARC.Logic
         {
 
         }
+
+        public Vector2 calcCenter()
+        {
+            return new Vector2((pos.X + hitBox.Width) / 2, (pos.Y + hitBox.Height) / 2);//TODO: Можно как-то через точку напрямую сделать
+        }
     }
 }

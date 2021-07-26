@@ -163,13 +163,19 @@ namespace KARC.Logic
 
             if (speed.X > 0)
             {
-                angle = 10;
+                if (orientation == SpriteEffects.None)
+                    angle = 10;
+                else
+                    angle = -10;
                 hitBox = new Rectangle((int)pos.X - 5, (int)pos.Y + 5, currentImage.Width, currentImage.Height);
             }
 
             else if (speed.X < 0)
             {
-                angle = -10;
+                if (orientation == SpriteEffects.None)
+                    angle = -10;
+                else
+                    angle = 10;
                 hitBox = new Rectangle((int)pos.X + 5, (int)pos.Y - 5, currentImage.Width, currentImage.Height);
             }
             else

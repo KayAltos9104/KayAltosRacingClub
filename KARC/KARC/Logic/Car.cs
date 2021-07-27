@@ -12,6 +12,8 @@ namespace KARC.Logic
     class Car : PhysicalObject
     {
         Vector2 speed = Vector2.Zero;
+        int periodAccel = 500;
+        int accelCooldown = 0;
         public bool explode=false;
         public int acceleration = 1;
         public int maneuver = 5;
@@ -21,13 +23,6 @@ namespace KARC.Logic
         {
             set
             {
-                if (value.X > 10)
-                    speed.X = 10;
-                else if (value.X < -10)
-                    speed.X = -10;
-                else
-                    speed.X = value.X;
-
                 if (value.Y > 40)
                     speed.Y = 40;
                 else if (value.Y < -40)
@@ -35,6 +30,14 @@ namespace KARC.Logic
                 else
                     speed.Y = value.Y;
 
+                if (speed.Y == 0)
+                    speed.X = 0;
+                else if (value.X > 10)
+                    speed.X = 10;
+                else if (value.X < -10)
+                    speed.X = -10;
+                else
+                    speed.X = value.X;
             }
             get
             {
@@ -185,6 +188,7 @@ namespace KARC.Logic
             }
 
             currentTime += _time;
+            accelCooldown += Game1.currentTime;
             if (currentTime > period)
             {
                 currentTime = 0;
@@ -192,12 +196,34 @@ namespace KARC.Logic
             }
             if (live)
                 speed.X = 0;
-
         }
 
         public override void move()
         {
             pos += Speed;
+        }
+
+        public void Accelerate (bool _dir)
+        {
+            if (accelCooldown>periodAccel)
+            {
+                accelCooldown = 0;
+                if (_dir)
+                    speed.Y += acceleration;
+                else
+                    speed.Y -= acceleration;
+            }
+        }
+        public void SharpTurn (bool _dir)
+        {
+            if (orientation == SpriteEffects.None)
+                speed.Y = -3;
+            else
+                speed.Y = 3;
+            if (_dir)
+                speed.X = 20;
+            else
+                speed.Y = -20;
         }
 
         public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта

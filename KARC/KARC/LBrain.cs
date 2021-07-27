@@ -29,17 +29,17 @@ namespace KARC
             if (_obj.Count==0)
                 return driver.Speed;
             
-            neighborhood[0] = new Rectangle((int)(driver.pos.X), (int)(driver.pos.Y - 3 * driver.hitBox.Height), (int)(driver.hitBox.Width), 3 * driver.hitBox.Height);//Смотрим вверх
-            neighborhood[1] = new Rectangle((int)(driver.pos.X+driver.hitBox.Width), (int)(driver.pos.Y), 3*driver.hitBox.Width, (int)(driver.hitBox.Height));//Смотрим вправо
-            neighborhood[2] = new Rectangle((int)(driver.pos.X), (int)(driver.pos.Y + driver.hitBox.Height), (int)(driver.hitBox.Width), 4 * driver.hitBox.Height);//Смотрим вниз
-            neighborhood[3] = new Rectangle((int)(driver.pos.X - 3*driver.hitBox.Width), (int)(driver.pos.Y), 3 * driver.hitBox.Width, (int)(driver.hitBox.Height));//Смотрим влево
+            neighborhood[0] = new Rectangle((int)(driver.pos.X-10), (int)(driver.pos.Y - 3 * driver.hitBox.Height), (int)(driver.hitBox.Width+10), 3 * driver.hitBox.Height);//Смотрим вверх
+            neighborhood[1] = new Rectangle((int)(driver.pos.X+driver.hitBox.Width), (int)(driver.pos.Y-10), 3*driver.hitBox.Width, (int)(driver.hitBox.Height+10));//Смотрим вправо
+            neighborhood[2] = new Rectangle((int)(driver.pos.X-10), (int)(driver.pos.Y + driver.hitBox.Height), (int)(driver.hitBox.Width+10), 4 * driver.hitBox.Height);//Смотрим вниз
+            neighborhood[3] = new Rectangle((int)(driver.pos.X - 3*driver.hitBox.Width), (int)(driver.pos.Y-10), 3 * driver.hitBox.Width, (int)(driver.hitBox.Height+10));//Смотрим влево
             int[] dangerArray = new int[4];
             
             PhysicalObject dangerous = _obj[0];
             int danger = 0;
             
-            if (driver.Tag == "Player")
-                return driver.Speed;
+           if (driver.Tag == "Player")
+               return driver.Speed;
             foreach (var currentObj in _obj)
             {
                 int direction = 0;
@@ -71,8 +71,8 @@ namespace KARC
                     }
                     else
                     {
-                        Rectangle hitBoxThis = new Rectangle((int)futurePosThis.X-5, (int)futurePosThis.Y-5, driver.currentImage.Width+5, driver.currentImage.Height+5);
-                        Rectangle hitBoxOther = new Rectangle((int)futurePosOther.X-5, (int)futurePosOther.Y-5, currentObj.currentImage.Width+5, currentObj.currentImage.Height+5);
+                        Rectangle hitBoxThis = new Rectangle((int)futurePosThis.X-10, (int)futurePosThis.Y-10, driver.currentImage.Width+10, driver.currentImage.Height+10);
+                        Rectangle hitBoxOther = new Rectangle((int)futurePosOther.X-10, (int)futurePosOther.Y-10, currentObj.currentImage.Width+10, currentObj.currentImage.Height+10);
                         if (hitBoxThis.Intersects(hitBoxOther))
                         {
                             if (dangerArray [direction]< 9-i)
@@ -90,8 +90,8 @@ namespace KARC
             {
                 if (driver.orientation == SpriteEffects.None)
                 {
-                    if (Math.Abs(driver.Speed.Y)<maxSpeed)
-                        changeSpeed += new Vector2(0, -driver.acceleration);
+                    if (Math.Abs(driver.Speed.Y) < maxSpeed)
+                        driver.Accelerate(false);
 
                 }
                 
@@ -101,7 +101,7 @@ namespace KARC
                 if (driver.orientation == SpriteEffects.None)
                 {
 
-                    changeSpeed += new Vector2(-10, -driver.Speed.Y);
+                    changeSpeed += new Vector2(-10, -dangerArray[2]);
 
                 }
                 else
@@ -114,21 +114,22 @@ namespace KARC
                 if (driver.orientation == SpriteEffects.None)
                 {
                     
-                        changeSpeed += new Vector2(-10, -driver.Speed.Y);
+                        changeSpeed += new Vector2(-10, -dangerArray[2]);
                    
                 }
                 else
                 {
                     changeSpeed += new Vector2(10, dangerArray[2]);
                 }
-            }
+            }         
+
             if (dangerArray[2] == 0)
             {
                 if (driver.orientation == SpriteEffects.FlipVertically)
                 {
 
                     if (Math.Abs(driver.Speed.Y) < maxSpeed)
-                        changeSpeed += new Vector2(0, driver.acceleration);
+                        driver.Accelerate(true);
 
                 }
             }
@@ -142,7 +143,7 @@ namespace KARC
                 else
                 {
 
-                    changeSpeed += new Vector2(10, -driver.Speed.Y);
+                    changeSpeed += new Vector2(10, -dangerArray[2]);
 
 
                 }
@@ -156,11 +157,36 @@ namespace KARC
                 }
                 else
                 {
-                    
-                        changeSpeed += new Vector2(10, -driver.Speed.Y);
-                 
-
+                    changeSpeed += new Vector2(10, -dangerArray[2]);
                 }
+            }
+
+            if (dangerArray[1] == 0)
+            {
+
+            }
+            else
+            {
+                changeSpeed += new Vector2(-10, 0);
+            }
+            if (dangerArray[3] == 0)
+            {
+
+            }
+            else
+            {
+                changeSpeed += new Vector2(10, 0);
+            }
+
+            if (dangerArray[1]>4&& dangerArray[3]>4)
+                changeSpeed += new Vector2(0, -dangerArray[2]);
+
+            if (dangerArray[0] > 4 && dangerArray[2] > 4)
+            {
+                if (dangerArray[1] < dangerArray[3])
+                    driver.SharpTurn(true);
+                else
+                    driver.SharpTurn(false);
             }
             return driver.Speed+changeSpeed;
         }

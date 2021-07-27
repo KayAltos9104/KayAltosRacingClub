@@ -21,6 +21,8 @@ namespace KARC
     {
         int load = 255;//Время загрузки заставки        
 
+        
+
         Dictionary<string, Texture2D> texturesDict;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -43,7 +45,7 @@ namespace KARC
         string titleLoad = "";
         int nameIndex = 1;
 
-        int currentTime = 0;
+        public static int currentTime = 0;
         bool songSwitched = false;
        
 
@@ -655,7 +657,6 @@ namespace KARC
                         {
                             pushed = false;
                             currentTimeforAccel -= periodForAccel;
-
                         }
                         if (!initial)
                         {

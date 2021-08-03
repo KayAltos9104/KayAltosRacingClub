@@ -29,17 +29,17 @@ namespace KARC
             if (_obj.Count==0)
                 return driver.Speed;
             
-            neighborhood[0] = new Rectangle((int)(driver.pos.X-10), (int)(driver.pos.Y - 3 * driver.hitBox.Height), (int)(driver.hitBox.Width+10), 3 * driver.hitBox.Height);//Смотрим вверх
-            neighborhood[1] = new Rectangle((int)(driver.pos.X+driver.hitBox.Width), (int)(driver.pos.Y-10), 3*driver.hitBox.Width, (int)(driver.hitBox.Height+10));//Смотрим вправо
-            neighborhood[2] = new Rectangle((int)(driver.pos.X-10), (int)(driver.pos.Y + driver.hitBox.Height), (int)(driver.hitBox.Width+10), 4 * driver.hitBox.Height);//Смотрим вниз
-            neighborhood[3] = new Rectangle((int)(driver.pos.X - 3*driver.hitBox.Width), (int)(driver.pos.Y-10), 3 * driver.hitBox.Width, (int)(driver.hitBox.Height+10));//Смотрим влево
+            neighborhood[0] = new Rectangle((int)(driver.pos.X-10), (int)(driver.pos.Y - 3 * driver.hitBox.Height), (int)(driver.hitBox.Width+20), 3 * driver.hitBox.Height);//Смотрим вверх
+            neighborhood[1] = new Rectangle((int)(driver.pos.X+driver.hitBox.Width), (int)(driver.pos.Y-10), 3*driver.hitBox.Width, (int)(driver.hitBox.Height+20));//Смотрим вправо
+            neighborhood[2] = new Rectangle((int)(driver.pos.X-10), (int)(driver.pos.Y + driver.hitBox.Height), (int)(driver.hitBox.Width+20), 4 * driver.hitBox.Height);//Смотрим вниз
+            neighborhood[3] = new Rectangle((int)(driver.pos.X - 3*driver.hitBox.Width), (int)(driver.pos.Y-10), 3 * driver.hitBox.Width, (int)(driver.hitBox.Height+20));//Смотрим влево
             int[] dangerArray = new int[4];
             
             PhysicalObject dangerous = _obj[0];
             int danger = 0;
-            
-           if (driver.Tag == "Player")
-               return driver.Speed;
+
+            if (driver.Tag == "Player")
+                return driver.Speed;
             foreach (var currentObj in _obj)
             {
                 int direction = 0;
@@ -61,8 +61,8 @@ namespace KARC
                 
                 for (int i = 1; i <=8;i++)
                 {
-                    Vector2 futurePosOther = currentObj.pos + new Vector2(currentObj.Speed.X*i*3, currentObj.Speed.Y*i*3);
-                    Vector2 futurePosThis = driver.pos + new Vector2(driver.Speed.X*i*3, driver.Speed.Y*i*3);
+                    Vector2 futurePosOther = currentObj.pos + new Vector2(currentObj.Speed.X*i*10, currentObj.Speed.Y*i*10);
+                    Vector2 futurePosThis = driver.pos + new Vector2(driver.Speed.X*i*10, driver.Speed.Y*i*10);
                     double futureDistance = Math.Sqrt((futurePosOther.X - futurePosThis.X) * (futurePosOther.X - futurePosThis.X) + (futurePosOther.Y - futurePosThis.Y) * (futurePosOther.Y - futurePosThis.Y));
                     if (futureDistance >= distance)
                     {
@@ -71,8 +71,8 @@ namespace KARC
                     }
                     else
                     {
-                        Rectangle hitBoxThis = new Rectangle((int)futurePosThis.X-10, (int)futurePosThis.Y-10, driver.currentImage.Width+10, driver.currentImage.Height+10);
-                        Rectangle hitBoxOther = new Rectangle((int)futurePosOther.X-10, (int)futurePosOther.Y-10, currentObj.currentImage.Width+10, currentObj.currentImage.Height+10);
+                        Rectangle hitBoxThis = new Rectangle((int)futurePosThis.X-10, (int)futurePosThis.Y-10, driver.currentImage.Width+20, driver.currentImage.Height+20);
+                        Rectangle hitBoxOther = new Rectangle((int)futurePosOther.X-10, (int)futurePosOther.Y-10, currentObj.currentImage.Width+20, currentObj.currentImage.Height+20);
                         if (hitBoxThis.Intersects(hitBoxOther))
                         {
                             if (dangerArray [direction]< 9-i)

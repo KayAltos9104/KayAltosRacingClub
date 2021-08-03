@@ -14,7 +14,7 @@ namespace KARC.Logic
         Vector2 speed = Vector2.Zero;
         int periodAccel = 500;
         int accelCooldown = 0;
-        public bool explode=false;
+        public bool explode = false;
         public int acceleration = 1;
         public int maneuver = 5;
         public SpriteEffects orientation = SpriteEffects.None;
@@ -116,12 +116,12 @@ namespace KARC.Logic
                 _object.Speed = buf;
 
                 live = false;
-                if (Tag == "Player")
-                    live = true;
+                //if (Tag == "Player")
+                //    live = true;
 
                 _object.live = false;
-                if (_object.Tag == "Player")
-                    _object.live = true; ;
+                //if (_object.Tag == "Player")
+                //    _object.live = true; ;
                 return true;
             }
             else

@@ -45,13 +45,13 @@ namespace KARC.Logic
         {
             physical = true;
             weight = _weight;
-            hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+            hitBox = new Rectangle((int)pos.X+5, (int)pos.Y+5, currentImage.Width-5, currentImage.Height-5);
             
         }
 
         public override void Update(int _time)
         {
-            hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+            hitBox = new Rectangle((int)pos.X+5, (int)pos.Y+5, currentImage.Width+5, currentImage.Height+5);
             base.Update(_time);
             
         }

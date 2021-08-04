@@ -847,21 +847,21 @@ namespace KARC
                         {
                             if (obj.Value.pos.Y > -1500 && obj.Value.pos.Y < 1500)
                                 obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
-                            //if (showhitBox && obj.Value.physical)
-                            //{
-                            //    PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
-                            //    spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
-                            //}
                             if (showhitBox && obj.Value.physical)
                             {
-                                Car hb = (Car)obj.Value;
-                                for (int i = 0; i < 4; i++)
-                                {
-                                    Rectangle r = hb.AI.neighborhood[i];
-                                    spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), r, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
-
-                                }
+                                PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
+                                spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
                             }
+                            //if (showhitBox && obj.Value.physical)
+                            //{
+                            //    Car hb = (Car)obj.Value;
+                            //    for (int i = 0; i < 4; i++)
+                            //    {
+                            //        Rectangle r = hb.AI.neighborhood[i];
+                            //        spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), r, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
+
+                            //    }
+                            //}
                         }
 
                         Car Player = (Car)currentScene.objectList[playerId];

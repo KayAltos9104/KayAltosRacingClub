@@ -62,8 +62,8 @@ namespace KARC.Logic
                 if (obj.Value.physical)
                 {
                     PhysicalObject o = (PhysicalObject)obj.Value;
-                    o.hitBox.X = (int)o.pos.X;
-                    o.hitBox.Y = (int)o.pos.Y;
+                    o.hitBox.X = (int)o.pos.X+5;
+                    o.hitBox.Y = (int)o.pos.Y+5;
                 }
             }
         }

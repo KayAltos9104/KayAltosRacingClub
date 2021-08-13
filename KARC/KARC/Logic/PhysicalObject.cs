@@ -41,22 +41,22 @@ namespace KARC.Logic
         }
 
 
-        public PhysicalObject(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, int _weight) :base(_pos, _layer, _loadTextList, _Id)
+        public PhysicalObject(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _weight) :base(_pos, _layer, _loadTextList)
         {
             physical = true;
             weight = _weight;
-            hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+            hitBox = new Rectangle((int)pos.X+5, (int)pos.Y+5, currentImage.Width-5, currentImage.Height-5);
             
         }
 
         public override void Update(int _time)
         {
-            hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+            hitBox = new Rectangle((int)pos.X+5, (int)pos.Y+5, currentImage.Width+5, currentImage.Height+5);
             base.Update(_time);
             
         }
 
-        public virtual void collision (Logic.PhysicalObject _object)//Обработка столкновения
+        public virtual bool collision (Logic.PhysicalObject _object)//Обработка столкновения
         {
             if (hitBox.Intersects(_object.hitBox))
             {
@@ -66,7 +66,7 @@ namespace KARC.Logic
                 //}
                 Rectangle inter;
                 Rectangle.Intersect(ref hitBox, ref _object.hitBox, out inter);
-                Vector2 intersecVect = pos - _object.pos;                
+                Vector2 intersecVect = pos - _object.pos;
                 //Vector2 intersecVect = pos - _object.pos;
                 //pos += intersecVect;
                 int xShift = inter.Width;
@@ -76,8 +76,8 @@ namespace KARC.Logic
                     pos.X += 1;
                     _object.pos.X -= 1;
                 }
-                    
-                else if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 ==0)
+
+                else if (pos.X + hitBox.Width / 2 - _object.pos.X - _object.hitBox.Width / 2 == 0)
                 { }
                 else
                 {
@@ -98,7 +98,10 @@ namespace KARC.Logic
                     pos.Y -= 1;
                     _object.pos.Y += 1;
                 }
+                return true;
             }
+            else
+                return false;
         }
         public double CountDistance(PhysicalObject _CheckObj)//Возвращает расстояние между этим объектом и объектом в аргументе
         {
@@ -113,6 +116,11 @@ namespace KARC.Logic
         public virtual void move()
         {
 
+        }
+
+        public Vector2 calcCenter()
+        {
+            return new Vector2((pos.X + hitBox.Width) / 2, (pos.Y + hitBox.Height) / 2);//TODO: Можно как-то через точку напрямую сделать
         }
     }
 }

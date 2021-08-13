@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -11,28 +12,32 @@ namespace KARC.Logic
     class Car : PhysicalObject
     {
         Vector2 speed = Vector2.Zero;
-
-        public int acceleration = 5;
+        int periodAccel = 500;
+        int accelCooldown = 0;
+        public bool explode = false;
+        public int acceleration = 1;
         public int maneuver = 5;
-
+        public SpriteEffects orientation = SpriteEffects.None;
+        public LBrain AI;
         public override Vector2 Speed
         {
             set
             {
-                if (value.X > 10)
-                    speed.X = 10;
-                else if (value.X < -10)
-                    speed.X = -10;
-                else
-                    speed.X = value.X;
-
-                if (value.Y > 10)
-                    speed.Y = 10;
+                if (value.Y > 40)
+                    speed.Y = 40;
                 else if (value.Y < -40)
                     speed.Y = -40;
                 else
                     speed.Y = value.Y;
 
+                if (speed.Y == 0)
+                    speed.X = 0;
+                else if (value.X > 10)
+                    speed.X = 10;
+                else if (value.X < -10)
+                    speed.X = -10;
+                else
+                    speed.X = value.X;
             }
             get
             {
@@ -40,16 +45,28 @@ namespace KARC.Logic
             }
         }
 
-        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _Id, Vector2 _speed, int _weight) : base(_pos, _layer, _loadTextList, _Id, _weight)
+        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight, string _tag) : base(_pos, _layer, _loadTextList, _weight)
         {
             Speed = _speed;
             movable = true;
-            type = objType.car;
+            tag = _tag;
             period = 10;
             live = true;
+            AI = new LBrain(this);
         }
 
-        public override void collision(PhysicalObject _object)
+        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight, int _Id, string _tag) : base(_pos, _layer, _loadTextList, _weight)
+        {
+            Speed = _speed;
+            movable = true;
+            tag = _tag;
+            period = 10;
+            id = _Id;
+            live = true;
+            AI = new LBrain(this);
+        }
+
+        public override bool collision(PhysicalObject _object)
         {
             if (hitBox.Intersects(_object.hitBox))
             {
@@ -99,9 +116,16 @@ namespace KARC.Logic
                 _object.Speed = buf;
 
                 live = false;
-                _object.live = false;
+                //if (Tag == "Player")
+                //    live = true;
 
+                _object.live = false;
+                //if (_object.Tag == "Player")
+                //    _object.live = true; ;
+                return true;
             }
+            else
+                return false;
         }
 
         public override void Update(int _time)
@@ -110,44 +134,61 @@ namespace KARC.Logic
             {
                 if (speed.Y > 0)
                 {
-                    speed.Y -= 5;
-                    speed.X -= 1;
+                    speed.Y -= 1;                    
                 }
 
                 else if (speed.Y < 0)
                 {
-                    speed.Y += 5;
-                    speed.X += 1;
+                    speed.Y += 1;                   
                 }
 
                 else
                 {
-                    speed.Y = 0;
+                    speed.Y = 0;                    
+                }
+
+                if (speed.X > 0)
+                {                    
+                    speed.X -= 1;
+                }
+
+                else if (speed.X < 0)
+                {                    
+                    speed.X += 1;
+                }
+                else
+                {                    
                     speed.X = 0;
                 }
 
-                currentImage = images["CrushedModel"];
-
+                currentImage = images["CrushedModel"];              
             }
 
             if (speed.X > 0)
             {
-                angle = 10;
+                if (orientation == SpriteEffects.None)
+                    angle = 10;
+                else
+                    angle = -10;
                 hitBox = new Rectangle((int)pos.X - 5, (int)pos.Y + 5, currentImage.Width, currentImage.Height);
             }
 
             else if (speed.X < 0)
             {
-                angle = -10;
+                if (orientation == SpriteEffects.None)
+                    angle = -10;
+                else
+                    angle = 10;
                 hitBox = new Rectangle((int)pos.X + 5, (int)pos.Y - 5, currentImage.Width, currentImage.Height);
             }
             else
             {
                 angle = 0;
-                hitBox = new Rectangle((int)pos.X, (int)pos.Y, currentImage.Width, currentImage.Height);
+                hitBox = new Rectangle((int)pos.X+5, (int)pos.Y+5, currentImage.Width-10, currentImage.Height-10);
             }
 
             currentTime += _time;
+            accelCooldown += Game1.currentTime;
             if (currentTime > period)
             {
                 currentTime = 0;
@@ -155,7 +196,6 @@ namespace KARC.Logic
             }
             if (live)
                 speed.X = 0;
-
         }
 
         public override void move()
@@ -163,12 +203,37 @@ namespace KARC.Logic
             pos += Speed;
         }
 
+        public void Accelerate (bool _dir)
+        {
+            if (accelCooldown>periodAccel)
+            {
+                accelCooldown = 0;
+                if (_dir)
+                    speed.Y += acceleration;
+                else
+                    speed.Y -= acceleration;
+            }
+        }
+        public void SharpTurn (bool _dir)
+        {
+            if (orientation == SpriteEffects.None)
+                speed.Y = -3;
+            else
+                speed.Y = 3;
+            if (_dir)
+                speed.X = 20;
+            else
+                speed.Y = -20;
+        }
+
         public override void drawObject(SpriteBatch _spriteBatch, int _time)//Метод отрисовки объекта
         {
-            _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, SpriteEffects.None, layer);
+            _spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, 1.0f, orientation, layer);
             if (!live)
             {
-                animationDict["explosion"].objectPos = this.pos;
+                //animationDict["explosion"].objectPos = this.pos;
+                animationDict["explosion"].objectPos.X = this.pos.X- 82;
+                animationDict["explosion"].objectPos.Y = this.pos.Y - 180;
                 animationDict["explosion"].drawObject(_spriteBatch, _time);
             }
 

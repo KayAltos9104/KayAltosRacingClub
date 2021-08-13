@@ -19,9 +19,7 @@ namespace KARC
 
     public class Game1 : Game
     {
-        int load = 255;//Время загрузки заставки        
-
-        
+        int load = 255;//Время загрузки заставки  
 
         Dictionary<string, Texture2D> texturesDict;
         GraphicsDeviceManager graphics;
@@ -117,18 +115,31 @@ namespace KARC
             texturesDict.Add("hitBoxBlank", Content.Load<Texture2D>("hitBoxBlank"));
             texturesDict.Add("Speedometer1", Content.Load<Texture2D>("Speedometer"));
             texturesDict.Add("Speedometer1_Arrow", Content.Load<Texture2D>("Speedometer_Arrow"));
+
+            texturesDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
+            texturesDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
+            texturesDict.Add("MainModel2", Content.Load<Texture2D>("carModels/Model2"));
+            texturesDict.Add("CrushedModel2", Content.Load<Texture2D>("carModels/Model2_Crushed"));
+            texturesDict.Add("MainModel3", Content.Load<Texture2D>("carModels/Model3"));
+            texturesDict.Add("CrushedModel3", Content.Load<Texture2D>("carModels/Model3_Crushed"));
+            texturesDict.Add("MainModel4", Content.Load<Texture2D>("carModels/Model4"));
+            texturesDict.Add("CrushedModel4", Content.Load<Texture2D>("carModels/Model4_Crushed"));
+            texturesDict.Add("MainModel5", Content.Load<Texture2D>("carModels/Model5"));
+            texturesDict.Add("CrushedModel5", Content.Load<Texture2D>("carModels/Model5_Crushed"));
+            texturesDict.Add("MainModel6", Content.Load<Texture2D>("carModels/Model6"));
+            texturesDict.Add("CrushedModel6", Content.Load<Texture2D>("carModels/Model6_Crushed"));
+            texturesDict.Add("MainModel7", Content.Load<Texture2D>("carModels/Model7"));
+            texturesDict.Add("CrushedModel7", Content.Load<Texture2D>("carModels/Model7_Crushed"));
+            texturesDict.Add("MainModel8", Content.Load<Texture2D>("carModels/Model8"));
+            texturesDict.Add("CrushedModel8", Content.Load<Texture2D>("carModels/Model8_Crushed"));
+
+            texturesDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
             //===================Загрузка начального экрана
             LoadMainMenu();
-            LoadOptions();         
-            
-
-            //Загрузка игры
-            //LoadLevel();
+            LoadOptions();                     
 
             currentSceneKey = "MainMenu";
             currentScene = scenesDict[currentSceneKey];
-
-
         }
 
         private void LoadMainMenu()
@@ -298,7 +309,6 @@ namespace KARC
                 new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0, Vector2.Zero);
             objList.Add(lblInstructions);
             InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150, 4, 6);
-
             scenesDict.Add("Options", Options);
         }
         private void LoadLevel()
@@ -347,8 +357,8 @@ namespace KARC
 
             //Генерация игрока
             textureDict.Clear();
-            textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
-            textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
+            textureDict.Add("MainModel", texturesDict["MainModel"]);
+            textureDict.Add("CrushedModel", texturesDict["CrushedModel"]);
             Vector2 place = InterfaceMenu.GetCoord(0, 0, 100, 100);
             Car Player = new Car(place, 0.2f, textureDict, new Vector2(0, 0), 5000,"Player");
             Player.player = true;
@@ -358,24 +368,22 @@ namespace KARC
 
             //Загрузка текстур моделей машин
             textureDict.Clear();
-            textureDict.Add("MainModel2", Content.Load<Texture2D>("carModels/Model2"));
-            textureDict.Add("CrushedModel2", Content.Load<Texture2D>("carModels/Model2_Crushed"));
-            textureDict.Add("MainModel3", Content.Load<Texture2D>("carModels/Model3"));
-            textureDict.Add("CrushedModel3", Content.Load<Texture2D>("carModels/Model3_Crushed"));
-            textureDict.Add("MainModel4", Content.Load<Texture2D>("carModels/Model4"));
-            textureDict.Add("CrushedModel4", Content.Load<Texture2D>("carModels/Model4_Crushed"));
-            textureDict.Add("MainModel5", Content.Load<Texture2D>("carModels/Model5"));
-            textureDict.Add("CrushedModel5", Content.Load<Texture2D>("carModels/Model5_Crushed"));
-            textureDict.Add("MainModel6", Content.Load<Texture2D>("carModels/Model6"));
-            textureDict.Add("CrushedModel6", Content.Load<Texture2D>("carModels/Model6_Crushed"));
-            textureDict.Add("MainModel7", Content.Load<Texture2D>("carModels/Model7"));
-            textureDict.Add("CrushedModel7", Content.Load<Texture2D>("carModels/Model7_Crushed"));
-            textureDict.Add("MainModel8", Content.Load<Texture2D>("carModels/Model8"));
-            textureDict.Add("CrushedModel8", Content.Load<Texture2D>("carModels/Model8_Crushed"));
+            textureDict.Add("MainModel2", texturesDict["MainModel2"]);
+            textureDict.Add("CrushedModel2", texturesDict["CrushedModel2"]);
+            textureDict.Add("MainModel3", texturesDict["MainModel3"]);
+            textureDict.Add("CrushedModel3", texturesDict["CrushedModel3"]);
+            textureDict.Add("MainModel4", texturesDict["MainModel4"]);
+            textureDict.Add("CrushedModel4", texturesDict["CrushedModel4"]);
+            textureDict.Add("MainModel5", texturesDict["MainModel5"]);
+            textureDict.Add("CrushedModel5", texturesDict["CrushedModel5"]);
+            textureDict.Add("MainModel6", texturesDict["MainModel6"]);
+            textureDict.Add("CrushedModel6", texturesDict["CrushedModel6"]);
+            textureDict.Add("MainModel7", texturesDict["MainModel7"]);
+            textureDict.Add("CrushedModel7", texturesDict["CrushedModel7"]);
+            textureDict.Add("MainModel8", texturesDict["MainModel8"]);
+            textureDict.Add("CrushedModel8", texturesDict["CrushedModel8"]);  
 
-            textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
-
-            //Level testLevel = new Level(map, 840, objList, true, textureDict, shiftX+139, shiftX+702);
+            textureDict.Add("explosion", texturesDict["explosion"]);
             Level testLevel = new Level(map, (int)(texturesDict["Road1"].Height * 0.9), objList, true, textureDict, shiftX + 139, shiftX + 702);
             scenesDict.Add("level0", testLevel);
 
@@ -402,9 +410,7 @@ namespace KARC
 
         }
         protected override void Update(GameTime gameTime)
-        {
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
+        {            
             currentTime += gameTime.ElapsedGameTime.Milliseconds;
             currentScene = scenesDict[currentSceneKey];             
             switch (currentSceneKey)
@@ -830,19 +836,6 @@ namespace KARC
                     }
                 case "level0"://Можно обобщить
                     {
-
-
-                        //if (!songSwitched)
-                        //{
-                        //    MediaPlayer.Play(musicList[1]);
-                        //    songSwitched = true;
-                        //}
-                        //else
-                        //{
-                        //    MediaPlayer.Resume();                           
-                        //}
-
-
                         foreach (var obj in currentScene.objectList)
                         {
                             if (obj.Value.pos.Y > -1500 && obj.Value.pos.Y < 1500)
@@ -851,26 +844,12 @@ namespace KARC
                             {
                                 PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
                                 spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
-                            }
-                            //if (showhitBox && obj.Value.physical)
-                            //{
-                            //    Car hb = (Car)obj.Value;
-                            //    for (int i = 0; i < 4; i++)
-                            //    {
-                            //        Rectangle r = hb.AI.neighborhood[i];
-                            //        spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), r, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
-
-                            //    }
-                            //}
+                            }                            
                         }
 
                         Car Player = (Car)currentScene.objectList[playerId];
-                        int speedKm = -(int)(Player.Speed.Y * 3.6);
-                        //spriteBatch.DrawString(gameFont, "Скорость: " + speedKm +" км/ч", Vector2.Zero, Color.Yellow);
+                        int speedKm = -(int)(Player.Speed.Y * 3.6);                       
                         spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить\nEsc - Выход в меню", new Vector2(0, 400), Color.Red);
-
-
-
                         break;
                     }
             }

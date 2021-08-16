@@ -54,6 +54,7 @@
     <Compile Include="Logic\Level.cs" />
     <Compile Include="Logic\Object.cs" />
     <Compile Include="Logic\Scene.cs" />
+    <Compile Include="Controllers\SceneController.cs" />
     <Compile Include="Logic\Speedometer.cs" />
     <Compile Include="Logic\SwitchBox.cs" />
     <Compile Include="Logic\Tile.cs" />

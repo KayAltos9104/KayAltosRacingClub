@@ -35,7 +35,7 @@ namespace KARC
 
         Song song;
         Song[] musicList;
-        Dictionary<string, Scene> scenesDict = new Dictionary<string, Logic.Scene>();
+        Dictionary<string, Scene> scenesDict = new Dictionary<string, Scene>();
 
         public static int windoWidth;
         public static int windowHeight;
@@ -69,7 +69,7 @@ namespace KARC
             mode = GameMode.mainMenu;
         }
 
-
+        SceneController sceneController;
 
 
         protected override void Initialize()
@@ -134,15 +134,19 @@ namespace KARC
             texturesDict.Add("CrushedModel8", Content.Load<Texture2D>("carModels/Model8_Crushed"));
 
             texturesDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
+            //===================Создание контроллера
+            sceneController = new SceneController();
             //===================Загрузка начального экрана
-            LoadMainMenu();
-            LoadOptions();                     
+            sceneController.AddScene("MainMenu", LoadMainMenu());
+            sceneController.AddScene("Options", LoadOptions());
+                             
 
             currentSceneKey = "MainMenu";
-            currentScene = scenesDict[currentSceneKey];
+            sceneController.SwitchScene(currentSceneKey);
+            currentScene = sceneController.GetCurrentScene();
         }
 
-        private void LoadMainMenu()
+        private InterfaceMenu LoadMainMenu()
         {
             int[,] map = new int[1, 1];
             scenesDict.Remove("MainMenu");
@@ -183,10 +187,11 @@ namespace KARC
 
             InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200, 10, 9);
             song = Content.Load<Song>("ME");
-            scenesDict.Add("MainMenu", mainMenu);
+            return mainMenu;
+            //scenesDict.Add("MainMenu", mainMenu);
         }
 
-        private void LoadOptions ()
+        private InterfaceMenu LoadOptions ()
         {
             int[,] map = new int[1, 1];
             scenesDict.Remove("Options");
@@ -309,9 +314,10 @@ namespace KARC
                 new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0, Vector2.Zero);
             objList.Add(lblInstructions);
             InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150, 4, 6);
-            scenesDict.Add("Options", Options);
+            //scenesDict.Add("Options", Options);
+            return Options;
         }
-        private void LoadLevel()
+        private Level LoadLevel()
         {
             //Тестовый уровень
             initial = true;
@@ -351,7 +357,7 @@ namespace KARC
             Speedometer playerSpeedometer = new Speedometer(new Vector2(0, shiftY), 0.89f, textureDict);
             objList.Add(playerSpeedometer);
 
-            Animation carExplosion = new Animation(Content.Load<Texture2D>("Animations/boom3"), 128, 128, new Point(8, 8), Vector2.Zero, false);
+            Animation carExplosion = new Animation(texturesDict["explosion"], 128, 128, new Point(8, 8), Vector2.Zero, false);
             carExplosion.scale = 2.0f;
             SoundEffect explosionSound = Content.Load<SoundEffect>("Sound/DeathFlash");
 
@@ -385,9 +391,10 @@ namespace KARC
 
             textureDict.Add("explosion", texturesDict["explosion"]);
             Level testLevel = new Level(map, (int)(texturesDict["Road1"].Height * 0.9), objList, true, textureDict, shiftX + 139, shiftX + 702);
-            scenesDict.Add("level0", testLevel);
+            //scenesDict.Add("level0", testLevel);
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
+            return testLevel;
         }
 
         protected override void LoadContent()
@@ -412,7 +419,9 @@ namespace KARC
         protected override void Update(GameTime gameTime)
         {            
             currentTime += gameTime.ElapsedGameTime.Milliseconds;
-            currentScene = scenesDict[currentSceneKey];             
+
+            currentScene = sceneController.GetCurrentScene();
+                         
             switch (currentSceneKey)
             {
                 case "MainMenu":
@@ -446,15 +455,17 @@ namespace KARC
                                         {
                                             //load = 0;
                                             currentSceneKey = "level0";
-                                            LoadLevel();
-                                            currentScene = scenesDict[currentSceneKey];
+                                            sceneController.AddScene(currentSceneKey, LoadLevel());
+                                            sceneController.SwitchScene(currentSceneKey);                                         
+                                            currentScene = sceneController.GetCurrentScene();
                                             break;
                                         }
                                     case 1:
                                         {
                                             //load = 0;
-                                            currentSceneKey = "Options";
-                                            currentScene = scenesDict[currentSceneKey];
+                                            currentSceneKey = "Options";                                         
+                                            sceneController.SwitchScene(currentSceneKey);
+                                            currentScene = sceneController.GetCurrentScene();
                                             break;
                                         }
                                     case 2:
@@ -597,7 +608,8 @@ namespace KARC
                     }
                 case "level0":
                     {
-                        Level currentLevel = (Level)currentScene;
+                        Level currentLevel = (Level)sceneController.GetCurrentScene();
+
                         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         {
                             currentSceneKey = "MainMenu";
@@ -652,7 +664,9 @@ namespace KARC
                         {
                             if (Keyboard.GetState().IsKeyDown(Keys.R))
                             {
-                                LoadLevel();
+                                sceneController.RemoveScene("level0");
+                                sceneController.AddScene("level0", LoadLevel());
+                                sceneController.SwitchScene("level0");
                             }
                         }
                         curSpeed = (int)System.Math.Abs(Player.Speed.Y * 3.6);
@@ -758,46 +772,8 @@ namespace KARC
 
                             obj.Value.colDraw = new Color(load, load, load);
                             obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
-
-
-                            //if (load >= 255)
-                            //{
-                        //        BackGround title = (BackGround)scenesDict["MainMenu"].objectList[1];
-
-                        //        Vector2 place = InterfaceMenu.GetCoord(12, 10, 29, 50);  
-                        //        for (int i =0; i<gameName.Length;i++)
-                        //        {
-                        //            Vector2 stringLength = Content.Load<SpriteFont>("ManualFont").MeasureString(gameName[i]);
-                        //            title.drawString("Title", gameName[i], new Vector2(place.X - stringLength.X / 2,
-                        //place.Y - stringLength.Y / 2+(int)(stringLength.Y * i*1.7)), new Color(load, 0, 0), spriteBatch);
-                        //        }
-                                
-
-
-                           // }
                         }
-                        /*if (titleLoad != gameName)
-                        {
-                            if (currentTime > period)
-                            {
-                                currentTime = 0;
-                                if (load < 255)
-                                {
-                                    load += 3;
-                                }
-                                else
-                                {
-                                    if (nameIndex <= gameName.Length)
-                                    {
-                                        titleLoad = gameName.Substring(0, nameIndex);
-                                        nameIndex++;
-                                    }
-                                }
-
-                            }
-                        }
-                        else
-                        {*/
+                       
                             period = 300;
                             if (currentTime < period)
                             {
@@ -805,7 +781,7 @@ namespace KARC
                             }
                             else if (currentTime > period && currentTime < 2 * period)
                             {
-                                BackGround pressStart = (BackGround)scenesDict["MainMenu"].objectList[1];
+                                BackGround pressStart = (BackGround)sceneController.GetCurrentScene().objectList[1];
                                 Vector2 place = InterfaceMenu.GetCoord(16, 32, 29, 50);
                                 string s = "Нажмите пробел для выбора";
                                 Vector2 stringLength = Content.Load<SpriteFont>("ManualFont").MeasureString(s);
@@ -816,8 +792,7 @@ namespace KARC
                             else
                             {
                                 currentTime = 0;
-                            }
-                        //}
+                            }                        
                         break;
 
                     }
@@ -829,25 +804,24 @@ namespace KARC
                         {
 
                             obj.Value.colDraw = new Color(load, load, load);
-                            obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
-                            //load += 3;
+                            obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);                            
                         }
                         break;
                     }
                 case "level0"://Можно обобщить
                     {
-                        foreach (var obj in currentScene.objectList)
+                        foreach (var obj in sceneController.GetCurrentScene().objectList)
                         {
                             if (obj.Value.pos.Y > -1500 && obj.Value.pos.Y < 1500)
                                 obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                             if (showhitBox && obj.Value.physical)
                             {
-                                PhysicalObject hb = (Logic.PhysicalObject)obj.Value;
+                                PhysicalObject hb = (PhysicalObject)obj.Value;
                                 spriteBatch.Draw(Content.Load<Texture2D>("hitBoxBlank"), hb.hitBox, null, Color.White, 0.0f, Vector2.Zero, SpriteEffects.None, 0.3f);
                             }                            
                         }
 
-                        Car Player = (Car)currentScene.objectList[playerId];
+                        Car Player = (Car)sceneController.GetCurrentScene().objectList[playerId];
                         int speedKm = -(int)(Player.Speed.Y * 3.6);                       
                         spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить\nEsc - Выход в меню", new Vector2(0, 400), Color.Red);
                         break;

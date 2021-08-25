@@ -12,7 +12,7 @@ namespace KARC.Logic
     {
         public Texture2D arrowImage;
         
-        public Speedometer (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList) : base (_pos, _layer, _loadTextList)
+        public Speedometer (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Scene parentScene) : base (_pos, _layer, _loadTextList, parentScene)
         {
             arrowImage = images.ElementAt(1).Value;
             angle = 180;

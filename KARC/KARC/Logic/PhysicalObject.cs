@@ -41,12 +41,11 @@ namespace KARC.Logic
         }
 
 
-        public PhysicalObject(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _weight) :base(_pos, _layer, _loadTextList)
+        public PhysicalObject(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _weight, Scene parentScene) :base(_pos, _layer, _loadTextList, parentScene)
         {
             physical = true;
             weight = _weight;
             hitBox = new Rectangle((int)pos.X+5, (int)pos.Y+5, currentImage.Width-5, currentImage.Height-5);
-            
         }
 
         public override void Update(int _time)

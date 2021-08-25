@@ -43,7 +43,7 @@ namespace KARC.Logic
 
         Random rnd = new Random();
 
-        public Level (int[,] _map, int _scale, List<Object> _objList, bool _toroidal, Dictionary<string, Texture2D> _textures, int _leftBorder, int _rightBorder) :base(_map, _scale, _objList)
+        public Level (int[,] _map, int _scale, bool _toroidal, Dictionary<string, Texture2D> _textures, int _leftBorder, int _rightBorder) :base(_map, _scale)
         {
             toroidal = _toroidal;
             texturesDict = new Dictionary<string, Texture2D>();
@@ -145,7 +145,7 @@ namespace KARC.Logic
             carTexturesDict.Add("MainModel", texturesDict[_mainKey]);
             carTexturesDict.Add("CrushedModel", texturesDict[_crushedKey]);
             
-            Car car = new Car(new Vector2(_x, _y), 0.2f, carTexturesDict, _speed, 5000, Id, "Civlil");
+            Car car = new Car(new Vector2(_x, _y), 0.2f, carTexturesDict, _speed, 5000, Id, "Civlil", this);
             if (_speed.Y >0)
                 car.orientation = SpriteEffects.FlipVertically;
             Animation carExplosion = new Animation(texturesDict["explosion"], 128, 128, new Point(8, 8), Vector2.Zero, false);

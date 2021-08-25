@@ -45,7 +45,7 @@ namespace KARC.Logic
             }
         }
 
-        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight, string _tag) : base(_pos, _layer, _loadTextList, _weight)
+        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight, string _tag, Scene parentScene) : base(_pos, _layer, _loadTextList, _weight, parentScene)
         {
             Speed = _speed;
             movable = true;
@@ -55,7 +55,7 @@ namespace KARC.Logic
             AI = new LBrain(this);
         }
 
-        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight, int _Id, string _tag) : base(_pos, _layer, _loadTextList, _weight)
+        public Car(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Vector2 _speed, int _weight, int _Id, string _tag, Scene parentScene) : base(_pos, _layer, _loadTextList, _weight, parentScene)
         {
             Speed = _speed;
             movable = true;

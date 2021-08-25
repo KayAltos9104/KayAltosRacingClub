@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace KARC.Logic
 {
-    class InterfaceMenu:Scene
+    class InterfaceMenu : Scene
     {
         Dictionary<int, Button> buttonDict = new Dictionary<int, Button>();
         public int cursor;
@@ -22,9 +22,9 @@ namespace KARC.Logic
         protected int currentTime; //Текущее время игры
         protected int period;
 
-       
+             
 
-        public InterfaceMenu (int[,] _map, int _scale, List<Object> _objList, int _period, int _rows, int _columns) :base(_map, _scale,_objList)
+        public InterfaceMenu(int[,] _map, int _scale, int _period, int _rows, int _columns) : base(_map, _scale)
         {
             cursor = 0;
             rows = _rows;
@@ -32,43 +32,45 @@ namespace KARC.Logic
             rowWidth = Game1.windoWidth / rows;
             colWidth = Game1.windowHeight / columns;
 
-            foreach (var obj in _objList)
-            {                
-                if (obj.GetType()==typeof(Button))
+            foreach (var obj in objectList)
+            {
+                if (obj.GetType() == typeof(Button))
                 {
-                    Button newBut = (Button)obj;
+                    Button newBut = (Button)obj.Value;
                     buttonDict.Add(newBut.tabIndex, newBut);
-                }               
+                }
                 if (obj.GetType() == typeof(SwitchBox))
                 {
-                    SwitchBox newBut = (SwitchBox)obj;
+                    SwitchBox newBut = (SwitchBox)obj.Value;
                     buttonDict.Add(newBut.tabIndex, newBut);
-                }                
+                }
             }
             maxCursor = buttonDict.Count;
-            period = _period;           
+            period = _period;
         }
 
-        public static Vector2 GetCoord (int row, int column, int _rows, int _columns)
+        public static Vector2 GetCoord(int row, int column, int _rows, int _columns)
         {
             return new Vector2(row * (Game1.windoWidth / _rows), column * (Game1.windowHeight / _columns));
         }
-        public Vector2 GetCoord (int row, int column)//TODO: Сделать проверку
+        public Vector2 GetCoord(int row, int column)//TODO: Сделать проверку
         {
             return new Vector2(row * rowWidth, column * colWidth);
         }
-        public override void updateScene(Keys key, int _time)
-        {           
-                currentTime = 0;
-                
-                if (key == Keys.Down)
+        public override void updateScene(int _time)
+        {
+            currentTime = 0;
+            var keysArray = GetPressedButtons();
+            if (keysArray != null&& keysArray.Length>1)
+            {
+                if (keysArray[0] == Keys.Down)
                 {
                     cursor++;
                     if (cursor >= maxCursor)
 
                         cursor = 0;
                 }
-                if (key == Keys.Up)
+                if (keysArray[0] == Keys.Up)
                 {
                     cursor--;
                     if (cursor < 0)
@@ -80,8 +82,10 @@ namespace KARC.Logic
                         but.Value.check = true;
                     else
                         but.Value.check = false;
-                }           
-            base.updateScene(key, _time);            
+                }
+            }
+            
+            base.updateScene(_time);
         }
     }
 }

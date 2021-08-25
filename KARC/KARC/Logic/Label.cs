@@ -11,7 +11,7 @@ namespace KARC.Logic
     class Label:SwitchBox
     {
         protected Vector2 sizePoint;
-        public Label(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _tabIndex, SpriteFont _font, string[] _valuesArray, int _currentIndex, Vector2 _sizePoint) : base(_pos, _layer, _loadTextList, _tabIndex, _font, _valuesArray, _currentIndex)
+        public Label(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, int _tabIndex, SpriteFont _font, string[] _valuesArray, int _currentIndex, Vector2 _sizePoint, Scene parentScene) : base(_pos, _layer, _loadTextList, _tabIndex, _font, _valuesArray, _currentIndex, parentScene)
         {
             sizePoint = _sizePoint;
         }

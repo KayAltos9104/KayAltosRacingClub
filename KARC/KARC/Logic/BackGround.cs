@@ -14,7 +14,7 @@ namespace KARC.Logic
         protected bool isSized=false;
         protected Vector2 sizePoint;
 
-        public BackGround(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, bool isSized, Vector2 _sizePoint) : base(_pos, _layer, _loadTextList)
+        public BackGround(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, bool isSized, Vector2 _sizePoint, Scene parentScene) : base(_pos, _layer, _loadTextList, parentScene)
         { 
             this.isSized = isSized;
             sizePoint = _sizePoint;
@@ -26,7 +26,7 @@ namespace KARC.Logic
             }
         }
 
-        public BackGround (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, bool isSized, Dictionary<string, SpriteFont> _fontDict, Vector2 _sizePoint) :base (_pos,_layer,_loadTextList)
+        public BackGround (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, bool isSized, Dictionary<string, SpriteFont> _fontDict, Vector2 _sizePoint, Scene parentScene) :base (_pos,_layer,_loadTextList, parentScene)
         {
             this.isSized = isSized;
             sizePoint = _sizePoint;

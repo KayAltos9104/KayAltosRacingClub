@@ -31,7 +31,7 @@ namespace KARC
         public static int windowHeight;
         bool initial = true;
 
-        delegate void PushAction(Keys key, int time);
+        delegate void PushAction(int time);
         bool pushed = false;
         int currentTimePushed;
         int periodPushed;
@@ -138,6 +138,8 @@ namespace KARC
         {
             int[,] map = new int[1, 1];
             scenesDict.Remove("MainMenu");
+            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, 200, 10, 9);
+
             List<Object> objList = new List<Object>();
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("background", texturesDict["MenuBackGround"]);
@@ -147,33 +149,34 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, true, fontDict, new Vector2(windoWidth, windowHeight));
-            objList.Add(backGround);
+            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, true, fontDict, new Vector2(windoWidth, windowHeight), mainMenu);
+            
+            mainMenu.AddObject(backGround);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Start_Select"]);
             textureDict.Add("dark", texturesDict["StartButton"]);
             Vector2 place = InterfaceMenu.GetCoord(16, 17, 29, 50);
-            Button btnStart = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 0);
+            Button btnStart = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 0, mainMenu);
             btnStart.check = true;
-            objList.Add(btnStart);
+            mainMenu.AddObject(btnStart);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Options_Select"]);
             textureDict.Add("dark", texturesDict["OptionsButton"]);
             place = InterfaceMenu.GetCoord(16, 21, 29, 50);
-            Button btnOptions = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 1);
-            objList.Add(btnOptions);
+            Button btnOptions = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 1, mainMenu);
+            mainMenu.AddObject(btnOptions);
 
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Exit_Select"]);
             textureDict.Add("dark", texturesDict["ExitButton"]);
             place = InterfaceMenu.GetCoord(16, 25, 29, 50);
-            Button btnExit = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 2);
-            objList.Add(btnExit);
+            Button btnExit = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 2, mainMenu);
+            mainMenu.AddObject(btnExit);
 
-            InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200, 10, 9);
+            
             song = Content.Load<Song>("ME");
             return mainMenu;
         }
@@ -184,6 +187,8 @@ namespace KARC
             scenesDict.Remove("Options");
 
             List<Object> objList = new List<Object>();
+            InterfaceMenu Options = new InterfaceMenu(map, 600, 150, 4, 6);
+
             Dictionary<string, Texture2D> textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("background", texturesDict["Garage_Options"]);
 
@@ -192,8 +197,8 @@ namespace KARC
             fontDict.Add("Title", gameName);
             fontDict.Add("ManualFont", Content.Load<SpriteFont>("ManualFont"));
 
-            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, true, fontDict, new Vector2(windoWidth, windowHeight));
-            objList.Add(backGround);
+            BackGround backGround = new BackGround(Vector2.Zero, 1.0f, textureDict, true, fontDict, new Vector2(windoWidth, windowHeight),Options);
+            Options.AddObject(backGround);
 
             //Настройки экрана
             textureDict = new Dictionary<string, Texture2D>();
@@ -210,17 +215,17 @@ namespace KARC
             Vector2 place = InterfaceMenu.GetCoord(21, 2, 29, 51);
             SwitchBox swbScreen = new SwitchBox(new Vector2(place.X, place.Y),
                 0.9f, textureDict, 0, Content.Load<SpriteFont>("ManualFont"),
-                screenArray, screenIndex);
+                screenArray, screenIndex, Options);
             swbScreen.check = true;
-            objList.Add(swbScreen);
+            Options.AddObject(swbScreen);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Table"]);
             place = InterfaceMenu.GetCoord(13, 2, 29, 51);
             Vector2 tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbScreen.currentImage.Height));
             Label lblScreen = new Label(place, 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"),
-                new string[] { "Screen Resolution" }, 0, tableSize);
-            objList.Add(lblScreen);
+                new string[] { "Screen Resolution" }, 0, tableSize, Options);
+            Options.AddObject(lblScreen);
 
             //Настройки оконного/полноэкранного режима
             textureDict = new Dictionary<string, Texture2D>();
@@ -234,15 +239,16 @@ namespace KARC
                 fullScreenIndex = 1;
             place = InterfaceMenu.GetCoord(21, 6, 29, 51);
             SwitchBox swbFullScreen = new SwitchBox(place, 0.9f, textureDict, 1,
-                Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No" }, fullScreenIndex);
-            objList.Add(swbFullScreen);
+                Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No" }, fullScreenIndex, Options);
+            Options.AddObject(swbScreen);
 
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Table"]);
             place = InterfaceMenu.GetCoord(13, 6, 29, 51);
-            Label lblScreenFull = new Label(place, 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), new string[] { "Fullscreen" }, 0, tableSize);
-            objList.Add(lblScreenFull);
+            Label lblScreenFull = new Label(place, 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), 
+                new string[] { "Fullscreen" }, 0, tableSize, Options);
+            Options.AddObject(lblScreenFull);
 
             //Настройки громкости музыки
             textureDict = new Dictionary<string, Texture2D>();
@@ -258,14 +264,15 @@ namespace KARC
             }
             place = InterfaceMenu.GetCoord(21, 10, 29, 51);
             SwitchBox swbMusic = new SwitchBox(place, 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"),
-                volumeArray, volumeIndex);
-            objList.Add(swbMusic);
+                volumeArray, volumeIndex, Options);
+            Options.AddObject(swbMusic);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Table"));
             place = InterfaceMenu.GetCoord(13, 10, 29, 51);
-            Label lblMusic = new Label(place, 0.9f, textureDict, 8, Content.Load<SpriteFont>("ManualFont"), new string[] { "Music Volume" }, 0, tableSize);
-            objList.Add(lblMusic);
+            Label lblMusic = new Label(place, 0.9f, textureDict, 8, Content.Load<SpriteFont>("ManualFont"), 
+                new string[] { "Music Volume" }, 0, tableSize, Options);
+            Options.AddObject(lblMusic);
 
 
             //Кнопка "Принять изменения"
@@ -273,16 +280,16 @@ namespace KARC
             textureDict.Add("light", Content.Load<Texture2D>("ApplyChanges_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("ApplyChanges_Button"));
             place = InterfaceMenu.GetCoord(21, 14, 29, 51);
-            Button btnApplyChanges = new Button(place, 0.9f, textureDict, 3);
-            objList.Add(btnApplyChanges);
+            Button btnApplyChanges = new Button(place, 0.9f, textureDict, 3,Options);
+            Options.AddObject(btnApplyChanges);
 
             //Кнопка "Вернуться"
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("BackButton_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("BackButton"));
             place = InterfaceMenu.GetCoord(21, 18, 29, 51);
-            Button btnBack = new Button(place, 0.9f, textureDict, 4);
-            objList.Add(btnBack);
+            Button btnBack = new Button(place, 0.9f, textureDict, 4, Options);
+            Options.AddObject(btnBack);
 
             //Рисунок планшета и инструкции на нем
             textureDict = new Dictionary<string, Texture2D>();
@@ -290,17 +297,16 @@ namespace KARC
             textureDict.Add("dark", Content.Load<Texture2D>("Planhset2"));
             Vector2 planshetActSize = new Vector2((float)(windoWidth * 0.5), (float)(windowHeight * 0.45));
             place = InterfaceMenu.GetCoord(14, 34, 29, 51);
-            BackGround Planshet = new BackGround(place, 0.95f, textureDict, true, planshetActSize);
-            objList.Add(Planshet);
+            BackGround Planshet = new BackGround(place, 0.95f, textureDict, true, planshetActSize, Options);
+            Options.AddObject(Planshet);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
             textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
             place = InterfaceMenu.GetCoord(75, 44, 100, 51);
             Label lblInstructions = new Label(place, 0.9f, textureDict, 5, Content.Load<SpriteFont>("ManualFont"),
-                new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0, Vector2.Zero);
-            objList.Add(lblInstructions);
-            InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150, 4, 6);
+                new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0, Vector2.Zero, Options);
+            Options.AddObject(lblInstructions);
             return Options;
         }
         private Level LoadLevel()
@@ -315,13 +321,17 @@ namespace KARC
             objList.Clear();
             textureDict.Clear();
             textureDict.Add("Road", Content.Load<Texture2D>("mapTiles/Road1"));
-
             int shiftX = windoWidth / 2 - textureDict["Road"].Width / 2;
+            textureDict.Add("Speedometer", texturesDict["Speedometer1"]);
+            int shiftY = windowHeight - textureDict["Speedometer"].Height;
+
+            Level testLevel = new Level(map, (int)(texturesDict["Road1"].Height * 0.9),true, textureDict, shiftX + 139, shiftX + 702);
+            
             for (int i = 0; i < map.GetLength(1); i++)
             {
                 if (map[0, i] != 0)
                 {
-                    objList.Add(new BackGround(new Vector2(shiftX, i * (int)(textureDict["Road"].Height * 0.9)), 0.9f, textureDict, false, new Vector2(windoWidth, windowHeight)));
+                    testLevel.AddObject(new BackGround(new Vector2(shiftX, i * (int)(textureDict["Road"].Height * 0.9)), 0.9f, textureDict, false, new Vector2(windoWidth, windowHeight), testLevel));
 
                 }
             }
@@ -331,7 +341,7 @@ namespace KARC
             {
                 if (map[0, i] != 0)
                 {
-                    objList.Add(new BackGround(new Vector2(0, i * (int)(windowHeight * 0.9)), 0.91f, textureDict, true, new Vector2(windoWidth, windowHeight)));
+                    testLevel.AddObject(new BackGround(new Vector2(0, i * (int)(windowHeight * 0.9)), 0.91f, textureDict, true, new Vector2(windoWidth, windowHeight), testLevel));
 
                 }
             }
@@ -339,9 +349,9 @@ namespace KARC
             textureDict.Clear();
             textureDict.Add("Speedometer", texturesDict["Speedometer1"]);
             textureDict.Add("Arrow", texturesDict["Speedometer1_Arrow"]);
-            int shiftY = windowHeight - textureDict["Speedometer"].Height;
-            Speedometer playerSpeedometer = new Speedometer(new Vector2(0, shiftY), 0.89f, textureDict);
-            objList.Add(playerSpeedometer);
+            
+            Speedometer playerSpeedometer = new Speedometer(new Vector2(0, shiftY), 0.89f, textureDict, testLevel);
+            testLevel.AddObject(playerSpeedometer);
 
             Animation carExplosion = new Animation(texturesDict["explosion"], 128, 128, new Point(8, 8), Vector2.Zero, false);
             carExplosion.scale = 2.0f;
@@ -352,11 +362,11 @@ namespace KARC
             textureDict.Add("MainModel", texturesDict["MainModel"]);
             textureDict.Add("CrushedModel", texturesDict["CrushedModel"]);
             Vector2 place = InterfaceMenu.GetCoord(0, 0, 100, 100);
-            Car Player = new Car(place, 0.2f, textureDict, new Vector2(0, 0), 5000, "Player");
+            Car Player = new Car(place, 0.2f, textureDict, new Vector2(0, 0), 5000, "Player", testLevel);
             Player.player = true;
             Player.animationDict.Add("explosion", carExplosion);
             Player.soundEffectsDict.Add("explosion", explosionSound);
-            objList.Add(Player);
+            testLevel.AddObject(Player);
 
             //Загрузка текстур моделей машин
             textureDict.Clear();
@@ -375,9 +385,8 @@ namespace KARC
             textureDict.Add("MainModel8", texturesDict["MainModel8"]);
             textureDict.Add("CrushedModel8", texturesDict["CrushedModel8"]);
 
-            textureDict.Add("explosion", texturesDict["explosion"]);
-            Level testLevel = new Level(map, (int)(texturesDict["Road1"].Height * 0.9), objList, true, textureDict, shiftX + 139, shiftX + 702);
-            //scenesDict.Add("level0", testLevel);
+            textureDict.Add("explosion", texturesDict["explosion"]);         
+           
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
             return testLevel;
@@ -476,13 +485,13 @@ namespace KARC
                         {
                             if (Keyboard.GetState().IsKeyDown(Keys.Up))
                             {
-                                currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                                currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
                                 pushed = true;
                                 currentTimePushed = 0;
                             }
                             else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                             {
-                                currentForm.updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                                currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
                                 pushed = true;
                                 currentTimePushed = 0;
                             }
@@ -588,7 +597,7 @@ namespace KARC
                 case "level0":
                     {
                         Level currentLevel = (Level)sceneController.GetCurrentScene();
-
+                        
                         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         {                          
                             sceneController.SwitchScene("MainMenu");
@@ -600,6 +609,9 @@ namespace KARC
                             currentLevel.objectList[playerId].pos = InterfaceMenu.GetCoord(50, 70, 100, 100);
                             initial = false;
                         }
+
+
+
 
                         Car Player = (Car)currentLevel.objectList[playerId];
                         if (Player.live)
@@ -619,7 +631,6 @@ namespace KARC
                                     Player.Speed += new Vector2(0, -Player.acceleration);
                                     pushed = true;
                                 }
-
                             }
                             if (Keyboard.GetState().IsKeyDown(Keys.Right))
                             {
@@ -722,7 +733,7 @@ namespace KARC
             PushAction act = p;
             if (!pushed)
             {
-                act(k, t);
+                act(t);
                 pushed = true;
                 currentTimePushed = 0;
             }

@@ -16,6 +16,7 @@ namespace KARC.Logic
         protected int[,] map;//Клетки карты (одна клетка, по идее, один экран)
         protected int scale;// Масштаб одного тайла(клетки) карты
         public int Id=1;
+        private Keys [] _pushedButtons;//Нажатые клавиши в сцене
 
         //public Song song;
 
@@ -31,27 +32,44 @@ namespace KARC.Logic
             
             foreach (var obj in _objList)
             {
-                obj.id = Id;
-                objectList.Add(Id,obj);
-                if (obj.player)
-                    Game1.playerId = Id;
-                Id++;
-            }   
-            
+                AddObject(obj);
+            }  
+        }
+
+        public Scene (int[,] _map, int _scale)
+        {
+            map = new int[_map.GetLength(0), _map.GetLength(1)];
+            for (int y = 0; y < map.GetLength(1); y++)
+                for (int x = 0; x < map.GetLength(0); x++)
+                    map[x, y] = _map[x, y];
+
+            scale = _scale;
+            objectList = new Dictionary<int, Object>();
+        }
+
+        public void AddObject (Object aObject)
+        {
+            aObject.id = Id;
+            objectList.Add(Id, aObject);
+            if (aObject.player)
+                Game1.playerId = Id;
+            Id++;
         }
 
         public virtual void updateScene(int _time)
         {
+            _pushedButtons = Keyboard.GetState().GetPressedKeys();  
             foreach (var obj in objectList)
                 obj.Value.Update(_time);
         }
-
-        public virtual void updateScene (Keys key, int _time)
-        {
-            foreach (var obj in objectList)
-                obj.Value.Update(key, _time);           
+        
+        public Keys[] GetPressedButtons()
+        {   if (_pushedButtons!=null)
+                return (Keys[])_pushedButtons.Clone();
+            else
+                return null;
         }
-
+           
         public void scroll (Vector2 _shift)
         {
             foreach (var obj in objectList)

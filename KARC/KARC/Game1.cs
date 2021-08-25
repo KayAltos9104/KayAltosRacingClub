@@ -24,54 +24,45 @@ namespace KARC
         Dictionary<string, Texture2D> texturesDict;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        delegate void PushAction(Keys key, int time);
         SoundEffect soundEffect;
-
         public static System.Random rnd = new System.Random();
-
-        public static GameMode mode;
-        string currentSceneKey;
-        Scene currentScene;
-
-        Song song;
-        Song[] musicList;
-        Dictionary<string, Scene> scenesDict = new Dictionary<string, Scene>();
-
+        
         public static int windoWidth;
         public static int windowHeight;
+        bool initial = true;
 
-        string titleLoad = "";
-        int nameIndex = 1;
-
-        public static int currentTime = 0;
-        bool songSwitched = false;
-
-
-        bool showhitBox = false;
-        public static int playerId;
-        public static int curSpeed;
+        delegate void PushAction(Keys key, int time);
         bool pushed = false;
         int currentTimePushed;
         int periodPushed;
 
+
+        public static GameMode mode;
+        
+        Song song;
+        Song[] musicList;
+
+
+        bool showhitBox = false;
+
+        public static int currentTime = 0; 
+        
+        public static int playerId;
+        public static int curSpeed; 
         int currentTimeforAccel;
         int periodForAccel;
 
         SpriteFont gameFont;
-        bool initial = true;
 
+        Dictionary<string, Scene> scenesDict = new Dictionary<string, Scene>();
+        SceneController sceneController;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content/Resources";
             texturesDict = new Dictionary<string, Texture2D>();
-
             mode = GameMode.mainMenu;
         }
-
-        SceneController sceneController;
-
-
         protected override void Initialize()
         {
             base.Initialize();
@@ -139,11 +130,8 @@ namespace KARC
             //===================Загрузка начального экрана
             sceneController.AddScene("MainMenu", LoadMainMenu());
             sceneController.AddScene("Options", LoadOptions());
-
-
-            currentSceneKey = "MainMenu";
-            sceneController.SwitchScene(currentSceneKey);
-            currentScene = sceneController.GetCurrentScene();
+            
+            sceneController.SwitchScene("MainMenu");
         }
 
         private InterfaceMenu LoadMainMenu()
@@ -188,7 +176,6 @@ namespace KARC
             InterfaceMenu mainMenu = new InterfaceMenu(map, 600, objList, 200, 10, 9);
             song = Content.Load<Song>("ME");
             return mainMenu;
-            //scenesDict.Add("MainMenu", mainMenu);
         }
 
         private InterfaceMenu LoadOptions()
@@ -314,7 +301,6 @@ namespace KARC
                 new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0, Vector2.Zero);
             objList.Add(lblInstructions);
             InterfaceMenu Options = new InterfaceMenu(map, 600, objList, 150, 4, 6);
-            //scenesDict.Add("Options", Options);
             return Options;
         }
         private Level LoadLevel()
@@ -418,15 +404,13 @@ namespace KARC
         }
         protected override void Update(GameTime gameTime)
         {
-            currentTime += gameTime.ElapsedGameTime.Milliseconds;
+            currentTime += gameTime.ElapsedGameTime.Milliseconds;  
 
-            currentScene = sceneController.GetCurrentScene();
-
-            switch (currentSceneKey)
+            switch (sceneController.GetCurrentSceneKey())
             {
                 case "MainMenu":
                     {
-                        InterfaceMenu currentForm = (InterfaceMenu)currentScene;
+                        InterfaceMenu currentForm = (InterfaceMenu)sceneController.GetCurrentScene();
                         currentTimePushed += gameTime.ElapsedGameTime.Milliseconds;
 
                         if (currentTimePushed > periodPushed)
@@ -454,18 +438,16 @@ namespace KARC
                                     case 0:
                                         {
                                             //load = 0;
-                                            currentSceneKey = "level0";
+                                            string currentSceneKey = "level0";
                                             sceneController.AddScene(currentSceneKey, LoadLevel());
-                                            sceneController.SwitchScene(currentSceneKey);
-                                            currentScene = sceneController.GetCurrentScene();
+                                            sceneController.SwitchScene(currentSceneKey);                                            
                                             break;
                                         }
                                     case 1:
                                         {
                                             //load = 0;
-                                            currentSceneKey = "Options";
-                                            sceneController.SwitchScene(currentSceneKey);
-                                            currentScene = sceneController.GetCurrentScene();
+                                            string currentSceneKey = "Options";
+                                            sceneController.SwitchScene(currentSceneKey);                                          
                                             break;
                                         }
                                     case 2:
@@ -484,7 +466,7 @@ namespace KARC
                     }
                 case "Options":
                     {
-                        InterfaceMenu currentForm = (InterfaceMenu)currentScene;
+                        InterfaceMenu currentForm = (InterfaceMenu)sceneController.GetCurrentScene();
                         currentTimePushed += gameTime.ElapsedGameTime.Milliseconds;
                         if (currentTimePushed > periodPushed)
                         {
@@ -519,19 +501,19 @@ namespace KARC
                                 {
                                     case 0:
                                         {
-                                            SwitchBox s = (SwitchBox)currentScene.objectList[2];//TODO: Да-да, я знаю
+                                            SwitchBox s = (SwitchBox)sceneController.GetCurrentScene().objectList[2];//TODO: Да-да, я знаю
                                             s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                             break;
                                         }
                                     case 1:
                                         {
-                                            SwitchBox s = (SwitchBox)currentScene.objectList[4];//TODO: Да-да, я знаю
+                                            SwitchBox s = (SwitchBox)sceneController.GetCurrentScene().objectList[4];//TODO: Да-да, я знаю
                                             s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                             break;
                                         }
                                     case 2:
                                         {
-                                            SwitchBox s = (SwitchBox)currentScene.objectList[6];//TODO: Да-да, я знаю
+                                            SwitchBox s = (SwitchBox)sceneController.GetCurrentScene().objectList[6];//TODO: Да-да, я знаю
                                             s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
                                             break;
                                         }
@@ -546,7 +528,7 @@ namespace KARC
                                 {
                                     case 3://TODO: Да-да, это крайне плохо!
                                         {
-                                            SwitchBox s = (SwitchBox)currentScene.objectList[2];
+                                            SwitchBox s = (SwitchBox)sceneController.GetCurrentScene().objectList[2];
                                             int[] screenDimension;
                                             if (SwitchBox.ParseValue(s.GetValue(), out screenDimension))
                                             {
@@ -564,7 +546,7 @@ namespace KARC
                                                 }
                                             }
 
-                                            s = (SwitchBox)currentScene.objectList[4];
+                                            s = (SwitchBox)sceneController.GetCurrentScene().objectList[4];
                                             bool fullScreen;
                                             if (SwitchBox.ParseValue(s.GetValue(), out fullScreen))
                                             {
@@ -576,7 +558,7 @@ namespace KARC
 
                                             }
 
-                                            s = (SwitchBox)currentScene.objectList[6];
+                                            s = (SwitchBox)sceneController.GetCurrentScene().objectList[6];
                                             float musicVolume;
                                             if (SwitchBox.ParseValue(s.GetValue(), out musicVolume))
                                             {
@@ -586,12 +568,9 @@ namespace KARC
                                             break;
                                         }
                                     case 4:
-                                        {
-                                            //load = 0;
-                                            titleLoad = "";
-                                            nameIndex = 1;
-                                            currentSceneKey = "MainMenu";
-                                            currentScene = scenesDict[currentSceneKey];
+                                        {                                            
+                                            string currentSceneKey = "MainMenu";
+                                            sceneController.SwitchScene(currentSceneKey);
                                             break;
                                         }
 
@@ -611,9 +590,8 @@ namespace KARC
                         Level currentLevel = (Level)sceneController.GetCurrentScene();
 
                         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                        {
-                            currentSceneKey = "MainMenu";
-                            currentScene = scenesDict[currentSceneKey];
+                        {                          
+                            sceneController.SwitchScene("MainMenu");
                         }
                         //Управление машинкой========================================================
                         if (initial)
@@ -758,7 +736,7 @@ namespace KARC
             //spriteBatch.Begin();
             if (load > 255)
                 load = 255;//TODO: сделать свойство!
-            switch (currentSceneKey)
+            switch (sceneController.GetCurrentSceneKey())
             {
                 case "MainMenu":
                     {
@@ -767,9 +745,8 @@ namespace KARC
 
                         string[] gameName = new string[] { "       K.A.R.C.", "Adrenaline Racing" };
 
-                        foreach (var obj in currentScene.objectList)
+                        foreach (var obj in sceneController.GetCurrentScene().objectList)
                         {
-
                             obj.Value.colDraw = new Color(load, load, load);
                             obj.Value.drawObject(spriteBatch, gameTime.ElapsedGameTime.Milliseconds);
                         }
@@ -800,7 +777,7 @@ namespace KARC
                     {
                         currentTime += gameTime.ElapsedGameTime.Milliseconds;
 
-                        foreach (var obj in currentScene.objectList)
+                        foreach (var obj in sceneController.GetCurrentScene().objectList)
                         {
 
                             obj.Value.colDraw = new Color(load, load, load);

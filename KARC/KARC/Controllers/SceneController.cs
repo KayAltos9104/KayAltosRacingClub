@@ -11,6 +11,7 @@ namespace KARC.Logic
     {
         Dictionary<string, Scene> _scenesDict;
         Scene _currentScene;
+        string _currentSceneKey;
 
         public SceneController()
         {
@@ -20,6 +21,7 @@ namespace KARC.Logic
         public SceneController (Dictionary<string, Scene> scenesDict, string initialScene)
         {
             _scenesDict = scenesDict;
+            _currentSceneKey = initialScene;
             SwitchScene(initialScene);
         }
 
@@ -38,11 +40,17 @@ namespace KARC.Logic
             return _currentScene;
         }
 
-        public void SwitchScene (string sceneKey) //Потом надо переделать, чтобы ключ получали прямо внутри контроллера
+        public string GetCurrentSceneKey()
+        {
+            return _currentSceneKey;
+        }
+
+        public void SwitchScene (string sceneKey)
         {
             try
             {
                 _currentScene = _scenesDict[sceneKey];
+                _currentSceneKey = sceneKey;
             }
             catch
             {

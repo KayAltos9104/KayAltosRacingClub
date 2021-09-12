@@ -14,9 +14,8 @@ namespace KARC.Logic
         protected SpriteFont font;
         protected string[] valuesArray;
         protected int currentIndex;
-        public SwitchBox(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList,  int _tabIndex, SpriteFont _font, string [] _valuesArray, int _currentIndex, Scene parentScene) : base(_pos, _layer, _loadTextList, _tabIndex, parentScene)
-        {
-            tabIndex = _tabIndex;
+        public SwitchBox(Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList,  SpriteFont _font, string [] _valuesArray, int _currentIndex, Scene parentScene) : base(_pos, _layer, _loadTextList, parentScene)
+        {            
             font = _font;            
             period = 100;
             valuesArray = new string[_valuesArray.Length];

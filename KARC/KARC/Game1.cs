@@ -157,7 +157,7 @@ namespace KARC
             textureDict.Add("light", texturesDict["Start_Select"]);
             textureDict.Add("dark", texturesDict["StartButton"]);
             Vector2 place = InterfaceMenu.GetCoord(16, 17, 29, 50);
-            Button btnStart = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 0, mainMenu);
+            Button btnStart = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, mainMenu);
             btnStart.check = true;
             mainMenu.AddObject(btnStart);
 
@@ -165,7 +165,7 @@ namespace KARC
             textureDict.Add("light", texturesDict["Options_Select"]);
             textureDict.Add("dark", texturesDict["OptionsButton"]);
             place = InterfaceMenu.GetCoord(16, 21, 29, 50);
-            Button btnOptions = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 1, mainMenu);
+            Button btnOptions = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, mainMenu);
             mainMenu.AddObject(btnOptions);
 
 
@@ -173,7 +173,7 @@ namespace KARC
             textureDict.Add("light", texturesDict["Exit_Select"]);
             textureDict.Add("dark", texturesDict["ExitButton"]);
             place = InterfaceMenu.GetCoord(16, 25, 29, 50);
-            Button btnExit = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, 2, mainMenu);
+            Button btnExit = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, mainMenu);
             mainMenu.AddObject(btnExit);
 
             
@@ -214,7 +214,7 @@ namespace KARC
             }
             Vector2 place = InterfaceMenu.GetCoord(21, 2, 29, 51);
             SwitchBox swbScreen = new SwitchBox(new Vector2(place.X, place.Y),
-                0.9f, textureDict, 0, Content.Load<SpriteFont>("ManualFont"),
+                0.9f, textureDict, Content.Load<SpriteFont>("ManualFont"),
                 screenArray, screenIndex, Options);
             swbScreen.check = true;
             Options.AddObject(swbScreen);
@@ -223,14 +223,15 @@ namespace KARC
             textureDict.Add("light", texturesDict["Table"]);
             place = InterfaceMenu.GetCoord(13, 2, 29, 51);
             Vector2 tableSize = new Vector2((float)(windoWidth * 0.25), (float)(swbScreen.currentImage.Height));
-            Label lblScreen = new Label(place, 0.9f, textureDict, 6, Content.Load<SpriteFont>("ManualFont"),
-                new string[] { "Screen Resolution" }, 0, tableSize, Options);
+            Label lblScreen = new Label(place, 0.9f, textureDict, Content.Load<SpriteFont>("ManualFont"),
+                new string[] { "Screen Resolution" }, 0, tableSize, Options);         
             Options.AddObject(lblScreen);
 
             //Настройки оконного/полноэкранного режима
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["SwitchBox_Select"]);
             textureDict.Add("dark", texturesDict["SwitchBox"]);
+           
 
             int fullScreenIndex = 0;
             if (graphics.IsFullScreen)
@@ -238,15 +239,15 @@ namespace KARC
             else
                 fullScreenIndex = 1;
             place = InterfaceMenu.GetCoord(21, 6, 29, 51);
-            SwitchBox swbFullScreen = new SwitchBox(place, 0.9f, textureDict, 1,
+            SwitchBox swbFullScreen = new SwitchBox(place, 0.9f, textureDict, 
                 Content.Load<SpriteFont>("ManualFont"), new string[] { "Yes", "No" }, fullScreenIndex, Options);
-            Options.AddObject(swbScreen);
+            Options.AddObject(swbFullScreen);
 
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", texturesDict["Table"]);
             place = InterfaceMenu.GetCoord(13, 6, 29, 51);
-            Label lblScreenFull = new Label(place, 0.9f, textureDict, 7, Content.Load<SpriteFont>("ManualFont"), 
+            Label lblScreenFull = new Label(place, 0.9f, textureDict, Content.Load<SpriteFont>("ManualFont"), 
                 new string[] { "Fullscreen" }, 0, tableSize, Options);
             Options.AddObject(lblScreenFull);
 
@@ -263,14 +264,14 @@ namespace KARC
                 volumeIndex++;
             }
             place = InterfaceMenu.GetCoord(21, 10, 29, 51);
-            SwitchBox swbMusic = new SwitchBox(place, 0.9f, textureDict, 2, Content.Load<SpriteFont>("ManualFont"),
+            SwitchBox swbMusic = new SwitchBox(place, 0.9f, textureDict, Content.Load<SpriteFont>("ManualFont"),
                 volumeArray, volumeIndex, Options);
             Options.AddObject(swbMusic);
 
             textureDict = new Dictionary<string, Texture2D>();
             textureDict.Add("light", Content.Load<Texture2D>("Table"));
             place = InterfaceMenu.GetCoord(13, 10, 29, 51);
-            Label lblMusic = new Label(place, 0.9f, textureDict, 8, Content.Load<SpriteFont>("ManualFont"), 
+            Label lblMusic = new Label(place, 0.9f, textureDict, Content.Load<SpriteFont>("ManualFont"), 
                 new string[] { "Music Volume" }, 0, tableSize, Options);
             Options.AddObject(lblMusic);
 
@@ -280,7 +281,7 @@ namespace KARC
             textureDict.Add("light", Content.Load<Texture2D>("ApplyChanges_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("ApplyChanges_Button"));
             place = InterfaceMenu.GetCoord(21, 14, 29, 51);
-            Button btnApplyChanges = new Button(place, 0.9f, textureDict, 3,Options);
+            Button btnApplyChanges = new Button(place, 0.9f, textureDict, Options);
             Options.AddObject(btnApplyChanges);
 
             //Кнопка "Вернуться"
@@ -288,7 +289,7 @@ namespace KARC
             textureDict.Add("light", Content.Load<Texture2D>("BackButton_Select"));
             textureDict.Add("dark", Content.Load<Texture2D>("BackButton"));
             place = InterfaceMenu.GetCoord(21, 18, 29, 51);
-            Button btnBack = new Button(place, 0.9f, textureDict, 4, Options);
+            Button btnBack = new Button(place, 0.9f, textureDict, Options);
             Options.AddObject(btnBack);
 
             //Рисунок планшета и инструкции на нем
@@ -304,7 +305,7 @@ namespace KARC
             textureDict.Add("light", Content.Load<Texture2D>("hitBoxBlank"));
             textureDict.Add("dark", Content.Load<Texture2D>("hitBoxBlank"));
             place = InterfaceMenu.GetCoord(75, 44, 100, 51);
-            Label lblInstructions = new Label(place, 0.9f, textureDict, 5, Content.Load<SpriteFont>("ManualFont"),
+            Label lblInstructions = new Label(place, 0.9f, textureDict, Content.Load<SpriteFont>("ManualFont"),
                 new string[] { "Press Up and Down arrows to choose", "Right and Left arrows to change value" }, 0, Vector2.Zero, Options);
             Options.AddObject(lblInstructions);
             return Options;

@@ -75,12 +75,8 @@ namespace KARC.Logic
                 SwitchBox newBut = (SwitchBox)aObject;
                 buttonDict.Add(tabIndex, newBut);
                 maxCursor++;
-            }
-            
-            
+            }  
         }
-
-
         public static Vector2 GetCoord(int row, int column, int _rows, int _columns)
         {
             return new Vector2(row * (Game1.windoWidth / _rows), column * (Game1.windowHeight / _columns));
@@ -115,8 +111,7 @@ namespace KARC.Logic
                     else
                         but.Value.check = false;
                 }
-            }
-            
+            }            
             base.updateScene(_time);
         }
     }

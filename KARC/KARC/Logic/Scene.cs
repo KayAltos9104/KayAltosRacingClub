@@ -47,7 +47,7 @@ namespace KARC.Logic
             objectList = new Dictionary<int, Object>();
         }
 
-        public void AddObject (Object aObject)
+        public virtual void AddObject (Object aObject)
         {
             aObject.id = Id;
             objectList.Add(Id, aObject);

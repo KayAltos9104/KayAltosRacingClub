@@ -13,6 +13,7 @@ namespace KARC.Logic
         Dictionary<int, Button> buttonDict = new Dictionary<int, Button>();
         public int cursor;
         int maxCursor;
+        int tabIndex;
 
         int rowWidth;
         int colWidth;
@@ -32,22 +33,53 @@ namespace KARC.Logic
             rowWidth = Game1.windoWidth / rows;
             colWidth = Game1.windowHeight / columns;
 
+            tabIndex = -1;
+
             foreach (var obj in objectList)
             {
+              
                 if (obj.GetType() == typeof(Button))
                 {
+                    tabIndex++;
                     Button newBut = (Button)obj.Value;
-                    buttonDict.Add(newBut.tabIndex, newBut);
+                    buttonDict.Add(tabIndex, newBut);
+                    maxCursor++;
                 }
                 if (obj.GetType() == typeof(SwitchBox))
                 {
+                    tabIndex++;
                     SwitchBox newBut = (SwitchBox)obj.Value;
-                    buttonDict.Add(newBut.tabIndex, newBut);
+                    buttonDict.Add(tabIndex, newBut);
+                    maxCursor++;
                 }
+                
             }
             maxCursor = buttonDict.Count;
             period = _period;
         }
+
+        public override void AddObject(Object aObject)
+        {
+            base.AddObject(aObject);
+           
+            if (aObject.GetType() == typeof(Button))
+            {
+                tabIndex++;
+                Button newBut = (Button)aObject;
+                buttonDict.Add(tabIndex, newBut);
+                maxCursor++;
+            }
+            if (aObject.GetType() == typeof(SwitchBox))
+            {
+                tabIndex++;
+                SwitchBox newBut = (SwitchBox)aObject;
+                buttonDict.Add(tabIndex, newBut);
+                maxCursor++;
+            }
+            
+            
+        }
+
 
         public static Vector2 GetCoord(int row, int column, int _rows, int _columns)
         {
@@ -61,7 +93,7 @@ namespace KARC.Logic
         {
             currentTime = 0;
             var keysArray = GetPressedButtons();
-            if (keysArray != null&& keysArray.Length>1)
+            if (keysArray != null&& keysArray.Length>0)
             {
                 if (keysArray[0] == Keys.Down)
                 {

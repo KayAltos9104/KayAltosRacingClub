@@ -10,8 +10,12 @@ namespace KARC.Logic
 {
     class Button:Object
     {
-        public bool check;//Наведен ли курсор на кнопку
-        public int tabIndex;
+        public bool check;//Наведен ли курсор на кнопку        
+
+        public delegate void Event(string order);
+
+        public Event pushEvent;
+        public string orderKey;
 
         public Button (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Scene parentScene) :base(_pos, _layer, _loadTextList, parentScene)
         {            
@@ -24,6 +28,11 @@ namespace KARC.Logic
                     currentImage = images["light"];
                 else
                     currentImage = images["dark"];  
+        }
+
+        public void PushLaunch ()
+        {
+            pushEvent(orderKey);
         }
     }
 }

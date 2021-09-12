@@ -111,6 +111,19 @@ namespace KARC.Logic
                     else
                         but.Value.check = false;
                 }
+
+                if (keysArray[0] == Keys.Space)
+                {
+                    foreach (var but in buttonDict)
+                    {
+                        if (but.Key == cursor && but.Value.GetType() == typeof(Button))
+                        {
+                            Button activeButton = (Button)but.Value;
+                            activeButton.PushLaunch();
+                        }
+                            
+                    }
+                }
             }            
             base.updateScene(_time);
         }

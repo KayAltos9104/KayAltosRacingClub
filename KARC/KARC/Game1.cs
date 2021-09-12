@@ -159,6 +159,9 @@ namespace KARC
             Vector2 place = InterfaceMenu.GetCoord(16, 17, 29, 50);
             Button btnStart = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, mainMenu);
             btnStart.check = true;
+            btnStart.pushEvent = sceneController.ButtonClick;
+            btnStart.orderKey = "StartGame";
+
             mainMenu.AddObject(btnStart);
 
             textureDict = new Dictionary<string, Texture2D>();
@@ -233,7 +236,7 @@ namespace KARC
             textureDict.Add("dark", texturesDict["SwitchBox"]);
            
 
-            int fullScreenIndex = 0;
+            int fullScreenIndex;
             if (graphics.IsFullScreen)
                 fullScreenIndex = 0;
             else

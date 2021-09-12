@@ -7,8 +7,8 @@ using KARC.Logic;
 
 namespace KARC.Logic
 {
-    class SceneController//Осуществляет управление в сценах
-    {
+    class SceneController//Осуществляет управление сцен
+    {        
         Dictionary<string, Scene> _scenesDict;
         Scene _currentScene;
         string _currentSceneKey;
@@ -57,5 +57,19 @@ namespace KARC.Logic
                 
             }
         }
+
+        public void ButtonClick (string order)
+        {
+            switch (order)
+            {
+                case "StartGame":
+                    {
+                        _currentSceneKey = "level0";                       
+                        SwitchScene(_currentSceneKey);
+                        break;
+                    }
+            }
+        }
+        
     }
 }

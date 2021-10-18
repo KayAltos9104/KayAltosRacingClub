@@ -12,9 +12,9 @@ namespace KARC.Logic
     {
         public bool check;//Наведен ли курсор на кнопку        
 
-        public delegate void Event(string order);
+        public delegate void push(object sender, ButtonEventArgs e);
 
-        public Event pushEvent;
+        public event push Push;
         public string orderKey;
 
         public Button (Vector2 _pos, float _layer, Dictionary<string, Texture2D> _loadTextList, Scene parentScene) :base(_pos, _layer, _loadTextList, parentScene)
@@ -29,10 +29,14 @@ namespace KARC.Logic
                 else
                     currentImage = images["dark"];  
         }
-
-        public void PushLaunch ()
+        public void PushButton()
         {
-            pushEvent(orderKey);
+            Push.Invoke(this, new ButtonEventArgs());
         }
+    }
+
+    class ButtonEventArgs
+    {
+
     }
 }

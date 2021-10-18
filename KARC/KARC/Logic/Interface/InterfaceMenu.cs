@@ -85,6 +85,7 @@ namespace KARC.Logic
         {
             return new Vector2(row * rowWidth, column * colWidth);
         }
+
         public override void updateScene(int _time)
         {
             currentTime = 0;
@@ -113,15 +114,10 @@ namespace KARC.Logic
                 }
 
                 if (keysArray[0] == Keys.Space)
-                {
-                    foreach (var but in buttonDict)
+                {                   
+                    if (buttonDict[cursor].GetType()== typeof(Button))
                     {
-                        if (but.Key == cursor && but.Value.GetType() == typeof(Button))
-                        {
-                            Button activeButton = (Button)but.Value;
-                            activeButton.PushLaunch();
-                        }
-                            
+                        buttonDict[cursor].PushButton();
                     }
                 }
             }            

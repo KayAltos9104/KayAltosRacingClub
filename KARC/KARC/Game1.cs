@@ -1,4 +1,5 @@
 ﻿using KARC.Logic;
+using KARC.Logic.Game;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -159,7 +160,7 @@ namespace KARC
             Vector2 place = InterfaceMenu.GetCoord(16, 17, 29, 50);
             Button btnStart = new Button(new Vector2(place.X - textureDict["light"].Width / 2, place.Y + textureDict["light"].Height / 2), 0.9f, textureDict, mainMenu);
             btnStart.check = true;
-            btnStart.pushEvent = sceneController.ButtonClick;
+            btnStart.Push += sceneController.ButtonClick;
             btnStart.orderKey = "StartGame";
 
             mainMenu.AddObject(btnStart);
@@ -329,7 +330,7 @@ namespace KARC
             textureDict.Add("Speedometer", texturesDict["Speedometer1"]);
             int shiftY = windowHeight - textureDict["Speedometer"].Height;
 
-            Level testLevel = new Level(map, (int)(texturesDict["Road1"].Height * 0.9),true, textureDict, shiftX + 139, shiftX + 702);
+            Level testLevel = new Level0(map, (int)(texturesDict["Road1"].Height * 0.9),true, textureDict, shiftX + 139, shiftX + 702);
             
             for (int i = 0; i < map.GetLength(1); i++)
             {
@@ -600,7 +601,7 @@ namespace KARC
                     }
                 case "level0":
                     {
-                        Level currentLevel = (Level)sceneController.GetCurrentScene();
+                        Level0 currentLevel = (Level0)sceneController.GetCurrentScene();
                         
                         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                         {                          

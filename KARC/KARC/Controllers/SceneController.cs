@@ -58,17 +58,17 @@ namespace KARC.Logic
             }
         }
 
-        public void ButtonClick (string order)
+        public void ButtonClick (object sender, ButtonEventArgs e)
         {
-            switch (order)
-            {
-                case "StartGame":
-                    {
+            //switch (order)
+            //{
+            //    case "StartGame":
+            //        {
                         _currentSceneKey = "level0";                       
                         SwitchScene(_currentSceneKey);
-                        break;
-                    }
-            }
+                        //break;
+            //        }
+            //}
         }
         
     }

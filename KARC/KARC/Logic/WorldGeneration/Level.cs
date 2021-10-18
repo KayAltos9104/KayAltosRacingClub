@@ -7,7 +7,7 @@ using System.Text;
 
 namespace KARC.Logic
 {
-    class Level:Scene
+    abstract class Level:Scene
     {
         Dictionary<string, Texture2D> texturesDict;//Словарь картинок, которые будут использоваться на уровне
 
@@ -38,9 +38,6 @@ namespace KARC.Logic
             }
         }
 
-        //protected List<Rectangle> tileMap;
-        int tileScale;
-
         Random rnd = new Random();
 
         public Level (int[,] _map, int _scale, bool _toroidal, Dictionary<string, Texture2D> _textures, int _leftBorder, int _rightBorder) :base(_map, _scale)
@@ -64,82 +61,10 @@ namespace KARC.Logic
 
         public override void updateScene(int _time)
         {
-            base.updateScene(_time);
-            if (toroidal)
-            {
-                List<int> delObj = new List<int>();
-                foreach (var obj in objectList)
-                {
-                    if (obj.Value.pos.Y>2*scale)
-                    {
-                        if (obj.Value.GetType() == typeof(BackGround))
-                        {
-                            obj.Value.pos.Y = -(map.GetLength(1) - 3) * scale;
-                        }
-                        else
-                        {
-                            delObj.Add(obj.Key);                            
-                        }
-                    }
-
-                    if (obj.Value.pos.Y < -(map.GetLength(1)+1) * scale)
-                    {
-                        if (obj.Value.GetType() == typeof(BackGround))
-                        {
-                            obj.Value.pos.Y = 0;
-                        }
-                        else
-                        {
-                            delObj.Add(obj.Key);
-                            
-                        }
-                    }
-                }
-
-                foreach (var del in delObj)
-                {
-                    objectList.Remove(del);
-                    EnemiesCur--;
-                    
-                }
-
-                for (int i = EnemiesCur; i < enemiesNum; i++)
-                {
-                    int oncoming = rnd.Next(0, 2);
-                    int left = 0;
-                    int right = 0;
-                    Vector2 speed = Vector2.Zero;
-                    if (oncoming == 1)
-                    {
-                        left = oncomingLane[0];
-                        right = oncomingLane[1];
-                        speed = new Vector2(0, rnd.Next(5, 21));
-                    }
-                    else
-                    {
-                        left = lane[0];
-                        right = lane[1];
-                        speed = new Vector2(0, rnd.Next(-20, -5));
-                    }
-
-                    int seed = rnd.Next(2, 9);
-                    string carMainKey = "MainModel" + seed;
-                    string carCrushedKey = "CrushedModel" + seed;
-                    int x = rnd.Next(left, right - texturesDict[carMainKey].Width);
-                    int y = rnd.Next(-(map.GetLength(1) - 1) * scale, -(map.GetLength(1) - 4) * scale);
-
-                    Car car = CarGeneration(x, y, carMainKey, carCrushedKey, speed);
-
-                    objectList.Add(Id, car);
-                    Id++;
-                    EnemiesCur++;
-                }
-            }
-            
-           
+            base.updateScene(_time);    
         }
 
-        private Car CarGeneration (int _x, int _y, string _mainKey, string _crushedKey, Vector2 _speed)
+        protected Car CarGeneration (int _x, int _y, string _mainKey, string _crushedKey, Vector2 _speed)
         {
             Dictionary<string, Texture2D> carTexturesDict = new Dictionary<string, Texture2D>();
             carTexturesDict.Add("MainModel", texturesDict[_mainKey]);
@@ -155,39 +80,9 @@ namespace KARC.Logic
             return car;
         }
 
-        public void initMapGen ()
+        protected virtual void initMapGen ()
         {
-            for (int i = EnemiesCur; i < enemiesNum; i++)
-            {
-                int oncoming = rnd.Next(0, 2);
-                int left = 0;
-                int right = 0;
-                Vector2 speed = Vector2.Zero;
-                if (oncoming == 1)
-                {
-                    left = oncomingLane[0];
-                    right = oncomingLane[1];
-                    speed = new Vector2(0, rnd.Next(5, 21));
-                }
-                else
-                {
-                    left = lane[0];
-                    right = lane[1];
-                    speed = new Vector2(0, rnd.Next(-20, -5));
-                }                 
-                              
-                int seed = rnd.Next(2, 9);
-                string carMainKey = "MainModel" + seed;
-                string carCrushedKey = "CrushedModel" + seed;
-                int x = rnd.Next(left, right - texturesDict[carMainKey].Width);
-                int y = rnd.Next(-(map.GetLength(1) - 1) * scale, -(map.GetLength(1) - 4) * scale);
-
-                Car car = CarGeneration(x, y, carMainKey, carCrushedKey, speed);
-                       
-                objectList.Add(Id,car);
-                Id++;
-                EnemiesCur++;
-            }
+           
         }
     }
 }

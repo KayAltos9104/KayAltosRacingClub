@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using KARC.GameObjsTemplates;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace KARC.ScenesTemplates
 {
@@ -40,6 +41,13 @@ namespace KARC.ScenesTemplates
             foreach (var key in deadObjsKeysList)
             {
                 RemoveObject(key);
+            }
+        }
+        public virtual void DrawScene (SpriteBatch spriteBatch)
+        {
+            foreach (var obj in _objDict)
+            {
+                obj.Value.Draw(spriteBatch);                
             }
         }
     }

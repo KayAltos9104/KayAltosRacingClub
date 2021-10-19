@@ -8,9 +8,10 @@ namespace KARC.Controllers
     static class SceneController
     {
         public static void Update (object sender, KeyBoardEventArgs e)
-        {
+        {            
             if (e.GetPushedButtons()[0] == Keys.Escape)
-                MainCycle.isOff = true;                
+                MainCycle.isOff = true;
+
         }
     }
 }

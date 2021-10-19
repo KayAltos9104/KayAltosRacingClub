@@ -2,25 +2,45 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using KARC.GameObjsTemplates;
 
 namespace KARC.ScenesTemplates
 {
-    abstract class Scene
+    abstract class Scene:IBehaviour
     {
-        private Keys[] _pushedButtons;//Нажатые клавиши в сцене
-        
-        public virtual void Update()
+        Dictionary<int, GameObject> _objDict;
+        private int _id;
+        public Scene ()
         {
-            _pushedButtons = Keyboard.GetState().GetPressedKeys();
-
+            _objDict = new Dictionary<int, GameObject>();
+            _id = 1;
         }
 
-        //private Keys[] GetPressedButtons()
-        //{
-        //    if (_pushedButtons != null)
-        //        return (Keys[])_pushedButtons.Clone();
-        //    else
-        //        return null;
-        //}
+        public void AddObject (GameObject newObj)
+        {
+            _objDict.Add(_id, newObj);
+            _id++;
+        }
+
+        public void RemoveObject (int key)
+        {
+            _objDict.Remove(key);
+            _id--;
+        }
+        public virtual void Update()
+        {
+            List<int> deadObjsKeysList = new List<int>();
+            foreach (var obj in _objDict)
+            {
+                obj.Value.Update();
+                if (obj.Value.Live == false)
+                    deadObjsKeysList.Add(obj.Key);
+            }
+
+            foreach (var key in deadObjsKeysList)
+            {
+                RemoveObject(key);
+            }
+        }
     }
 }

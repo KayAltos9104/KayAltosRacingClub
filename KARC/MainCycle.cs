@@ -12,10 +12,14 @@ namespace KARC
         private SpriteBatch _spriteBatch;
 
         public static bool isOff;
+        public static int TimeElapsedCycle { get; private set;}
+
 
         //Events
         delegate void ButtonHandler(object sender, KeyBoardEventArgs e);
         event ButtonHandler Pushed;
+
+
 
         public MainCycle()
         {
@@ -27,9 +31,7 @@ namespace KARC
         }
 
         protected override void Initialize()
-        {
-            
-
+        { 
             base.Initialize();
 
             Pushed += SceneController.Update;
@@ -47,14 +49,14 @@ namespace KARC
             if (isOff)
                 Exit();
 
-            var pressedKeys = Keyboard.GetState().GetPressedKeys();
+            TimeElapsedCycle = gameTime.ElapsedGameTime.Milliseconds;
 
+            var pressedKeys = Keyboard.GetState().GetPressedKeys();
             if (pressedKeys.Length > 0)
             {
-                Pushed.Invoke(this, new KeyBoardEventArgs(pressedKeys));
+                Pushed.Invoke(this, new KeyBoardEventArgs(pressedKeys, TimeElapsedCycle));
             }
-            
-            
+                        
 
             base.Update(gameTime);
         }
@@ -63,7 +65,7 @@ namespace KARC
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            
 
             base.Draw(gameTime);
         }
@@ -73,14 +75,14 @@ namespace KARC
     class KeyBoardEventArgs
     {
         private Keys[] _pushedButtons;
-
-        public KeyBoardEventArgs (Keys [] pushedButtons)
+        public int ElapsedTime { get; }
+        public KeyBoardEventArgs (Keys [] pushedButtons, int time)
         {
             if (pushedButtons != null)
             {               
                 _pushedButtons = (Keys[])pushedButtons.Clone();
-            }
-                
+                ElapsedTime = time;
+            }                
             else
                 _pushedButtons = null;
         }

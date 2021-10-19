@@ -33,7 +33,7 @@ namespace KARC.ScenesTemplates
             foreach (var obj in _objDict)
             {
                 obj.Value.Update();
-                if (obj.Value.Live == false)
+                if (obj.Value.ToDelete == false)
                     deadObjsKeysList.Add(obj.Key);
             }
 

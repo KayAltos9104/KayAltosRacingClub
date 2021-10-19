@@ -10,8 +10,9 @@ namespace KARC
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private SceneController sceneController;
 
-        public static bool isOff;
+       
         public static int TimeElapsedCycle { get; private set;}
 
 
@@ -27,14 +28,16 @@ namespace KARC
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            isOff = false;
+            
         }
 
         protected override void Initialize()
         { 
             base.Initialize();
-
-            Pushed += SceneController.Update;
+            sceneController = new SceneController();
+            //Здесь надо нагенерировать сцен и добавить в контроллер
+            //sceneController.Initialize();
+            Pushed += sceneController.Update;
         }
 
         protected override void LoadContent()
@@ -46,8 +49,7 @@ namespace KARC
 
         protected override void Update(GameTime gameTime)
         {
-            if (isOff)
-                Exit();
+            
 
             TimeElapsedCycle = gameTime.ElapsedGameTime.Milliseconds;
 

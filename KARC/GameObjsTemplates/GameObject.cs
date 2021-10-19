@@ -7,7 +7,7 @@ namespace KARC.GameObjsTemplates
 {
     abstract class GameObject: IBehaviour
     {
-        public bool Live { get; private set; }
+        public bool ToDelete { get; private set; }
         public virtual void Update ()
         {
 

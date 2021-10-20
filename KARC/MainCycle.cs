@@ -16,6 +16,7 @@ namespace KARC
         public static int windowWidth;
         public static int windowHeight;
 
+        public static bool isLoopOff;
         public static int TimeElapsedCycle { get; private set;}
 
 
@@ -31,13 +32,14 @@ namespace KARC
             Content.RootDirectory = "Content/Resources";
             IsMouseVisible = true;
             
-
             
         }
 
         protected override void Initialize()
         { 
             base.Initialize();
+
+            isLoopOff = false;
 
             _graphics.IsFullScreen = false;
 
@@ -76,7 +78,9 @@ namespace KARC
 
         protected override void Update(GameTime gameTime)
         {
-            
+            if (isLoopOff)
+                Exit();
+
             TimeElapsedCycle = gameTime.ElapsedGameTime.Milliseconds;
 
             var pressedKeys = Keyboard.GetState().GetPressedKeys();

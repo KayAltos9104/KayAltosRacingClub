@@ -26,6 +26,8 @@ namespace KARC.Controllers
             SwitchScene("MainMenu");
             _currentScene.scene.UpdateGraphics(MainCycle.windowWidth, MainCycle.windowHeight);
             _currentScene.scene.InitializeScene();
+            foreach (var scene in _scenesDict)
+                scene.Value.Change += SwitchScene;
         }
 
         public void AddScene(string key, Scene scene)
@@ -45,16 +47,21 @@ namespace KARC.Controllers
        
         private void SwitchScene(string sceneKey)
         {
+            if (sceneKey=="Exit")
+            {
+                MainCycle.isLoopOff = true;
+                return;
+            }
             try
             {
                 _currentScene = (key:sceneKey, scene: _scenesDict[sceneKey]);
             }
             catch
             {
-
+                System.Windows.Forms.MessageBox.Show("Заглушка на начало игры");
             }
         }
-
+      
         public void Update(object sender, KeyBoardEventArgs e)
         {
             pushElapsedTime += e.ElapsedTime;
@@ -90,14 +97,13 @@ namespace KARC.Controllers
                                 }
                         }
 
-
                         break;
                     }
             }
         }
 
         public void RunCycle()
-        {
+        {            
             _currentScene.scene.Update();
         }
 

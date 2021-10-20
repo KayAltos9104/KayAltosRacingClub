@@ -9,6 +9,9 @@ namespace KARC.ScenesTemplates
 {
     abstract class Scene:IBehaviour
     {
+        public delegate void SceneHandler(string scene);
+        public event SceneHandler Change;
+
         protected Dictionary<int, GameObject> _objDict;
         private int _id;
 
@@ -64,6 +67,11 @@ namespace KARC.ScenesTemplates
             {
                 obj.Value.Draw(spriteBatch);                
             }
+        }
+
+        public void SceneChangePerform(string scene)
+        {
+            Change.Invoke(scene);
         }
     }
 }

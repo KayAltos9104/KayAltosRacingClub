@@ -10,6 +10,8 @@ namespace KARC.Prefabs
 {
     class MenuMain : Menu
     {
+        
+        
         public override void InitializeScene()
         {
             base.InitializeScene();
@@ -46,16 +48,17 @@ namespace KARC.Prefabs
 
         private void btnStart_Click(object sender)
         {
-            System.Windows.Forms.MessageBox.Show("Заглушка на начало игры");
+            SceneChangePerform("Level0");
+            
         }
 
         private void btnOptions_Click(object sender)
         {
-            System.Windows.Forms.MessageBox.Show("Заглушка на опции");
+            SceneChangePerform("Options");
         }
         private void btnExit_Click(object sender)
         {
-            System.Windows.Forms.MessageBox.Show("Заглушка на выход");
+            SceneChangePerform("Exit");
         }
     }
 }

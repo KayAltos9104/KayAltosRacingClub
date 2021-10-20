@@ -24,6 +24,8 @@ namespace KARC.Controllers
         public void Initialize()
         {           
             SwitchScene("MainMenu");
+            _currentScene.scene.UpdateGraphics(MainCycle.windowWidth, MainCycle.windowHeight);
+            _currentScene.scene.InitializeScene();
         }
 
         public void AddScene(string key, Scene scene)
@@ -96,7 +98,6 @@ namespace KARC.Controllers
 
         public void RunCycle()
         {
-
             _currentScene.scene.Update();
         }
 

@@ -13,7 +13,9 @@ namespace KARC
         private SpriteBatch _spriteBatch;
         private SceneController sceneController;
 
-       
+        public static int windowWidth;
+        public static int windowHeight;
+
         public static int TimeElapsedCycle { get; private set;}
 
 
@@ -36,10 +38,20 @@ namespace KARC
         protected override void Initialize()
         { 
             base.Initialize();
+
+            _graphics.IsFullScreen = false;
+
+            _graphics.PreferredBackBufferWidth = 1600;
+            _graphics.PreferredBackBufferHeight = 900;
+
+            _graphics.ApplyChanges();
+
+            windowWidth = Window.ClientBounds.Width;
+            windowHeight = Window.ClientBounds.Height;
+
             sceneController = new SceneController();
             //Здесь надо нагенерировать сцен и добавить в контроллер
-            MenuMain mainMenu = new MenuMain();
-            mainMenu.InitializeScene();
+            MenuMain mainMenu = new MenuMain();           
             sceneController.AddScene("MainMenu", mainMenu);
             sceneController.Initialize();
             Pushed += sceneController.Update;

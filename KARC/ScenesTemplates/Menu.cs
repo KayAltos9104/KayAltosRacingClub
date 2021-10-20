@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using KARC.GameObjsTemplates;
 using KARC.GameObjsTemplates.InterfaceObjs;
+using KARC.GameObjsTemplates.InterfaceObjs.Controls;
+using Microsoft.Xna.Framework;
 using static KARC.ScenesTemplates.Menu;
 
 namespace KARC.ScenesTemplates
@@ -13,6 +15,10 @@ namespace KARC.ScenesTemplates
         public event CursorHandler Accept;
         public event CursorHandler ChooseElement;
         public event CursorHandler ChangeProperty;
+
+        protected int _columns;
+        protected int _rows;
+        
 
         Dictionary<int, (string,IObjectUI)> uiDict;
         int _cursor;       
@@ -73,6 +79,34 @@ namespace KARC.ScenesTemplates
             base.Update();            
         }
 
+        
+
+        
+
+        protected void PlaceElement (Control element, int row, int column)
+        {
+            element.ChangePlace(GetCoord(row, column));
+            float stretchCoef = 1.0f*(_windowWidth / _columns)/element.GetImageSize().Item1;
+            var t = element.GetImageSize().Item1;
+            element.Stretch(stretchCoef);
+        }
+        private Vector2 GetCoord (int row, int column)
+        {
+            int x = column * GetColumnWidth();
+            int y = row * GetRowHeight();
+            return new Vector2(x, y);
+        }
+
+        private int GetRowHeight ()
+        {
+            return _windowHeight / _rows;
+        }
+
+        private int GetColumnWidth()
+        {
+            return _windowWidth / _columns;
+        }
+
         private void MoveCursor (CursorDirection dir)
         {
             if (dir == CursorDirection.up)
@@ -90,6 +124,11 @@ namespace KARC.ScenesTemplates
             }
         }
 
+        public override void InitializeScene()
+        {
+            _columns = 1;
+            _rows = 1;
+        }
         public void AcceptPerform(object sender, CursorEventArgs e)
         {
             Accept.Invoke(sender, e);

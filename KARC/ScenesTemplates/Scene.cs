@@ -11,6 +11,10 @@ namespace KARC.ScenesTemplates
     {
         protected Dictionary<int, GameObject> _objDict;
         private int _id;
+
+        protected int _windowWidth;
+        protected int _windowHeight;
+
         public Scene ()
         {
             _objDict = new Dictionary<int, GameObject>();
@@ -21,6 +25,13 @@ namespace KARC.ScenesTemplates
         {
 
         }
+
+        public virtual void UpdateGraphics(int windowWidth, int windowHeight)
+        {
+            _windowHeight = windowHeight;
+            _windowWidth = windowWidth;
+        }
+
         public virtual void AddObject (GameObject newObj)
         {
             _objDict.Add(_id, newObj);

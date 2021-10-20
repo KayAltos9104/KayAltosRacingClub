@@ -24,8 +24,9 @@ namespace KARC.Controllers
         public void Initialize()
         {           
             SwitchScene("MainMenu");
-            _currentScene.scene.UpdateGraphics(MainCycle.windowWidth, MainCycle.windowHeight);
+            _currentScene.scene.UpdateGraphics(MainCycle.windowWidth, MainCycle.windowHeight);//TODO:Избавиться от статики
             _currentScene.scene.InitializeScene();
+
             foreach (var scene in _scenesDict)
                 scene.Value.Change += SwitchScene;
         }

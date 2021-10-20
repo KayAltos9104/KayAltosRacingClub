@@ -90,7 +90,7 @@ namespace KARC
             {
                 Pushed.Invoke(this, new KeyBoardEventArgs(pressedKeys, TimeElapsedCycle));
             }
-
+            //Отладка
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 _graphics.PreferredBackBufferWidth = 1024;

@@ -9,74 +9,59 @@ using static KARC.ScenesTemplates.Menu;
 
 namespace KARC.ScenesTemplates
 {
-    class Menu:Scene
+    class Menu:Scene//Сцена, которая содержит интерфейс
     {
         public delegate void CursorHandler(object sender, CursorEventArgs e);
-        public event CursorHandler Accept;
-        public event CursorHandler ChooseElement;
-        public event CursorHandler ChangeProperty;
+        public event CursorHandler Accept;//Событие подтверждения
+        public event CursorHandler ChooseElement;//Событие изменения выбранного элемента
+        public event CursorHandler ChangeProperty;//Событие изменения параметров выбранного элемента
 
-        protected int _columns;
+        //Количество столбцов и сток разметки
+        protected int _columns; 
         protected int _rows;
         
 
-        Dictionary<int, (string,Control)> _uiDict;//Name, Element
-        int _cursor;       
-        int _tabIndex;
+        Dictionary<int, (string,Control)> _uiDict;//Список элемнтов интерфейса
+        int _cursor;//Текущее положение курсора       
+        int _tabIndex;//Текущее количество элементов интерфейса
         public Menu ()
         {
-            _tabIndex = 0;
-            _uiDict = new Dictionary<int, (string, Control)>();            
             _cursor = 0;
+            _tabIndex = 0;
+            _uiDict = new Dictionary<int, (string, Control)>();    
 
+            //На событие подтверждения стоит активация клика кнопки, если курсор на кнопке
             Accept += (object sender, CursorEventArgs e) =>
             {
-                if (_uiDict[_cursor].Item2.GetType() == typeof(Button)) //Точное соответствие
-                //if (uiDict[_cursor].Item2.GetType() is IObjectUI) 
+                if (_uiDict[_cursor].Item2.GetType() == typeof(Button)) //Точное соответствие                
                 {
                     var btn = (Button)_uiDict[_cursor].Item2;
                     btn.PerformClick();
                 }
             };
 
+            //Если произошло событие изменения, то двигаем курсор
             ChooseElement += (object sender, CursorEventArgs e) =>
             {
                 MoveCursor(e.Dir);
             };
 
         }
-        
-        protected void LoadUI()
+        public override void InitializeScene()
         {
-            
-            foreach (var obj in _objDict)
-            {
-                if(obj.Value is Control)//Включает наследников
-                {                   
-                    AddUI((Control)obj.Value);
-                }
-            }
-        }
-        private void AddUI(Control newUI)
-        {
-            _uiDict.Add(_tabIndex, (newUI.Name, newUI));
-            _tabIndex++;
-           
-        }
-        private void RemoveUI(int index)
-        {
-            _uiDict.Remove(index);
-            _tabIndex--;            
+            _columns = 1;
+            _rows = 1;
         }
 
         public override void Update()
         {
+            //Выключаем состояние выбора на элементах интерфейса и включаем на том, на котором курсор
             foreach (var ui in _uiDict)
             {
                 ui.Value.Item2.IsChoosed = false;
             }
             _uiDict[_cursor].Item2.IsChoosed = true;
-            base.Update();            
+            base.Update();
         }
 
         public override void UpdateGraphics(int windowWidth, int windowHeight)
@@ -87,29 +72,16 @@ namespace KARC.ScenesTemplates
                 PlaceElement(ui.Value.Item2, ui.Value.Item2.Row, ui.Value.Item2.Column);
             }
         }
+        //Разместить элемент интерфейса с учетом его разметки
         protected void PlaceElement (Control element, int row, int column)
         {
-            element.ChangePlace(GetCoord(row, column));
-            float stretchCoef = 1.0f*(_windowWidth / _columns)/element.GetImageSize().Item1;            
-            element.SetPlace(row, column);
-            element.Stretch(stretchCoef);
+            element.ChangePlace(GetCoord(row, column));//Получение координаты из разметки
+            float stretchCoef = 1.0f*(_windowWidth / _columns)/element.GetImageSize().Item1;
+            element.Stretch(stretchCoef);//Растягиваем элемент так, чтобы он уместился во всю ширину столбца
+            element.SetPlace(row, column);//Сохраняем разметку элемента
+            
         }
-        private Vector2 GetCoord (int row, int column)
-        {
-            int x = column * GetColumnWidth();
-            int y = row * GetRowHeight();
-            return new Vector2(x, y);
-        }
-
-        private int GetRowHeight ()
-        {
-            return _windowHeight / _rows;
-        }
-
-        private int GetColumnWidth()
-        {
-            return _windowWidth / _columns;
-        }
+        
 
         private void MoveCursor (CursorDirection dir)
         {
@@ -128,11 +100,46 @@ namespace KARC.ScenesTemplates
             }
         }
 
-        public override void InitializeScene()
+        private Vector2 GetCoord(int row, int column)//Получить векторную координату из разметки
         {
-            _columns = 1;
-            _rows = 1;
+            int x = column * GetColumnWidth();
+            int y = row * GetRowHeight();
+            return new Vector2(x, y);
         }
+
+        private int GetRowHeight()
+        {
+            return _windowHeight / _rows;
+        }
+
+        private int GetColumnWidth()
+        {
+            return _windowWidth / _columns;
+        }
+
+        protected void LoadUI()//Сохраняем интерфейсные объекты в отдельный список и присваиваем каждому его tabIndex
+        {
+            foreach (var obj in _objDict)
+            {
+                if (obj.Value is Control)//Включает наследников
+                {
+                    AddUI((Control)obj.Value);
+                }
+            }
+        }
+        private void AddUI(Control newUI)//Добавить новый элемент интерфейса в список
+        {
+            _uiDict.Add(_tabIndex, (newUI.Name, newUI));
+            _tabIndex++;
+
+        }
+        private void RemoveUI(int index)
+        {
+            _uiDict.Remove(index);
+            _tabIndex--;
+        }
+
+        //Активация событий, чтобы можно было делать это извне
         public void AcceptPerform(object sender, CursorEventArgs e)
         {
             Accept.Invoke(sender, e);

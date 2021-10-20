@@ -67,13 +67,18 @@ namespace KARC.Controllers
                         switch (e.GetPushedButtons()[0])
                         {
                             case Keys.Up:
-                                {                                    
-                                    menu.MoveCursor(Menu.CursorDirection.up);
+                                {
+                                    menu.ChoosePerform(this, new CursorEventArgs(Menu.CursorDirection.up));
                                     break;
                                 }
                             case Keys.Down:
                                 {
-                                    menu.MoveCursor(Menu.CursorDirection.down);
+                                    menu.ChoosePerform(this, new CursorEventArgs(Menu.CursorDirection.down));
+                                    break;
+                                }
+                            case Keys.Space:
+                                {
+                                    menu.AcceptPerform(this, null);
                                     break;
                                 }
                         }

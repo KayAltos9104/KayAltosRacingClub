@@ -31,7 +31,7 @@ namespace KARC.Prefabs
             this.LoadUI();
         }
 
-        private void btnSelect_Click(object sender, KeyBoardEventArgs e)
+        private void btnSelect_Click(object sender)
         {
             System.Windows.Forms.MessageBox.Show("Заглушка");
         }

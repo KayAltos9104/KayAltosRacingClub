@@ -7,7 +7,7 @@ namespace KARC.GameObjsTemplates.InterfaceObjs
 {
     class Button:GameObject, IObjectUI
     {
-        public delegate void ClickHandler(object sender, KeyBoardEventArgs e);
+        public delegate void ClickHandler(object sender);
         public event ClickHandler AcceptClick;
         
         public bool IsChoosed { get; set; }
@@ -33,9 +33,9 @@ namespace KARC.GameObjsTemplates.InterfaceObjs
             SwitchImage(keyImage);
         }
         
-        public void PerformClick(int time, Keys[] pushedButtons)
+        public void PerformClick()
         {
-            AcceptClick.Invoke(this, new KeyBoardEventArgs(pushedButtons, time));
+            AcceptClick.Invoke(this);
         }
         
     }

@@ -28,6 +28,7 @@ namespace KARC
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content/Resources";
             IsMouseVisible = true;
+            
 
             
         }

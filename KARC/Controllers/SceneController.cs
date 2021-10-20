@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using KARC.ScenesTemplates;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace KARC.Controllers
 {
@@ -57,6 +58,16 @@ namespace KARC.Controllers
                 var game = (MainCycle)sender;
                 game.Exit();
             }
+        }
+
+        public void RunCycle()
+        {
+            _currentScene.scene.Update();
+        }
+
+        public void Render (SpriteBatch spriteBatch)
+        {
+            _currentScene.scene.DrawScene(spriteBatch);
         }
 
     }

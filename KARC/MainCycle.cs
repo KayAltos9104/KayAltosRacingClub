@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using KARC.Controllers;
+using KARC.Prefabs;
 
 namespace KARC
 {
@@ -36,7 +37,10 @@ namespace KARC
             base.Initialize();
             sceneController = new SceneController();
             //Здесь надо нагенерировать сцен и добавить в контроллер
-            //sceneController.Initialize();
+            MenuMain mainMenu = new MenuMain();
+            mainMenu.InitializeScene();
+            sceneController.AddScene("MainMenu", mainMenu);
+            sceneController.Initialize();
             Pushed += sceneController.Update;
         }
 
@@ -58,17 +62,20 @@ namespace KARC
             {
                 Pushed.Invoke(this, new KeyBoardEventArgs(pressedKeys, TimeElapsedCycle));
             }
-                        
+
+            sceneController.RunCycle();
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.CornflowerBlue);            
+            _spriteBatch.Begin(SpriteSortMode.BackToFront);
 
-            
+            sceneController.Render(_spriteBatch);
 
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
 

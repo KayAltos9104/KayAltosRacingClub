@@ -18,6 +18,9 @@ namespace KARC.Prefabs
             btnSelect.InitializeGraphics();
             btnSelect.ChangePlace(new Vector2(100, 100));
             btnSelect.AcceptClick += btnSelect_Click;
+            this.AddObject(btnSelect);
+
+            this.LoadUI();
         }
 
         private void btnSelect_Click(object sender, KeyBoardEventArgs e)

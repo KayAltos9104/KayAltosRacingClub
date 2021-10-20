@@ -12,11 +12,13 @@ namespace KARC.Controllers
     {
         private Dictionary<string, Scene> _scenesDict =  new Dictionary<string, Scene>();
         private (string key, Scene scene) _currentScene;
-      
+        
+        const int pushInterfaceCoolDown = 100;
+        int pushElapsedTime;
 
         public SceneController()
         {
-            
+            pushElapsedTime = 0;
         }
 
         public void Initialize()
@@ -53,6 +55,7 @@ namespace KARC.Controllers
 
         public void Update(object sender, KeyBoardEventArgs e)
         {
+            pushElapsedTime += e.ElapsedTime;
             if (e.GetPushedButtons()[0] == Keys.Escape)
             {
                 var game = (MainCycle)sender;
@@ -63,6 +66,8 @@ namespace KARC.Controllers
             {
                 case "MainMenu":
                     {
+                        if (IsPushedInterface())
+                            break;
                         var menu = (Menu)_currentScene.scene;
                         switch (e.GetPushedButtons()[0])
                         {
@@ -91,7 +96,21 @@ namespace KARC.Controllers
 
         public void RunCycle()
         {
+
             _currentScene.scene.Update();
+        }
+
+        public bool IsPushedInterface ()
+        {
+            if (pushElapsedTime > pushInterfaceCoolDown)
+            {
+                pushElapsedTime = 0;
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public void Render (SpriteBatch spriteBatch)

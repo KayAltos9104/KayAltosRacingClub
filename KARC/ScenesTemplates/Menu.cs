@@ -10,6 +10,5 @@ namespace KARC.ScenesTemplates
         int _maxCursor;
 
 
-
     }
 }

@@ -14,14 +14,18 @@ namespace KARC.GameObjsTemplates
         public GameObject ()
         {
             InitializeGraphics();
+            pos = Vector2.Zero;
+            ToDelete = false;
         }
+        
+
 
         public virtual void Update ()
         {
            
         }
 
-        public void Teleport (Vector2 newPlace)
+        public void ChangePlace (Vector2 newPlace)
         {
             pos = newPlace;
         }

@@ -14,31 +14,48 @@ namespace KARC.Prefabs
         {
             base.InitializeScene();
 
-            _rows = 3;
-            _columns = 3;
+            _rows = 7;
+            _columns = 7;
 
-            Button btnSelect = new Button("SelectButton");
-            btnSelect.AddImage(btnSelect.StatusKeyGen(Button.ControlStatus.dark), ResourcesStorage.GetImage("SelectButton"));
-            btnSelect.AddImage(btnSelect.StatusKeyGen(Button.ControlStatus.light), ResourcesStorage.GetImage("SelectButton_Light"));
-            btnSelect.InitializeGraphics();
-            PlaceElement(btnSelect, 0, 0);
-            btnSelect.AcceptClick += btnSelect_Click;
-            this.AddObject(btnSelect);
+            Button btnStart = new Button("StartButton");
+            btnStart.AddImage(btnStart.StatusKeyGen(Button.ControlStatus.dark), ResourcesStorage.GetImage("StartButton"));
+            btnStart.AddImage(btnStart.StatusKeyGen(Button.ControlStatus.light), ResourcesStorage.GetImage("StartButton_Light"));
+            btnStart.InitializeGraphics();
+            PlaceElement(btnStart, 1, 3);
+            btnStart.AcceptClick += btnStart_Click;
+            this.AddObject(btnStart);
 
-            Button btnSelect2 = new Button("SelectButton2");
-            btnSelect2.AddImage(btnSelect2.StatusKeyGen(Button.ControlStatus.dark), ResourcesStorage.GetImage("SelectButton"));
-            btnSelect2.AddImage(btnSelect2.StatusKeyGen(Button.ControlStatus.light), ResourcesStorage.GetImage("SelectButton_Light"));
-            btnSelect2.InitializeGraphics();
-            PlaceElement(btnSelect2, 1, 2);
-            btnSelect2.AcceptClick += btnSelect_Click;
-            this.AddObject(btnSelect2);
+            Button btnOptions = new Button("OptionsButton");
+            btnOptions.AddImage(btnOptions.StatusKeyGen(Button.ControlStatus.dark), ResourcesStorage.GetImage("OptionsButton"));
+            btnOptions.AddImage(btnOptions.StatusKeyGen(Button.ControlStatus.light), ResourcesStorage.GetImage("OptionsButton_Light"));
+            btnOptions.InitializeGraphics();
+            PlaceElement(btnOptions, 2, 3);
+            btnOptions.AcceptClick += btnOptions_Click;
+            this.AddObject(btnOptions);
+
+            Button btnExit = new Button("ExitButton");
+            btnExit.AddImage(btnExit.StatusKeyGen(Button.ControlStatus.dark), ResourcesStorage.GetImage("ExitButton"));
+            btnExit.AddImage(btnExit.StatusKeyGen(Button.ControlStatus.light), ResourcesStorage.GetImage("ExitButton_Light"));
+            btnExit.InitializeGraphics();
+            PlaceElement(btnExit, 3, 3);
+            btnExit.AcceptClick += btnExit_Click;
+            this.AddObject(btnExit);
 
             this.LoadUI();
         }
 
-        private void btnSelect_Click(object sender)
+        private void btnStart_Click(object sender)
         {
-            System.Windows.Forms.MessageBox.Show("Заглушка");
+            System.Windows.Forms.MessageBox.Show("Заглушка на начало игры");
+        }
+
+        private void btnOptions_Click(object sender)
+        {
+            System.Windows.Forms.MessageBox.Show("Заглушка на опции");
+        }
+        private void btnExit_Click(object sender)
+        {
+            System.Windows.Forms.MessageBox.Show("Заглушка на выход");
         }
     }
 }

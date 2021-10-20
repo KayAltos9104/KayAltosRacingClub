@@ -78,11 +78,6 @@ namespace KARC.ScenesTemplates
             uiDict[_cursor].Item2.IsChoosed = true;
             base.Update();            
         }
-
-        
-
-        
-
         protected void PlaceElement (Control element, int row, int column)
         {
             element.ChangePlace(GetCoord(row, column));

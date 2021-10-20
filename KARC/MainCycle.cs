@@ -63,6 +63,15 @@ namespace KARC
             ResourcesStorage.AddImage("SelectButton", Content.Load<Texture2D>("ButtonsImages/btnSelect"));
             ResourcesStorage.AddImage("SelectButton_Light", Content.Load<Texture2D>("ButtonsImages/btnSelect_light"));
 
+            ResourcesStorage.AddImage("StartButton", Content.Load<Texture2D>("ButtonsImages/btnStart"));
+            ResourcesStorage.AddImage("StartButton_Light", Content.Load<Texture2D>("ButtonsImages/btnStart_light"));
+
+            ResourcesStorage.AddImage("OptionsButton", Content.Load<Texture2D>("ButtonsImages/btnOptions"));
+            ResourcesStorage.AddImage("OptionsButton_Light", Content.Load<Texture2D>("ButtonsImages/btnOptions_light"));
+
+            ResourcesStorage.AddImage("ExitButton", Content.Load<Texture2D>("ButtonsImages/btnExit"));
+            ResourcesStorage.AddImage("ExitButton_Light", Content.Load<Texture2D>("ButtonsImages/btnExit_light"));
+
         }
 
         protected override void Update(GameTime gameTime)

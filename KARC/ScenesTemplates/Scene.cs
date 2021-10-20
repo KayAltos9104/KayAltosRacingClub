@@ -9,7 +9,7 @@ namespace KARC.ScenesTemplates
 {
     abstract class Scene:IBehaviour
     {
-        Dictionary<int, GameObject> _objDict;
+        protected Dictionary<int, GameObject> _objDict;
         private int _id;
         public Scene ()
         {

@@ -11,13 +11,16 @@ namespace KARC.GameObjsTemplates
     {
         private Dictionary<string, Texture2D> imagesDict = new Dictionary<string, Texture2D>();//Изображения, которые может иметь объект
         private Texture2D currentImage; //Текущее изображение 
-        protected float layer; //Слой отрисовки
-        protected float scale;
-        protected Color colDraw;        
-        protected int angle;
+        protected float _layer; //Слой отрисовки
+        protected float _scale;
+        protected Color _colDraw;        
+        protected int _angle;
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(currentImage, pos, null, colDraw, MathHelper.ToRadians(angle), Vector2.Zero, scale, SpriteEffects.None, layer);
+            spriteBatch.Draw(texture:currentImage,position: pos,sourceRectangle: null, 
+                color: _colDraw,rotation: MathHelper.ToRadians(_angle),origin: Vector2.Zero,
+                scale: _scale,effects: SpriteEffects.None,layerDepth: _layer);
+            
         }
 
         public void AddImage (string key, Texture2D image)
@@ -31,11 +34,11 @@ namespace KARC.GameObjsTemplates
 
         public void LayerToFront (float step)
         {
-            layer -= step;
+            _layer -= step;
         }
         public void LayerToBack(float step)
         {
-            layer += step;
+            _layer += step;
         }
         protected void SwitchImage (string key)
         {
@@ -49,10 +52,10 @@ namespace KARC.GameObjsTemplates
 
         public virtual void InitializeGraphics ()
         {
-            layer = 1.0f;
-            scale = 1.0f;
-            colDraw = Color.White;
-            angle = 0;
+            _layer = 1.0f;
+            _scale = 1.0f;
+            _colDraw = Color.White;
+            _angle = 0;
             currentImage = imagesDict.First().Value;
         }
     }

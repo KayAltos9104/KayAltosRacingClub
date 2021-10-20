@@ -5,6 +5,7 @@ using KARC.ScenesTemplates;
 using KARC.GameObjsTemplates.InterfaceObjs;
 using Microsoft.Xna.Framework;
 
+
 namespace KARC.Prefabs
 {
     class MenuMain : Menu
@@ -21,7 +22,7 @@ namespace KARC.Prefabs
 
         private void btnSelect_Click(object sender, KeyBoardEventArgs e)
         {
-            
+            System.Windows.Forms.MessageBox.Show("Заглушка");
         }
     }
 }

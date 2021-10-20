@@ -12,8 +12,7 @@ namespace KARC.GameObjsTemplates
         private Vector2 pos; //Текущая позиция
 
         public GameObject ()
-        {
-            
+        {            
             pos = Vector2.Zero;
             ToDelete = false;
         }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace KARC.GameObjsTemplates.InterfaceObjs
 {
-    class Button:GameObject, IObject
+    class Button:GameObject, IObjectUI
     {
         public delegate void ClickHandler(object sender, KeyBoardEventArgs e);
         public event ClickHandler AcceptClick;
@@ -30,6 +31,11 @@ namespace KARC.GameObjsTemplates.InterfaceObjs
                 keyImage = Name + "_Dark";
             }
             SwitchImage(keyImage);
+        }
+        
+        public void PerformClick(int time, Keys[] pushedButtons)
+        {
+            AcceptClick.Invoke(this, new KeyBoardEventArgs(pushedButtons, time));
         }
         
     }

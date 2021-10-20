@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KARC.GameObjsTemplates
 {
-    interface IObject
+    interface IObjectUI
     {        
         public string Name { get; }
     }

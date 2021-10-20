@@ -6,7 +6,7 @@ using KARC.GameObjsTemplates;
 namespace KARC.ScenesTemplates
 {
     class Menu:Scene
-    {
+    {        
         Dictionary<int, (string,IObjectUI)> uiDict;
         int _cursor;       
         int _tabIndex;
@@ -37,6 +37,16 @@ namespace KARC.ScenesTemplates
         {
             uiDict.Remove(index);
             _tabIndex--;            
+        }
+
+        public override void Update()
+        {
+            foreach (var ui in uiDict)
+            {
+                ui.Value.Item2.IsChoosed = false;
+            }
+            uiDict[_cursor].Item2.IsChoosed = true;
+            base.Update();            
         }
 
         public void MoveCursor (CursorDirection dir)

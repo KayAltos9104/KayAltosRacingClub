@@ -20,6 +20,14 @@ namespace KARC.Prefabs
             btnSelect.AcceptClick += btnSelect_Click;
             this.AddObject(btnSelect);
 
+            Button btnSelect2 = new Button("SelectButton2");
+            btnSelect2.AddImage("SelectButton2_Dark", ResourcesStorage.GetImage("SelectButton"));
+            btnSelect2.AddImage("SelectButton2_Light", ResourcesStorage.GetImage("SelectButton_Light"));
+            btnSelect2.InitializeGraphics();
+            btnSelect2.ChangePlace(new Vector2(100, 300));
+            btnSelect2.AcceptClick += btnSelect_Click;
+            this.AddObject(btnSelect2);
+
             this.LoadUI();
         }
 

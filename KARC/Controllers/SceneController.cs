@@ -58,6 +58,30 @@ namespace KARC.Controllers
                 var game = (MainCycle)sender;
                 game.Exit();
             }
+
+            switch (_currentScene.key)
+            {
+                case "MainMenu":
+                    {
+                        var menu = (Menu)_currentScene.scene;
+                        switch (e.GetPushedButtons()[0])
+                        {
+                            case Keys.Up:
+                                {                                    
+                                    menu.MoveCursor(Menu.CursorDirection.up);
+                                    break;
+                                }
+                            case Keys.Down:
+                                {
+                                    menu.MoveCursor(Menu.CursorDirection.down);
+                                    break;
+                                }
+                        }
+
+
+                        break;
+                    }
+            }
         }
 
         public void RunCycle()

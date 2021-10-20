@@ -9,8 +9,8 @@ namespace KARC.GameObjsTemplates.InterfaceObjs
     {
         public delegate void ClickHandler(object sender, KeyBoardEventArgs e);
         public event ClickHandler AcceptClick;
-        public event ClickHandler Choosed;
-        bool IsChoosed { get; set; }
+        
+        public bool IsChoosed { get; set; }
 
         public string Name { get; private set; }
 

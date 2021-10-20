@@ -23,7 +23,7 @@ namespace KARC.Prefabs
             btnStart.AddImage(btnStart.StatusKeyGen(Button.ControlStatus.dark), ResourcesStorage.GetImage("StartButton"));
             btnStart.AddImage(btnStart.StatusKeyGen(Button.ControlStatus.light), ResourcesStorage.GetImage("StartButton_Light"));
             btnStart.InitializeGraphics();
-            PlaceElement(btnStart, 1, 3);
+            PlaceElement(btnStart, 2, 3);
             btnStart.AcceptClick += btnStart_Click;
             this.AddObject(btnStart);
 
@@ -31,7 +31,7 @@ namespace KARC.Prefabs
             btnOptions.AddImage(btnOptions.StatusKeyGen(Button.ControlStatus.dark), ResourcesStorage.GetImage("OptionsButton"));
             btnOptions.AddImage(btnOptions.StatusKeyGen(Button.ControlStatus.light), ResourcesStorage.GetImage("OptionsButton_Light"));
             btnOptions.InitializeGraphics();
-            PlaceElement(btnOptions, 2, 3);
+            PlaceElement(btnOptions, 3, 3);
             btnOptions.AcceptClick += btnOptions_Click;
             this.AddObject(btnOptions);
 
@@ -39,7 +39,7 @@ namespace KARC.Prefabs
             btnExit.AddImage(btnExit.StatusKeyGen(Button.ControlStatus.dark), ResourcesStorage.GetImage("ExitButton"));
             btnExit.AddImage(btnExit.StatusKeyGen(Button.ControlStatus.light), ResourcesStorage.GetImage("ExitButton_Light"));
             btnExit.InitializeGraphics();
-            PlaceElement(btnExit, 3, 3);
+            PlaceElement(btnExit, 4, 3);
             btnExit.AcceptClick += btnExit_Click;
             this.AddObject(btnExit);
 

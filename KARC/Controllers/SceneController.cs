@@ -53,14 +53,10 @@ namespace KARC.Controllers
                 MainCycle.isLoopOff = true;
                 return;
             }
-            try
-            {
-                _currentScene = (key:sceneKey, scene: _scenesDict[sceneKey]);
-            }
-            catch
-            {
-                System.Windows.Forms.MessageBox.Show("Заглушка на начало игры");
-            }
+            if (_scenesDict.ContainsKey(sceneKey))
+                _currentScene = (key: sceneKey, scene: _scenesDict[sceneKey]);
+            else
+                System.Windows.Forms.MessageBox.Show("Такой сцены еще нет!");
         }
       
         public void Update(object sender, KeyBoardEventArgs e)

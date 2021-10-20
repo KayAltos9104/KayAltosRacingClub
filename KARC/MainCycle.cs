@@ -19,11 +19,11 @@ namespace KARC
         public static bool isLoopOff;
         public static int TimeElapsedCycle { get; private set;}
 
-
         //Events
         delegate void ButtonHandler(object sender, KeyBoardEventArgs e);
         event ButtonHandler Pushed;
-
+        delegate void GraphicsHandler(object sender,GraphicsEventArgs e);
+        event GraphicsHandler GraphicsChanged;
 
 
         public MainCycle()
@@ -57,6 +57,8 @@ namespace KARC
             sceneController.AddScene("MainMenu", mainMenu);
             sceneController.Initialize();
             Pushed += sceneController.Update;
+            GraphicsChanged += sceneController.Update;
+
         }
 
         protected override void LoadContent()
@@ -87,6 +89,18 @@ namespace KARC
             if (pressedKeys.Length > 0)
             {
                 Pushed.Invoke(this, new KeyBoardEventArgs(pressedKeys, TimeElapsedCycle));
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                _graphics.PreferredBackBufferWidth = 1024;
+                _graphics.PreferredBackBufferHeight = 768;
+
+                _graphics.ApplyChanges();
+
+                windowWidth = Window.ClientBounds.Width;
+                windowHeight = Window.ClientBounds.Height;
+                GraphicsChanged.Invoke(this, new GraphicsEventArgs(windowWidth, windowHeight, false));
             }
 
             sceneController.RunCycle();
@@ -130,4 +144,18 @@ namespace KARC
                 return null;
         }
     }
+    class GraphicsEventArgs
+    {
+        public int WindowHeight { get; }
+        public int WindowWidth { get; }
+        public bool IsFullScreen { get; }
+
+        public GraphicsEventArgs(int width, int height, bool fScreen)
+        {
+            WindowHeight = height;
+            WindowWidth = width;
+            IsFullScreen = fScreen;
+        }
+    }
+
 }

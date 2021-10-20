@@ -20,21 +20,21 @@ namespace KARC.ScenesTemplates
         protected int _rows;
         
 
-        Dictionary<int, (string,IObjectUI)> uiDict;
+        Dictionary<int, (string,Control)> _uiDict;//Name, Element
         int _cursor;       
         int _tabIndex;
         public Menu ()
         {
             _tabIndex = 0;
-            uiDict = new Dictionary<int, (string, IObjectUI)>();            
+            _uiDict = new Dictionary<int, (string, Control)>();            
             _cursor = 0;
 
             Accept += (object sender, CursorEventArgs e) =>
             {
-                if (uiDict[_cursor].Item2.GetType() == typeof(Button)) //Точное соответствие
+                if (_uiDict[_cursor].Item2.GetType() == typeof(Button)) //Точное соответствие
                 //if (uiDict[_cursor].Item2.GetType() is IObjectUI) 
                 {
-                    var btn = (Button)uiDict[_cursor].Item2;
+                    var btn = (Button)_uiDict[_cursor].Item2;
                     btn.PerformClick();
                 }
             };
@@ -51,38 +51,47 @@ namespace KARC.ScenesTemplates
             
             foreach (var obj in _objDict)
             {
-                if(obj.Value is IObjectUI)//Включает наследников
+                if(obj.Value is Control)//Включает наследников
                 {                   
-                    AddUI((IObjectUI)obj.Value);
+                    AddUI((Control)obj.Value);
                 }
             }
         }
-        private void AddUI(IObjectUI newUI)
+        private void AddUI(Control newUI)
         {
-            uiDict.Add(_tabIndex, (newUI.Name, newUI));
+            _uiDict.Add(_tabIndex, (newUI.Name, newUI));
             _tabIndex++;
            
         }
         private void RemoveUI(int index)
         {
-            uiDict.Remove(index);
+            _uiDict.Remove(index);
             _tabIndex--;            
         }
 
         public override void Update()
         {
-            foreach (var ui in uiDict)
+            foreach (var ui in _uiDict)
             {
                 ui.Value.Item2.IsChoosed = false;
             }
-            uiDict[_cursor].Item2.IsChoosed = true;
+            _uiDict[_cursor].Item2.IsChoosed = true;
             base.Update();            
+        }
+
+        public override void UpdateGraphics(int windowWidth, int windowHeight)
+        {
+            base.UpdateGraphics(windowWidth, windowHeight);
+            foreach (var ui in _uiDict)
+            {
+                PlaceElement(ui.Value.Item2, ui.Value.Item2.Row, ui.Value.Item2.Column);
+            }
         }
         protected void PlaceElement (Control element, int row, int column)
         {
             element.ChangePlace(GetCoord(row, column));
-            float stretchCoef = 1.0f*(_windowWidth / _columns)/element.GetImageSize().Item1;
-            var t = element.GetImageSize().Item1;
+            float stretchCoef = 1.0f*(_windowWidth / _columns)/element.GetImageSize().Item1;            
+            element.SetPlace(row, column);
             element.Stretch(stretchCoef);
         }
         private Vector2 GetCoord (int row, int column)

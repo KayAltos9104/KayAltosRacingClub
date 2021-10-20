@@ -102,6 +102,12 @@ namespace KARC.Controllers
             }
         }
 
+        public void Update (object sender, GraphicsEventArgs e)
+        {
+            foreach (var scene in _scenesDict)
+                scene.Value.UpdateGraphics(e.WindowWidth, e.WindowHeight);
+        }
+
         public void RunCycle()
         {            
             _currentScene.scene.Update();

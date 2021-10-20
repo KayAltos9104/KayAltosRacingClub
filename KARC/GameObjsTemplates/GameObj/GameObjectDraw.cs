@@ -61,7 +61,7 @@ namespace KARC.GameObjsTemplates
 
         public void Stretch (float coef)
         {
-            _scale *= coef;
+            _scale =1.0f*coef;
         }
 
         public (int, int) GetImageSize ()

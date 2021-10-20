@@ -10,6 +10,8 @@ namespace KARC.GameObjsTemplates.InterfaceObjs.Controls
         public bool IsChoosed { get; set; }
         public string Name { get; private set; }
 
+        public int Row { get; private set; }
+        public int Column { get; private set; }
         public Control (string name)
         {
             Name = name;
@@ -47,6 +49,12 @@ namespace KARC.GameObjsTemplates.InterfaceObjs.Controls
                         return Name + "_Def";
                     }
             }
+        }
+
+        public void SetPlace (int row, int col)
+        {
+            Row = row;
+            Column = col;
         }
 
         public enum ControlStatus:byte

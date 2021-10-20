@@ -25,7 +25,8 @@ namespace KARC.ScenesTemplates
 
             Accept += (object sender, CursorEventArgs e) =>
             {
-                if (uiDict[_cursor].Item2.GetType() == typeof(Button))
+                //if (uiDict[_cursor].Item2.GetType() == typeof(Button)) //Точное соответствие
+                if (uiDict[_cursor].Item2.GetType() is IObjectUI) //Включает наследников
                 {
                     var btn = (Button)uiDict[_cursor].Item2;
                     btn.PerformClick();
@@ -44,7 +45,7 @@ namespace KARC.ScenesTemplates
             
             foreach (var obj in _objDict)
             {
-                if(obj.GetType()==typeof(IObjectUI))
+                if(obj.Value.GetType()==typeof(Button))
                 {                   
                     AddUI((IObjectUI)obj.Value);
                 }
@@ -72,13 +73,18 @@ namespace KARC.ScenesTemplates
             base.Update();            
         }
 
-        public void MoveCursor (CursorDirection dir)
+        private void MoveCursor (CursorDirection dir)
         {
             if (dir == CursorDirection.up)
             {
                 _cursor--;
                 if (_cursor < 0)
                     _cursor = _tabIndex - 1;
+               
+            }
+            if (dir == CursorDirection.down)
+            {
+                _cursor++;
                 if (_cursor >= _tabIndex)
                     _cursor = 0;
             }

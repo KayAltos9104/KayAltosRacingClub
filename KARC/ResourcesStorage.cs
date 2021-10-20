@@ -9,6 +9,10 @@ namespace KARC
     {
         static Dictionary<string, Texture2D> _imagesDict = new Dictionary<string, Texture2D>();
 
+        public static Texture2D GetImage (string key)
+        {
+            return _imagesDict[key];
+        }
         public static void AddImage (string key, Texture2D image)
         {
             _imagesDict.Add(key, image);

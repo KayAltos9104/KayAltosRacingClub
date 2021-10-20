@@ -51,7 +51,6 @@ namespace KARC
         protected override void Update(GameTime gameTime)
         {
             
-
             TimeElapsedCycle = gameTime.ElapsedGameTime.Milliseconds;
 
             var pressedKeys = Keyboard.GetState().GetPressedKeys();

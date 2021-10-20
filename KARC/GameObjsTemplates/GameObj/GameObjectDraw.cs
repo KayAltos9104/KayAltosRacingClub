@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace KARC.GameObjsTemplates
@@ -46,12 +47,13 @@ namespace KARC.GameObjsTemplates
 
         }
 
-        protected virtual void InitializeGraphics ()
+        public virtual void InitializeGraphics ()
         {
             layer = 1.0f;
             scale = 1.0f;
             colDraw = Color.White;
             angle = 0;
+            currentImage = imagesDict.First().Value;
         }
     }
 }

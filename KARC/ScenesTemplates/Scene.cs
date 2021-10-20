@@ -17,6 +17,10 @@ namespace KARC.ScenesTemplates
             _id = 1;
         }
 
+        public virtual void InitializeScene ()
+        {
+
+        }
         public virtual void AddObject (GameObject newObj)
         {
             _objDict.Add(_id, newObj);

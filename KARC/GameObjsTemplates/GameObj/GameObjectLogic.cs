@@ -13,7 +13,7 @@ namespace KARC.GameObjsTemplates
 
         public GameObject ()
         {
-            InitializeGraphics();
+            
             pos = Vector2.Zero;
             ToDelete = false;
         }

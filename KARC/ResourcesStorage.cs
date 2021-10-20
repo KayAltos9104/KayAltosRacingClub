@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KARC
 {
-    static class Content
+    static class ResourcesStorage
     {
         static Dictionary<string, Texture2D> _imagesDict = new Dictionary<string, Texture2D>();
 

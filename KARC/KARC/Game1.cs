@@ -345,7 +345,7 @@ namespace KARC
             //Генерация игрока
             textureDict.Clear();
             textureDict.Add("MainModel", Content.Load<Texture2D>("carModels/Model1"));
-            textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_Crushed"));
+            textureDict.Add("CrushedModel", Content.Load<Texture2D>("carModels/Model1_crushed"));
             Vector2 place = InterfaceMenu.GetCoord(0, 0, 100, 100);
             Car Player = new Car(place, 0.2f, textureDict, new Vector2(0, 0), 5000, "Player");
             Player.player = true;
@@ -356,19 +356,19 @@ namespace KARC
             //Загрузка текстур моделей машин
             textureDict.Clear();
             textureDict.Add("MainModel2", Content.Load<Texture2D>("carModels/Model2"));
-            textureDict.Add("CrushedModel2", Content.Load<Texture2D>("carModels/Model2_Crushed"));
+            textureDict.Add("CrushedModel2", Content.Load<Texture2D>("carModels/Model2_crushed"));
             textureDict.Add("MainModel3", Content.Load<Texture2D>("carModels/Model3"));
-            textureDict.Add("CrushedModel3", Content.Load<Texture2D>("carModels/Model3_Crushed"));
+            textureDict.Add("CrushedModel3", Content.Load<Texture2D>("carModels/Model3_crushed"));
             textureDict.Add("MainModel4", Content.Load<Texture2D>("carModels/Model4"));
-            textureDict.Add("CrushedModel4", Content.Load<Texture2D>("carModels/Model4_Crushed"));
+            textureDict.Add("CrushedModel4", Content.Load<Texture2D>("carModels/Model4_crushed"));
             textureDict.Add("MainModel5", Content.Load<Texture2D>("carModels/Model5"));
-            textureDict.Add("CrushedModel5", Content.Load<Texture2D>("carModels/Model5_Crushed"));
+            textureDict.Add("CrushedModel5", Content.Load<Texture2D>("carModels/Model5_crushed"));
             textureDict.Add("MainModel6", Content.Load<Texture2D>("carModels/Model6"));
-            textureDict.Add("CrushedModel6", Content.Load<Texture2D>("carModels/Model6_Crushed"));
+            textureDict.Add("CrushedModel6", Content.Load<Texture2D>("carModels/Model6_crushed"));
             textureDict.Add("MainModel7", Content.Load<Texture2D>("carModels/Model7"));
-            textureDict.Add("CrushedModel7", Content.Load<Texture2D>("carModels/Model7_Crushed"));
+            textureDict.Add("CrushedModel7", Content.Load<Texture2D>("carModels/Model7_crushed"));
             textureDict.Add("MainModel8", Content.Load<Texture2D>("carModels/Model8"));
-            textureDict.Add("CrushedModel8", Content.Load<Texture2D>("carModels/Model8_Crushed"));
+            textureDict.Add("CrushedModel8", Content.Load<Texture2D>("carModels/Model8_crushed"));
 
             textureDict.Add("explosion", Content.Load<Texture2D>("Animations/boom3"));
 

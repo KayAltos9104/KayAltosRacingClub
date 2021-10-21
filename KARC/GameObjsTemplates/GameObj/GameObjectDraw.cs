@@ -68,6 +68,11 @@ namespace KARC.GameObjsTemplates
             _scale =1.0f*coef;
         }
 
+        protected void ChangeFilter(int r, int g, int b)
+        {
+            _colDraw = new Color(r, g, b);
+        }
+
         public (int, int) GetImageSize ()
         {
             return (_currentImage.Width, _currentImage.Height);

@@ -65,6 +65,8 @@ namespace KARC
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            ResourcesStorage.AddImage("MenuMainBackGround", Content.Load<Texture2D>("BackGrounds/MenuBackGround"));
+
             ResourcesStorage.AddImage("SelectButton", Content.Load<Texture2D>("ButtonsImages/btnSelect"));
             ResourcesStorage.AddImage("SelectButton_Light", Content.Load<Texture2D>("ButtonsImages/btnSelect_light"));
 
@@ -118,8 +120,6 @@ namespace KARC
             _spriteBatch.End();
             base.Draw(gameTime);
         }
-
-        
     }
     class KeyBoardEventArgs
     {

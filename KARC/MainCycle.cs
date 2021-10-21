@@ -11,13 +11,16 @@ namespace KARC
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+
         private SceneController sceneController;
 
+        //Текущее разрешение экрана
         public static int windowWidth;
         public static int windowHeight;
 
-        public static bool isLoopOff;
-        public static int TimeElapsedCycle { get; private set;}
+        public static bool isLoopOff;//Флаг на продолжение игрового цикла
+        public static int TimeElapsedCycle { get; private set;}//Сколько времени прошло между текущим и предыдущим шагом цикла
 
         //Events
         delegate void ButtonHandler(object sender, KeyBoardEventArgs e);
@@ -25,14 +28,11 @@ namespace KARC
         delegate void GraphicsHandler(object sender,GraphicsEventArgs e);
         event GraphicsHandler GraphicsChanged;
 
-
         public MainCycle()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content/Resources";
             IsMouseVisible = true;
-            
-            
         }
 
         protected override void Initialize()
@@ -42,10 +42,8 @@ namespace KARC
             isLoopOff = false;
 
             _graphics.IsFullScreen = false;
-
             _graphics.PreferredBackBufferWidth = 1600;
             _graphics.PreferredBackBufferHeight = 900;
-
             _graphics.ApplyChanges();
 
             windowWidth = Window.ClientBounds.Width;
@@ -56,6 +54,8 @@ namespace KARC
             MenuMain mainMenu = new MenuMain();           
             sceneController.AddScene("MainMenu", mainMenu);
             sceneController.Initialize();
+
+            //Контроллер отслеживает нажатие клавиши и изменение графических настроек
             Pushed += sceneController.Update;
             GraphicsChanged += sceneController.Update;
 
@@ -64,6 +64,7 @@ namespace KARC
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
             ResourcesStorage.AddImage("SelectButton", Content.Load<Texture2D>("ButtonsImages/btnSelect"));
             ResourcesStorage.AddImage("SelectButton_Light", Content.Load<Texture2D>("ButtonsImages/btnSelect_light"));
 
@@ -90,20 +91,19 @@ namespace KARC
             {
                 Pushed.Invoke(this, new KeyBoardEventArgs(pressedKeys, TimeElapsedCycle));
             }
+
             //Отладка
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 _graphics.PreferredBackBufferWidth = 1024;
                 _graphics.PreferredBackBufferHeight = 768;
-
                 _graphics.ApplyChanges();
-
                 windowWidth = Window.ClientBounds.Width;
                 windowHeight = Window.ClientBounds.Height;
                 GraphicsChanged.Invoke(this, new GraphicsEventArgs(windowWidth, windowHeight, false));
             }
 
-            sceneController.RunCycle();
+            sceneController.Update();//Апдейт, если ничего не произошло
 
             base.Update(gameTime);
         }

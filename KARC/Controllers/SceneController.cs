@@ -31,34 +31,10 @@ namespace KARC.Controllers
                 scene.Value.Change += SwitchScene;
         }
 
-        public void AddScene(string key, Scene scene)
+        public void Update()
         {
-            _scenesDict.Add(key, scene);
+            _currentScene.scene.Update();
         }
-
-        public void RemoveScene(string key)
-        {
-            _scenesDict.Remove(key);
-        }
-
-        public (string key, Scene scene) GetCurrentScene()
-        {
-            return _currentScene;
-        }
-       
-        private void SwitchScene(string sceneKey)
-        {
-            if (sceneKey=="Exit")
-            {
-                MainCycle.isLoopOff = true;
-                return;
-            }
-            if (_scenesDict.ContainsKey(sceneKey))
-                _currentScene = (key: sceneKey, scene: _scenesDict[sceneKey]);
-            else
-                System.Windows.Forms.MessageBox.Show("Такой сцены еще нет!");
-        }
-      
         public void Update(object sender, KeyBoardEventArgs e)
         {
             pushElapsedTime += e.ElapsedTime;
@@ -99,17 +75,47 @@ namespace KARC.Controllers
             }
         }
 
-        public void Update (object sender, GraphicsEventArgs e)
+        public void Update(object sender, GraphicsEventArgs e)
         {
             foreach (var scene in _scenesDict)
                 scene.Value.UpdateGraphics(e.WindowWidth, e.WindowHeight);
         }
 
-        public void RunCycle()
-        {            
-            _currentScene.scene.Update();
+        
+
+        public void Render(SpriteBatch spriteBatch)
+        {
+            _currentScene.scene.DrawScene(spriteBatch);
         }
 
+        public void AddScene(string key, Scene scene)
+        {
+            _scenesDict.Add(key, scene);
+        }
+
+        public void RemoveScene(string key)
+        {
+            _scenesDict.Remove(key);
+        }
+
+        public (string key, Scene scene) GetCurrentScene()
+        {
+            return _currentScene;
+        }
+       
+        private void SwitchScene(string sceneKey)
+        {
+            if (sceneKey=="Exit")
+            {
+                MainCycle.isLoopOff = true;
+                return;
+            }
+            if (_scenesDict.ContainsKey(sceneKey))
+                _currentScene = (key: sceneKey, scene: _scenesDict[sceneKey]);
+            else
+                System.Windows.Forms.MessageBox.Show("Такой сцены еще нет!");
+        }
+      
         public bool IsPushedInterface ()
         {
             if (pushElapsedTime > pushInterfaceCoolDown)
@@ -123,10 +129,7 @@ namespace KARC.Controllers
             }
         }
 
-        public void Render (SpriteBatch spriteBatch)
-        {
-            _currentScene.scene.DrawScene(spriteBatch);
-        }
+        
 
     }
 }

@@ -6,10 +6,10 @@ namespace KARC.GameObjsTemplates.InterfaceObjs.Controls
 {
     partial class Control : GameObject, IObjectUI
     {
-        public delegate void ClickHandler(object sender);
-        public bool IsChoosed { get; set; }
-        public string Name { get; private set; }
-
+        public delegate void ClickHandler(object sender);//Обработчик клика по элементу
+        public bool IsChoosed { get; set; } //Находится ли курсор на объекте
+        public string Name { get; private set; } //Строковое имя элемента. Аналогично Name в WinForms или WPF
+        //Разметка объекта
         public int Row { get; private set; }
         public int Column { get; private set; }
         public Control (string name)
@@ -20,6 +20,7 @@ namespace KARC.GameObjsTemplates.InterfaceObjs.Controls
         public override void Update()
         {
             base.Update();
+            //Меняем картинку элемента, если он выбран
             string keyImage;
             if (IsChoosed)
             {
@@ -32,6 +33,7 @@ namespace KARC.GameObjsTemplates.InterfaceObjs.Controls
             SwitchImage(keyImage);
         }
 
+        //Генерация ключа изображения для разных случаев. Все названия изображений элементов должны быть унифицированы
         public string StatusKeyGen (ControlStatus status)
         {
             switch (status)
@@ -51,7 +53,7 @@ namespace KARC.GameObjsTemplates.InterfaceObjs.Controls
             }
         }
 
-        public void SetPlace (int row, int col)
+        public void SaveTracking (int row, int col)
         {
             Row = row;
             Column = col;

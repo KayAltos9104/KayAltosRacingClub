@@ -78,7 +78,7 @@ namespace KARC.ScenesTemplates
             element.ChangePlace(GetCoord(row, column));//Получение координаты из разметки
             float stretchCoef = 1.0f*(_windowWidth / _columns)/element.GetImageSize().Item1;
             element.Stretch(stretchCoef);//Растягиваем элемент так, чтобы он уместился во всю ширину столбца
-            element.SetPlace(row, column);//Сохраняем разметку элемента
+            element.SaveTracking(row, column);//Сохраняем разметку элемента
             
         }
         

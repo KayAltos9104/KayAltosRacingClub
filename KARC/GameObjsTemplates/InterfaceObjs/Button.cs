@@ -9,16 +9,12 @@ namespace KARC.GameObjsTemplates.InterfaceObjs
     class Button:Control, IObjectUI
     {
         
-        public event ClickHandler AcceptClick;
-        
-      
+        public event ClickHandler AcceptClick;//Событие нажатия на кнопку    
         public Button (string name) : base (name)
         {
 
-        }        
-        
-        
-        public void PerformClick()
+        } 
+        public void PerformClick()//Включить событие клика
         {
             AcceptClick.Invoke(this);
         }

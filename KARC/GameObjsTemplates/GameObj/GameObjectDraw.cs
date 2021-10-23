@@ -75,7 +75,8 @@ namespace KARC.GameObjsTemplates
 
         public (int, int) GetImageSize ()
         {
-            return (_currentImage.Width, _currentImage.Height);
+            (int width, int height) size = (_currentImage.Width, _currentImage.Height);
+            return size;
         }
     }
 }

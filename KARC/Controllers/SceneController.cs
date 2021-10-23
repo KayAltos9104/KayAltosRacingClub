@@ -74,15 +74,11 @@ namespace KARC.Controllers
                     }
             }
         }
-
         public void Update(object sender, GraphicsEventArgs e)
         {
             foreach (var scene in _scenesDict)
                 scene.Value.UpdateGraphics(e.WindowWidth, e.WindowHeight);
         }
-
-        
-
         public void Render(SpriteBatch spriteBatch)
         {
             _currentScene.scene.DrawScene(spriteBatch);
@@ -92,17 +88,14 @@ namespace KARC.Controllers
         {
             _scenesDict.Add(key, scene);
         }
-
         public void RemoveScene(string key)
         {
             _scenesDict.Remove(key);
         }
-
         public (string key, Scene scene) GetCurrentScene()
         {
             return _currentScene;
         }
-       
         private void SwitchScene(string sceneKey)
         {
             if (sceneKey=="Exit")
@@ -115,7 +108,6 @@ namespace KARC.Controllers
             else
                 System.Windows.Forms.MessageBox.Show("Такой сцены еще нет!");
         }
-      
         public bool IsPushedInterface ()
         {
             if (pushElapsedTime > pushInterfaceCoolDown)

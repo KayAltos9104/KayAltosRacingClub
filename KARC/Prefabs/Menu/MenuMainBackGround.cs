@@ -13,17 +13,12 @@ namespace KARC.Prefabs
             AddImage("MenuMainBackGround", ResourcesStorage.GetImage("MenuMainBackGround"));
             this.InitializeGraphics();
         }
-
-        
-
         public override void Update()
         {
             if(initTime < 255)
                 initTime += 1;
-
             Animate();
-        }        
-
+        }      
         protected override void Animate ()
         {
             this.ChangeFilter(initTime, initTime, initTime);

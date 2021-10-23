@@ -95,15 +95,15 @@ namespace KARC
             }
 
             //Отладка
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-            {
-                _graphics.PreferredBackBufferWidth = 1024;
-                _graphics.PreferredBackBufferHeight = 768;
-                _graphics.ApplyChanges();
-                windowWidth = Window.ClientBounds.Width;
-                windowHeight = Window.ClientBounds.Height;
-                GraphicsChanged.Invoke(this, new GraphicsEventArgs(windowWidth, windowHeight, false));
-            }
+            //if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            //{
+            //    _graphics.PreferredBackBufferWidth = 1024;
+            //    _graphics.PreferredBackBufferHeight = 768;
+            //    _graphics.ApplyChanges();
+            //    windowWidth = Window.ClientBounds.Width;
+            //    windowHeight = Window.ClientBounds.Height;
+            //    GraphicsChanged.Invoke(this, new GraphicsEventArgs(windowWidth, windowHeight, false));
+            //}
 
             sceneController.Update();//Апдейт, если ничего не произошло
 

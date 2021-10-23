@@ -61,8 +61,6 @@ namespace KARC.ScenesTemplates
         {
             Change.Invoke(scene);
         }
-
-
         protected virtual void AddObject (GameObject newObj)
         {
             _objDict.Add(_id, newObj);

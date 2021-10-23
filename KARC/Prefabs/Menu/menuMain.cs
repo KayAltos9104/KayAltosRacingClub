@@ -56,7 +56,6 @@ namespace KARC.Prefabs
         private void btnStart_Click(object sender)
         {
             SceneChangePerform("Level0");
-            
         }
 
         private void btnOptions_Click(object sender)

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KARC.Prefabs.Menu
+namespace KARC.Prefabs.Scenes
 {
     class Level0:Level
     {

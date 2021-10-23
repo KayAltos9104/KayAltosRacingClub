@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 using KARC.Controllers;
 using KARC.Prefabs;
+using KARC.Prefabs.Scenes;
 
 namespace KARC
 {

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using KARC.GameObjsTemplates;
-namespace KARC.Prefabs
-{
-    class MenuMainBackGround:BackGround
+namespace KARC.Prefabs.Scenes
+{    class MenuMainBackGround:BackGround
     {
         private int initTime;
         public MenuMainBackGround ():base()

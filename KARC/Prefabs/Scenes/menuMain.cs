@@ -6,7 +6,7 @@ using KARC.GameObjsTemplates.InterfaceObjs;
 using Microsoft.Xna.Framework;
 
 
-namespace KARC.Prefabs
+namespace KARC.Prefabs.Scenes
 {
     class MenuMain : Menu
     {

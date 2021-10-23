@@ -1,4 +1,5 @@
 ﻿using KARC.ScenesTemplates;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +16,18 @@ namespace KARC.Prefabs.Scenes
             scale = (width: _windowWidth / 300, height: _windowHeight / 100);
             map[0][150, 90] = (int)ObjectCode.player;
             map[0][150, 50] = (int)ObjectCode.player;
+        }
+
+        protected override void ButtonPush(object sender, KeyBoardEventArgs e)//TODO: Перенести клавиатуру на контроллер?
+        {
+            switch (e.GetPushedButtons()[0])
+            {
+                case Keys.Left:
+                    {
+                        
+                        break;
+                    }
+            }
         }
     }
 }

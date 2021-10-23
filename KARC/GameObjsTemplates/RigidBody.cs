@@ -19,5 +19,10 @@ namespace KARC.GameObjsTemplates
         {
             return _hitBox.Intersects(anotherHitBox);
         }
+
+        public void Move(Point p)
+        {
+            _hitBox = new Rectangle(p, _hitBox.Size);
+        }
     }
 }

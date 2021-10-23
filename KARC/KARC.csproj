@@ -22,6 +22,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Prefabs\Levels\" />
-    <Folder Include="Prefabs\Objects\" />
   </ItemGroup>
 </Project>

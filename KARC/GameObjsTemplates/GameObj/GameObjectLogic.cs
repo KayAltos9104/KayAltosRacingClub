@@ -26,6 +26,11 @@ namespace KARC.GameObjsTemplates
         {
             pos = newPlace;
         }
+
+        public Vector2 GetPos()
+        {
+            return pos;
+        }
        
     }
 }

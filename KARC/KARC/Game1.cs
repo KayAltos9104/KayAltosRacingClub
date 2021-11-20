@@ -44,6 +44,7 @@ namespace KARC
 
         int currentTime = 0;
         bool songSwitched = false;
+        long score = 0;
 
 
         bool showhitBox = false;
@@ -375,6 +376,7 @@ namespace KARC
             //Level testLevel = new Level(map, 840, objList, true, textureDict, shiftX+139, shiftX+702);
             Level testLevel = new Level(map, (int)(texturesDict["Road1"].Height * 0.9), objList, true, textureDict, shiftX + 139, shiftX + 702);
             scenesDict.Add("level0", testLevel);
+            score = 0;
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
         }
@@ -648,6 +650,7 @@ namespace KARC
                             }
                         }
                         curSpeed = (int)System.Math.Abs(Player.Speed.Y * 3.6);
+                        score += curSpeed * deltaTime;
                         //Управление машинкой===========Конец=============================================
                         //Отжатие ускорения===============================================================
                         currentTimeforAccel += deltaTime;
@@ -855,6 +858,7 @@ namespace KARC
 
                         Car Player = (Car)currentScene.objectList[playerId];
                         int speedKm = -(int)(Player.Speed.Y * 3.6);
+                        spriteBatch.DrawString(gameFont, "Количество очков: " + score / 1000, Vector2.Zero, Color.Yellow);
                         //spriteBatch.DrawString(gameFont, "Скорость: " + speedKm +" км/ч", Vector2.Zero, Color.Yellow);
                         spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить\nEsc - Выход в меню", new Vector2(0, 400), Color.Red);
 

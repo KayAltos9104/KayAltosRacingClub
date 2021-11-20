@@ -44,6 +44,7 @@ namespace KARC
 
         int currentTime = 0;
         bool songSwitched = false;
+        long score = 0;
 
 
         bool showhitBox = false;
@@ -375,6 +376,7 @@ namespace KARC
             //Level testLevel = new Level(map, 840, objList, true, textureDict, shiftX+139, shiftX+702);
             Level testLevel = new Level(map, (int)(texturesDict["Road1"].Height * 0.9), objList, true, textureDict, shiftX + 139, shiftX + 702);
             scenesDict.Add("level0", testLevel);
+            score = 0;
 
             gameFont = Content.Load<SpriteFont>("ManualFont");
         }
@@ -402,14 +404,15 @@ namespace KARC
         {
             //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             //    Exit();
-            currentTime += gameTime.ElapsedGameTime.Milliseconds;
+            var deltaTime = gameTime.ElapsedGameTime.Milliseconds;
+            currentTime += deltaTime;
             currentScene = scenesDict[currentSceneKey];
             switch (currentSceneKey)
             {
                 case "MainMenu":
                     {
                         InterfaceMenu currentForm = (InterfaceMenu)currentScene;
-                        currentTimePushed += gameTime.ElapsedGameTime.Milliseconds;
+                        currentTimePushed += deltaTime;
 
                         if (currentTimePushed > periodPushed)
                         {
@@ -418,14 +421,14 @@ namespace KARC
                         PushAction update = currentForm.updateScene;
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
                         {
-                            PushCalc(update, Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                            PushCalc(update, Keys.Up, deltaTime);
                         }
                         else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                         {
-                            PushCalc(update, Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                            PushCalc(update, Keys.Down, deltaTime);
                         }
                         else
-                            currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
+                            currentForm.updateScene(deltaTime);
 
                         if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Enter))
                         {
@@ -465,7 +468,7 @@ namespace KARC
                 case "Options":
                     {
                         InterfaceMenu currentForm = (InterfaceMenu)currentScene;
-                        currentTimePushed += gameTime.ElapsedGameTime.Milliseconds;
+                        currentTimePushed += deltaTime;
                         if (currentTimePushed > periodPushed)
                         {
                             pushed = false;
@@ -474,18 +477,18 @@ namespace KARC
                         {
                             if (Keyboard.GetState().IsKeyDown(Keys.Up))
                             {
-                                currentForm.updateScene(Keys.Up, gameTime.ElapsedGameTime.Milliseconds);
+                                currentForm.updateScene(Keys.Up, deltaTime);
                                 pushed = true;
                                 currentTimePushed = 0;
                             }
                             else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                             {
-                                currentForm.updateScene(Keys.Down, gameTime.ElapsedGameTime.Milliseconds);
+                                currentForm.updateScene(Keys.Down, deltaTime);
                                 pushed = true;
                                 currentTimePushed = 0;
                             }
                             else
-                                currentForm.updateScene(gameTime.ElapsedGameTime.Milliseconds);
+                                currentForm.updateScene(deltaTime);
 
                             if (Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Left))
                             {
@@ -500,19 +503,19 @@ namespace KARC
                                     case 0:
                                         {
                                             SwitchBox s = (SwitchBox)currentScene.objectList[2];//TODO: Да-да, я знаю
-                                            s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
+                                            s.ChangeIndex(dirValue, deltaTime);
                                             break;
                                         }
                                     case 1:
                                         {
                                             SwitchBox s = (SwitchBox)currentScene.objectList[4];//TODO: Да-да, я знаю
-                                            s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
+                                            s.ChangeIndex(dirValue, deltaTime);
                                             break;
                                         }
                                     case 2:
                                         {
                                             SwitchBox s = (SwitchBox)currentScene.objectList[6];//TODO: Да-да, я знаю
-                                            s.ChangeIndex(dirValue, gameTime.ElapsedGameTime.Milliseconds);
+                                            s.ChangeIndex(dirValue, deltaTime);
                                             break;
                                         }
                                 }
@@ -647,9 +650,10 @@ namespace KARC
                             }
                         }
                         curSpeed = (int)System.Math.Abs(Player.Speed.Y * 3.6);
+                        score += curSpeed * deltaTime;
                         //Управление машинкой===========Конец=============================================
                         //Отжатие ускорения===============================================================
-                        currentTimeforAccel += gameTime.ElapsedGameTime.Milliseconds;
+                        currentTimeforAccel += deltaTime;
                         if (currentTimeforAccel > periodForAccel)
                         {
                             pushed = false;
@@ -680,7 +684,7 @@ namespace KARC
 
                             }
 
-                            currentLevel.updateScene(gameTime.ElapsedGameTime.Milliseconds);
+                            currentLevel.updateScene(deltaTime);
                             Vector2 scrollVector = new Vector2(0, -Player.Speed.Y);
                             currentLevel.scroll(scrollVector);//Скроллинг
                         }
@@ -854,6 +858,7 @@ namespace KARC
 
                         Car Player = (Car)currentScene.objectList[playerId];
                         int speedKm = -(int)(Player.Speed.Y * 3.6);
+                        spriteBatch.DrawString(gameFont, "Количество очков: " + score / 1000, Vector2.Zero, Color.Yellow);
                         //spriteBatch.DrawString(gameFont, "Скорость: " + speedKm +" км/ч", Vector2.Zero, Color.Yellow);
                         spriteBatch.DrawString(gameFont, "Управление:\nСтрелки - движение \nLeftCtrl - Показать хитбоксы \nR - Перезагрузить\nEsc - Выход в меню", new Vector2(0, 400), Color.Red);
 

@@ -15,8 +15,10 @@ namespace KARC.Prefabs.Scenes
             map[0] = new int[300, 100];
             scale = (width: _windowWidth / 300, height: _windowHeight / 100);
             map[0][150, 90] = (int)ObjectCode.player;
-            map[0][150, 50] = (int)ObjectCode.player;
+            map[0][150, 50] = (int)ObjectCode.civilCar;
         }
+
+
 
         protected override void ButtonPush(object sender, KeyBoardEventArgs e)//TODO: Перенести клавиатуру на контроллер?
         {

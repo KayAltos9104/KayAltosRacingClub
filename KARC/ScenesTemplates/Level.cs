@@ -1,31 +1,58 @@
-﻿using System;
+﻿using KARC.Controllers;
+using KARC.Prefabs.Objects;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace KARC.ScenesTemplates
 {
-    class Level : Scene
+    abstract class Level : Scene
     {
+        private CarFabric fabric;
+
         public delegate void KeyBoardHandler(object sender, KeyBoardEventArgs e);
         public event KeyBoardHandler Push;
 
         protected int[][,] map;//[Кол-во экранов][Карта экрана]
+        protected int[] background;
         protected bool toroidal;
         protected (float width, float height) scale;
-
         public Level ()
         {
             Push += ButtonPush;
-        }      
-
+            background = new int[map.Length];
+            GenerateFabric();
+            InitializeMap();
+        }  
         public void PerformPush (object sender, KeyBoardEventArgs e)
         {
             Push.Invoke(sender, e);
         }
-        protected virtual void ButtonPush (object sender, KeyBoardEventArgs e)
+        protected abstract void GenerateFabric();
+        protected void InitializeMap()
         {
-
+            for (int screen = 0; screen < map.Length; screen++)
+            {
+                for (int y = 0; y < map[screen].GetLength(1);y++)
+                    for (int x = 0; x < map[screen].GetLength(0); x++)
+                    {
+                        float xPos = x * scale.width;
+                        float yPos = y * scale.height;
+                        Car car = null;
+                        if (map[screen][x,y]==(int)ObjectCode.civilCar)
+                        {
+                            car = fabric.CreateGeneral();                            
+                        }
+                        else if (map[screen][x, y] == (int)ObjectCode.player)
+                        {
+                            car = fabric.CreatePlayer();
+                        }
+                        car.ChangePlace(new Vector2(xPos, yPos));
+                    }
+            }
         }
+        protected abstract void ButtonPush(object sender, KeyBoardEventArgs e);         
         public enum ObjectCode : int
         {
             empty = 0,

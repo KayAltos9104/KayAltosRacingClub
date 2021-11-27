@@ -14,6 +14,7 @@ namespace KARC.Prefabs.Objects
         float _acceleration;
         string Name { get;}
         RigidBody _physicalBody;
+        bool _player = false;
 
         public Car ():base()
         {
@@ -21,6 +22,19 @@ namespace KARC.Prefabs.Objects
             _speedVect = (X:0,Y:0);
             _acceleration = 1.0f;
             Name = "GeneralCar";            
+        }         
+        public Car (string carKey): this ()
+        {
+            AddImage(carKey, ResourcesStorage.GetImage(carKey));
+            AddImage(String.Format(carKey,"_crushed"), ResourcesStorage.GetImage(carKey));
+            PhysicsInit(this.GetImageSize().Item1, this.GetImageSize().Item1);
+        }
+        public Car (string carKey, string name):this(carKey)
+        {
+            Name = name.ToLower();
+            Name = Name.Trim();
+            if (Name.Contains("player"))
+                _player = true;
         }
 
         public void PhysicsInit (int width, int height)

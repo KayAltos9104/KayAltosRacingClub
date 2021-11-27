@@ -26,7 +26,8 @@ namespace KARC.Prefabs.Objects
         public Car (string carKey): this ()
         {
             AddImage(carKey, ResourcesStorage.GetImage(carKey));
-            AddImage(String.Format(carKey,"_crushed"), ResourcesStorage.GetImage(carKey));
+            AddImage(String.Concat(carKey,"_crushed"), ResourcesStorage.GetImage(carKey));
+            InitializeGraphics();
             PhysicsInit(this.GetImageSize().Item1, this.GetImageSize().Item1);
         }
         public Car (string carKey, string name):this(carKey)

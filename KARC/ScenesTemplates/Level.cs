@@ -9,7 +9,7 @@ namespace KARC.ScenesTemplates
 {
     abstract class Level : Scene
     {
-        private CarFabric fabric;
+        protected CarFabric fabric;
 
         public delegate void KeyBoardHandler(object sender, KeyBoardEventArgs e);
         public event KeyBoardHandler Push;
@@ -20,10 +20,8 @@ namespace KARC.ScenesTemplates
         protected (float width, float height) scale;
         public Level ()
         {
-            Push += ButtonPush;
-            background = new int[map.Length];
-            GenerateFabric();
-            InitializeMap();
+            Push += ButtonPush;            
+            GenerateFabric();            
         }  
         public void PerformPush (object sender, KeyBoardEventArgs e)
         {
@@ -37,18 +35,22 @@ namespace KARC.ScenesTemplates
                 for (int y = 0; y < map[screen].GetLength(1);y++)
                     for (int x = 0; x < map[screen].GetLength(0); x++)
                     {
-                        float xPos = x * scale.width;
-                        float yPos = y * scale.height;
-                        Car car = null;
-                        if (map[screen][x,y]==(int)ObjectCode.civilCar)
+                        if (map[screen][x,y]!= (int)ObjectCode.empty)
                         {
-                            car = fabric.CreateGeneral();                            
-                        }
-                        else if (map[screen][x, y] == (int)ObjectCode.player)
-                        {
-                            car = fabric.CreatePlayer();
-                        }
-                        car.ChangePlace(new Vector2(xPos, yPos));
+                            float xPos = x * scale.width;
+                            float yPos = y * scale.height;
+                            Car car = null;
+                            if (map[screen][x, y] == (int)ObjectCode.civilCar)
+                            {
+                                car = fabric.CreateGeneral();
+                            }
+                            else if (map[screen][x, y] == (int)ObjectCode.player)
+                            {
+                                car = fabric.CreatePlayer();
+                            }
+                            car.ChangePlace(new Vector2(xPos, yPos));
+                            AddObject(car);
+                        }                        
                     }
             }
         }

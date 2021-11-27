@@ -104,7 +104,14 @@ namespace KARC.Controllers
                 return;
             }
             if (_scenesDict.ContainsKey(sceneKey))
+            {
                 _currentScene = (key: sceneKey, scene: _scenesDict[sceneKey]);
+                if (_currentScene.scene.IsInitialized)
+                {
+                    _currentScene.scene.UpdateGraphics(MainCycle.windowWidth, MainCycle.windowHeight);//TODO:Избавиться от статики
+                    _currentScene.scene.InitializeScene();
+                }
+            }                
             else
                 System.Windows.Forms.MessageBox.Show("Такой сцены еще нет!");
         }
@@ -119,9 +126,6 @@ namespace KARC.Controllers
             {
                 return true;
             }
-        }
-
-        
-
+        }  
     }
 }

@@ -56,6 +56,9 @@ namespace KARC
             sceneController.AddScene("MainMenu", mainMenu);
             sceneController.Initialize();
 
+            Level0 level0 = new Level0();
+            sceneController.AddScene("Level0", level0);
+
             //Контроллер отслеживает нажатие клавиши и изменение графических настроек
             Pushed += sceneController.Update;
             GraphicsChanged += sceneController.Update;
@@ -80,6 +83,22 @@ namespace KARC
             ResourcesStorage.AddImage("ExitButton", Content.Load<Texture2D>("ButtonsImages/btnExit"));
             ResourcesStorage.AddImage("ExitButton_Light", Content.Load<Texture2D>("ButtonsImages/btnExit_light"));
 
+            ResourcesStorage.AddImage("PlayerCar1", Content.Load<Texture2D>("CarImages/PlayerCar1"));
+            ResourcesStorage.AddImage("PlayerCar1_crushed", Content.Load<Texture2D>("CarImages/PlayerCar1_crushed"));
+            ResourcesStorage.AddImage("CivilCar1", Content.Load<Texture2D>("CarImages/CivilCar1"));
+            ResourcesStorage.AddImage("CivilCar1_crushed", Content.Load<Texture2D>("CarImages/CivilCar1_crushed"));
+            ResourcesStorage.AddImage("CivilCar2", Content.Load<Texture2D>("CarImages/CivilCar2"));
+            ResourcesStorage.AddImage("CivilCar2_crushed", Content.Load<Texture2D>("CarImages/CivilCar2_crushed"));
+            ResourcesStorage.AddImage("CivilCar3", Content.Load<Texture2D>("CarImages/CivilCar3"));
+            ResourcesStorage.AddImage("CivilCar3_crushed", Content.Load<Texture2D>("CarImages/CivilCar3_crushed"));
+            ResourcesStorage.AddImage("CivilCar4", Content.Load<Texture2D>("CarImages/CivilCar4"));
+            ResourcesStorage.AddImage("CivilCar4_crushed", Content.Load<Texture2D>("CarImages/CivilCar4_crushed"));
+            ResourcesStorage.AddImage("CivilCar5", Content.Load<Texture2D>("CarImages/CivilCar5"));
+            ResourcesStorage.AddImage("CivilCar5_crushed", Content.Load<Texture2D>("CarImages/CivilCar5_crushed"));
+            ResourcesStorage.AddImage("CivilCar6", Content.Load<Texture2D>("CarImages/CivilCar6"));
+            ResourcesStorage.AddImage("CivilCar6_crushed", Content.Load<Texture2D>("CarImages/CivilCar6_crushed"));
+            ResourcesStorage.AddImage("CivilCar7", Content.Load<Texture2D>("CarImages/CivilCar7"));
+            ResourcesStorage.AddImage("CivilCar7_crushed", Content.Load<Texture2D>("CarImages/CivilCar7_crushed"));
         }
 
         protected override void Update(GameTime gameTime)

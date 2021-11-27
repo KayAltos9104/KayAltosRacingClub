@@ -10,7 +10,7 @@ namespace KARC.Controllers
         readonly Random rnd = new Random();
         public override Car CreateGeneral()
         {
-            string key = String.Format("CivilCar", rnd.Next(1, 5));
+            string key = String.Concat("CivilCar", rnd.Next(1, 5));
             return new Car(key);
         }
         public override Car CreatePlayer()
@@ -24,7 +24,7 @@ namespace KARC.Controllers
         }
         public override Car CreateEnemy()
         {
-            string key = String.Format("RacerCar", rnd.Next(1, 4));
+            string key = String.Concat("RacerCar", rnd.Next(1, 4));
             return new Car(key,"EnemyCar");
         }
     }

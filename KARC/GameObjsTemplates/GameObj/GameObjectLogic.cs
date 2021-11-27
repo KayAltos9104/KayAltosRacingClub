@@ -11,7 +11,7 @@ namespace KARC.GameObjsTemplates
         public bool ToDelete { get; private set; }//Удалить ли объект на этом шаге игрового цикла
         private Vector2 pos; //Текущая позиция
 
-        public GameObject ()
+        public GameObject ()//Не забывать вручную инициализировать графику и физику у дочерних объектов
         {            
             pos = Vector2.Zero;
             ToDelete = false;

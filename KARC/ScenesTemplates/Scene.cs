@@ -18,15 +18,25 @@ namespace KARC.ScenesTemplates
         protected int _windowWidth;//Текущая ширина сцены
         protected int _windowHeight;//Текущая высота сцены
 
+        private bool _isInit = true;
+        public bool IsInitialized 
+        {
+            get
+            {
+                return _isInit;
+            }
+        }
+
         public Scene ()
         {
             _objDict = new Dictionary<int, GameObject>();
             _id = 1;
+            
         }
 
         public virtual void InitializeScene ()//Сюда писать генерацию объектов для конкретной сцены
         {
-
+            _isInit = false;
         }
         public virtual void Update()
         {

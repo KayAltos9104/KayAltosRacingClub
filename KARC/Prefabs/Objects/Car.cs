@@ -65,9 +65,9 @@ namespace KARC.Prefabs.Objects
         public void Accelerate(bool forward)
         {
             if (forward)
-                ChangeSpeed((0, _acceleration));
-            else
                 ChangeSpeed((0, -_acceleration));
+            else
+                ChangeSpeed((0, +_acceleration));
         }
 
         public void Turn (bool right)

@@ -140,17 +140,17 @@ namespace KARC.ScenesTemplates
         }
 
         //Активация событий, чтобы можно было делать это извне
-        public void AcceptPerform(object sender, CursorEventArgs e)
+        public void AcceptPerform(object sender, CursorEventArgs e) //Подтверждение выбора
         {
             Accept.Invoke(sender, e);
         }
 
-        public void ChoosePerform(object sender, CursorEventArgs e)
+        public void ChoosePerform(object sender, CursorEventArgs e) //Смена курсора
         {
             ChooseElement.Invoke(sender, e);
         }
 
-        public void ChangePropertyPerform(object sender, CursorEventArgs e)
+        public void ChangePropertyPerform(object sender, CursorEventArgs e) //Когда типа стрелочками параметры в настройках будем менять
         {
             ChangeProperty.Invoke(sender, e);
         }

@@ -62,9 +62,7 @@ namespace KARC
             //Контроллер отслеживает нажатие клавиши и изменение графических настроек
             Pushed += sceneController.Update;
             GraphicsChanged += sceneController.Update;
-
         }
-
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);

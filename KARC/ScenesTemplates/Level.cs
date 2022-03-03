@@ -18,6 +18,9 @@ namespace KARC.ScenesTemplates
         protected int[] background;
         protected bool toroidal;
         protected (float width, float height) scale;
+
+        protected Car _player;
+        
         public Level ()
         {
             Push += ButtonPush;            
@@ -47,6 +50,7 @@ namespace KARC.ScenesTemplates
                             else if (map[screen][x, y] == (int)ObjectCode.player)
                             {
                                 car = fabric.CreatePlayer();
+                                _player = car;
                             }
                             car.ChangePlace(new Vector2(xPos, yPos));
                             AddObject(car);

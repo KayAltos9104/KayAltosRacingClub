@@ -15,7 +15,7 @@ namespace KARC.Prefabs.Scenes
         public override void Update()
         {
             if(initTime < 255)
-                initTime += 1;
+                initTime += 5;
             Animate();
         }      
         protected override void Animate ()

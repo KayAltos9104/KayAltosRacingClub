@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using KARC.ScenesTemplates;
 using Microsoft.Xna.Framework.Graphics;
+using KARC.Prefabs.Scenes;
 
 namespace KARC.Controllers
 {
@@ -43,7 +44,6 @@ namespace KARC.Controllers
                 var game = (MainCycle)sender;
                 game.Exit();
             }
-
             switch (_currentScene.key)
             {
                 case "MainMenu":
@@ -69,7 +69,12 @@ namespace KARC.Controllers
                                     break;
                                 }
                         }
-
+                        break;
+                    }
+                case "Level0":
+                    {
+                        var level = (Level0)_currentScene.scene;
+                        level.PerformPush(this, e);
                         break;
                     }
             }
@@ -83,7 +88,6 @@ namespace KARC.Controllers
         {
             _currentScene.scene.DrawScene(spriteBatch);
         }
-
         public void AddScene(string key, Scene scene)
         {
             _scenesDict.Add(key, scene);

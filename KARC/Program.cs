@@ -7,9 +7,8 @@ namespace KARC
         [STAThread]
         static void Main()
         {
-            using (var game = new MainCycle())
+            using (var game = new GameCycleView())
                 game.Run();
-            
         }
     }
 }
